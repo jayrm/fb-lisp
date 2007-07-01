@@ -15,6 +15,8 @@
 
 #include once "lisp_runtime.bi"
 
+namespace LISP
+
 '' --------------------------------------------------------
 '' (distance x1 y1 x2 y2)
 ''
@@ -45,7 +47,9 @@ define_lisp_function( distance, args )
 
 	end if
 
-end_lisp_function
+end_lisp_function()
+
+end namespace
 
 
 '' --------------------------------------------------------
@@ -53,8 +57,13 @@ end_lisp_function
 '' --------------------------------------------------------
 
 #include once "lisp.bi"
+using LISP
 
 dim lsp as LispModule
+
+'' Turn on display to see what's happening
+'' lsp.EchoInput = 1
+'' lsp.ShowResults = 1
 
 ''
 '' bind the function named "distance" to the FreeBASIC

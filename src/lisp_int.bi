@@ -39,25 +39,10 @@
 #endif
 
 namespace LISP
+
 	declare function strdup( byval s as zstring ptr ) as zstring ptr
 	declare sub strdel( byval s as zstring ptr )
 
-#ifdef DEBUG
-	declare function allocate( byval size as uinteger, byval file as zstring ptr, byval lineno as integer ) as any ptr
-	declare function callocate( byval size as uinteger, byval file as zstring ptr, byval lineno as integer ) as any ptr
-	declare sub deallocate( byval buf as any ptr, byval file as zstring ptr, byval lineno as integer )
-
-#else
-	declare function allocate( byval size as uinteger ) as any ptr
-	declare function callocate( byval size as uinteger ) as any ptr
-	declare sub deallocate( byval buf as any ptr )
-
-#endif
-
-	declare sub memcheck()
-
 end namespace
-
-#include once "lisp_debug.bi"
 
 #endif

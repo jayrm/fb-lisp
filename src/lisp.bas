@@ -34,6 +34,10 @@
 
 #include once "lisp.bi"
 
+#include once "lisp_runtime.bi"
+
+namespace LISP
+
 '' ---------------------------------------------------------------------------
 '' ERROR MESSAGES
 '' ---------------------------------------------------------------------------
@@ -53,13 +57,6 @@ dim shared ErrMessages( 0 to LISP_ERRS - 1 ) as zstring ptr = { _
 	@"Argument type mismatch", _
 	@"Too few arguments" _
 }
-
-'' ---------------------------------------------------------------------------
-'' IMPORTS FROM LISP RUNTIME
-'' ---------------------------------------------------------------------------
-
-#include once "lisp_runtime.bi"
-import_lisp_function( princ_object )
 
 '' ---------------------------------------------------------------------------
 '' USER API
@@ -93,7 +90,7 @@ function LispModule.Eval( byref text as string ) as integer
 
 		if( ctx->EchoInput ) then
 			print "<<= ";
-			_CALL( princ_object, p1 )
+			_CALL( princ-object, p1 )
 			print
 		end if
 
@@ -105,7 +102,7 @@ function LispModule.Eval( byref text as string ) as integer
 
 		if( ctx->ShowResults ) then
 			print "==> ";
-			_CALL( princ_object, p2 )
+			_CALL( princ-object, p2 )
 			print
 		end if
 
@@ -183,3 +180,5 @@ end property
 property LispModule.Functions() as LISP_FUNCTIONS_ ptr
 	property = ctx->functions
 end property
+
+end namespace

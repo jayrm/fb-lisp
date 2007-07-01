@@ -25,8 +25,10 @@
 
 #include once "lisp_runtime.bi"
 
+namespace LISP
+
 '' ---------------------------------------------------------------------------
-'' (princ-string <string>)
+'' (princ_string <string>)
 ''
 define_lisp_function( princ_string, args )
 
@@ -71,11 +73,11 @@ define_lisp_function( princ_string, args )
 
 	function = p
 
-end_lisp_function
+end_lisp_function()
 
 
 '' ---------------------------------------------------------------------------
-'' (princ-object <item>)
+'' (princ_object <item>)
 ''
 define_lisp_function( princ_object, args )
 
@@ -93,7 +95,7 @@ define_lisp_function( princ_object, args )
 		print *p->value.id;
 
 	case OBJECT_TYPE_STRING
-		_CALL( princ_string, p )
+		_CALL( princ-string, p )
 
 	case OBJECT_TYPE_INTEGER
 		print str(p->value.int);
@@ -105,13 +107,13 @@ define_lisp_function( princ_object, args )
 		print "(";
 		p1 = p
 		do
-			_CALL( princ_object, p1->value.cell.car )
+			_CALL( princ-object, p1->value.cell.car )
 			p1 = p1->value.cell.cdr
 			if( p1 <> _NIL_ ) then
 				print " ";
 				if( p1->dtype <> OBJECT_TYPE_CONS ) then
 					print ". ";
-					_CALL( princ_object, p1 )
+					_CALL( princ-object, p1 )
 				end if
 			elseif( p1->dtype <> OBJECT_TYPE_CONS ) then
 				exit do
@@ -124,7 +126,7 @@ define_lisp_function( princ_object, args )
 
 	function = p
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (princ <expr>...)
@@ -139,14 +141,14 @@ define_lisp_function( princ, args )
 		if( _IS_STRING(p1) ) then
 			print *p1->value.str;
 		else
-			_CALL( princ_object, p1 )
+			_CALL( princ-object, p1 )
 		end if
 		p = _CDR(p)
 	loop while ( p <> _NIL_ )
 
 	function = p1
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (gc)
@@ -156,7 +158,7 @@ define_lisp_function( gc, args )
 
 	function = ctx->objects->garbage_collect()
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 ''
@@ -170,3 +172,5 @@ sub bind_intrinsic_funcs2( byval functions as LISP_FUNCTIONS ptr )
 	BIND_FUNC( functions, "garbage-collect", gc )
 
 end sub
+
+end namespace

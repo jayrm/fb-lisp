@@ -20,6 +20,7 @@
 '' --------------------------------------------------------
 
 #include once "lisp.bi"
+using LISP
 
 ''
 '' Load a text file from disk as a string
@@ -110,7 +111,7 @@ sub main
 	print
 
 	do
-		print "lisp>";
+		print "lisp > ";
 		line input expr
 
 		if( lcase(trim(expr)) = "quit" ) then

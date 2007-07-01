@@ -53,6 +53,8 @@
 
 #include once "lisp_objects.bi"
 
+namespace LISP
+
 #define _NIL_ ctx->NIL_
 #define _T_	  ctx->T_
 
@@ -63,20 +65,14 @@
 ''
 type LISP_OBJECT_PAIR
 
-	DECLARE_DEBUG_ALLOCATOR()
-
 	nameid as LISP_OBJECT ptr
 	value as LISP_OBJECT ptr
 	nxt as LISP_OBJECT_PAIR ptr
 
 end type
 
-DEFINE_DEBUG_ALLOCATOR( LISP_OBJECT_PAIR )
-
 ''
 type LISP_OBJECTS_CTX
-
-	DECLARE_DEBUG_ALLOCATOR()
 
 	declare constructor( byval parent_ctx as LISP_CTX ptr )
 	declare destructor( )
@@ -101,8 +97,6 @@ type LISP_OBJECTS_CTX
 	declare sub gc_tag_whole_tree()
 
 end type
-
-DEFINE_DEBUG_ALLOCATOR( LISP_OBJECTS_CTX )
 
 ''
 private constructor LISP_OBJECTS_CTX( byval parent_ctx as LISP_CTX ptr )
@@ -231,8 +225,6 @@ end sub
 '' ---------------------------------------------------------------------------
 '' OBJECTS
 '' ---------------------------------------------------------------------------
-
-DEFINE_DEBUG_ALLOCATOR( LISP_OBJECTS )
 
 ''
 constructor LISP_OBJECTS( byval parent_ctx as LISP_CTX ptr )
@@ -455,3 +447,5 @@ function LISP_OBJECTS.garbage_collect() as LISP_OBJECT ptr
 	ctx->garbage_collect()	
 	function = _T_
 end function
+
+end namespace

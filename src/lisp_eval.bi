@@ -25,26 +25,28 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '/
 
-type LISP_EVAL_CTX_ as LISP_EVAL_CTX
+namespace LISP
 
-type LISP_EVAL
+	type LISP_EVAL_CTX_ as LISP_EVAL_CTX
 
-	DECLARE_DEBUG_ALLOCATOR()
-	
-	declare constructor( )
-	declare constructor( byval parent_ctx as LISP_CTX ptr )
-	declare destructor()
+	type LISP_EVAL
 
-public:
-	declare function car( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
-	declare function cdr( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
-	declare function eval( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
-	declare function length( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
-	declare function execute( byval nameid as zstring ptr, byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+		declare constructor( )
+		declare constructor( byval parent_ctx as LISP_CTX ptr )
+		declare destructor()
 
-private:
-	ctx as LISP_EVAL_CTX_ ptr
+	public:
+		declare function car( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+		declare function cdr( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+		declare function eval( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+		declare function length( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+		declare function execute( byval nameid as zstring ptr, byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 
-end type
+	private:
+		ctx as LISP_EVAL_CTX_ ptr
+
+	end type
+
+end namespace
 
 #endif

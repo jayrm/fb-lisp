@@ -48,33 +48,35 @@
 
 #include once "lisp_runtime.bi"
 
+namespace LISP
+
 '' ---------------------------------------------------------------------------
 '' (quote expr)
 ''
 define_lisp_function( quote, args )
 	function = _CAR( args )
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (car expr)
 ''
 define_lisp_function( car, args )
 	function = _CAR( _EVAL( _CAR( args ) ) )
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (cdr expr)
 ''
 define_lisp_function( cdr, args )
 	function = _CDR( _EVAL( _CAR( args )))
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (eval expr)
 ''
 define_lisp_function( eval, args )
 	function = _EVAL(_EVAL(_CAR( args )))
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (+ expr... )
@@ -100,7 +102,7 @@ define_lisp_function( add, args )
 	
 	function = res
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (- expr... )
@@ -131,7 +133,7 @@ define_lisp_function( sub, args )
 	
 	function = res
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (* expr... )
@@ -162,7 +164,7 @@ define_lisp_function( mul, args )
 	
 	function = res
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (/ expr... )
@@ -197,7 +199,7 @@ define_lisp_function( div, args )
 	
 	function = res
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (progn expr... )
@@ -214,7 +216,7 @@ define_lisp_function( progn, args )
 
 	function = p1
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (set name value)
@@ -232,7 +234,7 @@ define_lisp_function( set, args )
 
 	function = p2
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (setq name value...)
@@ -253,7 +255,7 @@ define_lisp_function( setq, args )
 
 	function = p2
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (atom expr)
@@ -270,7 +272,7 @@ define_lisp_function( atom, args )
 		function = _T_
 	end if
 
-end_lisp_function
+end_lisp_function()
 
 
 '' ---------------------------------------------------------------------------
@@ -292,7 +294,7 @@ define_lisp_function( and, args)
 
 	function = p1
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (or expr...)
@@ -313,7 +315,7 @@ define_lisp_function( or, args)
 
 	function = _NIL_
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (not expr)
@@ -329,7 +331,7 @@ define_lisp_function( not, args)
 		function = _T_
 	end if
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (cond (expr1 [expr2])...)
@@ -358,7 +360,7 @@ define_lisp_function( cond, args)
 
 	function = _NIL_
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (if expr then-expr else-expr...)
@@ -375,7 +377,7 @@ define_lisp_function( if, args)
 		function = _CALL( progn, p3 )
 	end if
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (when expr then-expr...)
@@ -391,7 +393,7 @@ define_lisp_function( when, args )
 		function = _NIL_
 	end if
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (unless expr else-expr...)
@@ -407,7 +409,7 @@ define_lisp_function( unless, args)
 		function = _NIL_
 	end if
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (while expr exprs...)
@@ -423,7 +425,7 @@ define_lisp_function( while, args )
 
 	function = _NIL_
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (cons expr1 expr2)
@@ -439,7 +441,7 @@ define_lisp_function( cons, args)
 
 	function = p
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (list expr1...)
@@ -471,7 +473,7 @@ define_lisp_function( list, args)
 
 	function = first
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (defun name (arglist) expr...)
@@ -498,7 +500,7 @@ define_lisp_function( defun, args )
 
 	function = p1
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (eq <expr1> <expr2>)
@@ -544,7 +546,7 @@ define_lisp_function( eq, args )
 
 	end if
 
-end_lisp_function
+end_lisp_function()
 
 
 '' ---------------------------------------------------------------------------
@@ -579,3 +581,5 @@ sub bind_intrinsic_funcs1( byval functions as LISP_FUNCTIONS ptr )
 	BIND_FUNC( functions, "eq", eq )
 
 end sub
+
+end namespace

@@ -29,11 +29,11 @@
 
 #include once "lisp_object.bi"
 
+namespace LISP
+
 '' ---------------------------------------------------------------------------
 '' OBJECT
 '' ---------------------------------------------------------------------------
-
-DEFINE_DEBUG_ALLOCATOR( LISP_OBJECT )
 
 ''
 constructor LISP_OBJECT( )
@@ -269,3 +269,4 @@ operator LISP_OBJECT.cast() as integer
 
 end operator
 
+end namespace

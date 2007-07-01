@@ -31,13 +31,13 @@
 
 #include once "lisp_funcs.bi"
 
+namespace LISP
+
 '' ---------------------------------------------------------------------------
 '' FUNCTION DEFINITION
 '' ---------------------------------------------------------------------------
 
 type FUNCTION_DEF
-
-	DECLARE_DEBUG_ALLOCATOR()
 
 	declare constructor()
 	declare constructor( byval id as zstring ptr )
@@ -48,8 +48,6 @@ type FUNCTION_DEF
 	nxt as FUNCTION_DEF ptr
 
 end type
-
-DEFINE_DEBUG_ALLOCATOR( FUNCTION_DEF )
 
 ''
 private constructor FUNCTION_DEF( )
@@ -76,8 +74,6 @@ end destructor
 
 type LISP_FUNCTIONS_CTX
 
-	DECLARE_DEBUG_ALLOCATOR()
-
 	declare constructor( )
 	declare constructor( byval parent_ctx as LISP_CTX ptr )
 	declare destructor( )
@@ -90,8 +86,6 @@ type LISP_FUNCTIONS_CTX
 	declare function bind( byval id as zstring ptr, byval func as LISP_FUNCTION ) as integer
 
 end type
-
-DEFINE_DEBUG_ALLOCATOR( LISP_FUNCTIONS_CTX )
 
 ''
 private constructor LISP_FUNCTIONS_CTX( byval parent_ctx as LISP_CTX ptr )
@@ -142,7 +136,7 @@ private function LISP_FUNCTIONS_CTX.bind( byval id as zstring ptr, byval func as
 	dim f as FUNCTION_DEF ptr = any 
 
 	function = FALSE
-	
+
 	if( id = NULL ) then
 		exit function
 	elseif ( len(*id) = 0 ) then
@@ -166,8 +160,6 @@ end function
 '' ---------------------------------------------------------------------------
 '' FUNCTIONS
 '' ---------------------------------------------------------------------------
-
-DEFINE_DEBUG_ALLOCATOR( LISP_FUNCTIONS )
 
 ''
 constructor LISP_FUNCTIONS( byval parent_ctx as LISP_CTX ptr )
@@ -194,3 +186,5 @@ function LISP_FUNCTIONS.find( byval id as zstring ptr ) as LISP_FUNCTION
 		function = NULL
 	end if
 end function
+
+end namespace

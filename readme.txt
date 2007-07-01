@@ -51,14 +51,14 @@ INTRINSIC FUNCTIONS
 	(car <list>)
 	(cdr <list>)
 	(cond (expr1 [expr2])...)
-	(cons expr1 expr2)
+	(cons <expr1> <expr2>)
 	(defun <sym> <arglist> <expr>...)
 	(eval <expr>)
 	(garbage-collect)
 	(gc)
 	(if expr then-expr else-expr...)
 	(length <list>)
-	(list expr1...)
+	(list <expr1>...)
 	(not <expr>)
 	(null <expr>)
 	(or <expr>...)
@@ -76,8 +76,10 @@ INTRINSIC FUNCTIONS
 EXAMPLE USAGE IN FREEBASIC
 
 	#include "lisp.bi"
+	using LISP
 
 	DIM lsp AS LispModule, expr AS STRING
+
 
 	expr = "(lisp expression)"
 	lsp.eval( expr )
@@ -97,25 +99,26 @@ EXAMPLE PROGRAMS
 
 WHY DID I WRITE THIS LIBRARY?
 
-	My main motivation for writing this library was that I wanted to make a
-	non-trivial object oriented program in FreeBASIC to see what the
-	experience was like.  Overall, it mostly didn't suck.  Except just as in
-	C++, much effort needs to go in to managing memory.  I spent probably
-	25% of my time hunting down a memory leak.  And this was with careful
-	planning of object life-times from the beginning.  In the end it was a
-	stupid mistake that was causing the memory leak, but, isn't that always
-	the case?
+	My main motivation for writing this is I like the idea of LISP as a script
+	or macro language that can be embedded in my programs.
 
-	Otherwise, I like the LISP language.  And I thought to create something
-	that could be used as a script/macro language for use in my programs.
-	Also with the OO design of the library, it is possible to instance
-	completely seperate LispModule objects that can execute independant of
-	each other.
+	I also wanted to make a	non-trivial object oriented program in FreeBASIC.
+	And the design of this LISP evaluator is exactly that.  Through the top-
+	level object LispModule, it is possible to instance two or more
+	completely seperate evaluators.  The only thing shared between the 
+	instances is the string text for error messages.
+
+	In writing the library, the experience didn't completely suck, except in
+	debugging it was just like C++, spending a significant smount of time
+	chasing down a memory leak due to the manual managed memory allocations.
+	And this was with careful planning of object life-times from the 
+	beginning.  In the end it was a	stupid mistake that was causing the 
+	memory leak, but, isn't that always	the case?
 
 
 OBTAINING THE ORIGINAL SOURCE
 
-	You should be able to find this source at http://www.coderjeff.ca
+	Sources whould be at my own webpage here: http://www.coderjeff.ca
 
 
 ACKNOWLEDGEMENTS

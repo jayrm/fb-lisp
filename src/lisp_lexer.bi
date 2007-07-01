@@ -26,46 +26,48 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '/
 
-''
-enum LISP_TOKEN_ID
-	LISP_TK_INVALID
-	LISP_TK_COMMENT
-	LISP_TK_INTEGER
-	LISP_TK_REAL
-	LISP_TK_STRING
-	LISP_TK_IDENTIFIER
+namespace LISP
 
-	LISP_TK_LEFT_PARA
-	LISP_TK_RIGHT_PARA
-	LISP_TK_DOT
-	LISP_TK_SINGLE_QUOTE
-	LISP_TK_CHAR
+	''
+	enum LISP_TOKEN_ID
+		LISP_TK_INVALID
+		LISP_TK_COMMENT
+		LISP_TK_INTEGER
+		LISP_TK_REAL
+		LISP_TK_STRING
+		LISP_TK_IDENTIFIER
 
-	LISP_TK_EOF
-end enum
+		LISP_TK_LEFT_PARA
+		LISP_TK_RIGHT_PARA
+		LISP_TK_DOT
+		LISP_TK_SINGLE_QUOTE
+		LISP_TK_CHAR
 
-''
-type LISP_LEXER_CTX_ as LISP_LEXER_CTX
+		LISP_TK_EOF
+	end enum
 
-''
-type LISP_LEXER
+	''
+	type LISP_LEXER_CTX_ as LISP_LEXER_CTX
 
-	DECLARE_DEBUG_ALLOCATOR()
-	
-	declare constructor( byval parent_ctx as LISP_CTX ptr )
-	declare destructor( )
+	''
+	type LISP_LEXER
 
-public:
-	declare sub settext( byref buffer as string ) 
-	declare function gettoken( ) as LISP_TOKEN_ID
-	declare function token() as zstring ptr
-	
-	declare function lineno() as integer
-	declare function column() as integer
+		declare constructor( byval parent_ctx as LISP_CTX ptr )
+		declare destructor( )
 
-private:
-	ctx as LISP_LEXER_CTX_ ptr
+	public:
+		declare sub settext( byref buffer as string ) 
+		declare function gettoken( ) as LISP_TOKEN_ID
+		declare function token() as zstring ptr
+		
+		declare function lineno() as integer
+		declare function column() as integer
 
-end type
+	private:
+		ctx as LISP_LEXER_CTX_ ptr
+
+	end type
+
+end namespace
 
 #endif

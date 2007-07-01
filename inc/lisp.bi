@@ -29,36 +29,40 @@
 
 #inclib "lisp"
 
-''
-type LISP_CTX_ as LISP_CTX
-type LISP_FUNCTIONS_ as LISP_FUNCTIONS
+namespace LISP
 
-''
-type LispModule
+	''
+	type LISP_CTX_ as LISP_CTX
+	type LISP_FUNCTIONS_ as LISP_FUNCTIONS
 
-	declare constructor( )
-	declare destructor( )
+	''
+	type LispModule
 
-public:
-	declare function Eval( byref text as string ) as integer
-	declare sub GarbageCollect()
+		declare constructor( )
+		declare destructor( )
 
-	declare property EchoInput() as integer
-	declare property EchoInput( byval flag as integer )
-	declare property ShowResults() as integer
-	declare property ShowResults( byval flag as integer )
+	public:
+		declare function Eval( byref text as string ) as integer
+		declare sub GarbageCollect()
 
-	declare sub ErrorReset()
-	declare function ErrorCode() as integer
-	declare function ErrorText() as string
-	declare function ErrorLine() as integer
-	declare function ErrorColumn() as integer
+		declare property EchoInput() as integer
+		declare property EchoInput( byval flag as integer )
+		declare property ShowResults() as integer
+		declare property ShowResults( byval flag as integer )
 
-	declare property Functions() as LISP_FUNCTIONS_ ptr
+		declare sub ErrorReset()
+		declare function ErrorCode() as integer
+		declare function ErrorText() as string
+		declare function ErrorLine() as integer
+		declare function ErrorColumn() as integer
 
-private:
-	ctx as LISP_CTX_ ptr
+		declare property Functions() as LISP_FUNCTIONS_ ptr
 
-end type
+	private:
+		ctx as LISP_CTX_ ptr
+
+	end type
+
+end namespace
 
 #endif

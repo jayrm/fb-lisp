@@ -11,6 +11,7 @@
 '' --------------------------------------------------------
 
 #include once "lisp.bi
+using LISP
 
 sub main
 	dim lsp as LispModule

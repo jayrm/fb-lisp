@@ -25,6 +25,8 @@
 
 #include once "lisp_runtime.bi"
 
+namespace LISP
+
 '' ---------------------------------------------------------------------------
 '' (length <list>)
 ''
@@ -41,7 +43,7 @@ define_lisp_function( length, args )
 
 	function = _NEW_INTEGER( count )
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (= expr... )
@@ -75,7 +77,7 @@ define_lisp_function( eq_atom, args )
 		p = _CDR(p)
 	wend
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (< expr... )
@@ -109,7 +111,7 @@ define_lisp_function( lt_atom, args )
 		p = _CDR(p)
 	wend
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (> expr... )
@@ -143,7 +145,7 @@ define_lisp_function( gt_atom, args )
 		p = _CDR(p)
 	wend
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (/= expr... )
@@ -177,7 +179,7 @@ define_lisp_function( ne_atom, args )
 		p = _CDR(p)
 	wend
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (>= expr... )
@@ -211,7 +213,7 @@ define_lisp_function( ge_atom, args )
 		p = _CDR(p)
 	wend
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (<= expr... )
@@ -245,7 +247,7 @@ define_lisp_function( le_atom, args )
 		p = _CDR(p)
 	wend
 
-end_lisp_function
+end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 ''
@@ -261,3 +263,5 @@ sub bind_intrinsic_funcs3( byval functions as LISP_FUNCTIONS ptr )
 	BIND_FUNC( functions, "<=", le_atom )
 
 end sub
+
+end namespace

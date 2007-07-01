@@ -25,39 +25,41 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '/
 
-type LISP_LEXER_ as LISP_LEXER
-type LISP_PARSER_ as LISP_PARSER
-type LISP_OBJECTS_ as LISP_OBJECTS
-type LISP_FUNCTIONS_ as LISP_FUNCTIONS
-type LISP_EVAL_ as LISP_EVAL
-type LISP_OBJECT_ as LISP_OBJECT
-type LISP_FUNCTION_ as LISP_FUNCTION
+namespace LISP
 
-''
-type LISP_CTX
+	type LISP_LEXER_ as LISP_LEXER
+	type LISP_PARSER_ as LISP_PARSER
+	type LISP_OBJECTS_ as LISP_OBJECTS
+	type LISP_FUNCTIONS_ as LISP_FUNCTIONS
+	type LISP_EVAL_ as LISP_EVAL
+	type LISP_OBJECT_ as LISP_OBJECT
+	type LISP_FUNCTION_ as LISP_FUNCTION
 
-	DECLARE_DEBUG_ALLOCATOR()
+	''
+	type LISP_CTX
 
-	declare constructor()
-	declare destructor()
+		declare constructor()
+		declare destructor()
 
-	lexer as LISP_LEXER_ ptr
-	parser as LISP_PARSER_ ptr
-	objects as LISP_OBJECTS_ ptr
-	functions as LISP_FUNCTIONS_ ptr
-	evaluator as LISP_EVAL_ ptr
+		lexer as LISP_LEXER_ ptr
+		parser as LISP_PARSER_ ptr
+		objects as LISP_OBJECTS_ ptr
+		functions as LISP_FUNCTIONS_ ptr
+		evaluator as LISP_EVAL_ ptr
 
-	ErrorCode as integer
-	ErrorLine as integer
-	ErrorColumn as integer
-	ErrorText as string
+		ErrorCode as integer
+		ErrorLine as integer
+		ErrorColumn as integer
+		ErrorText as string
 
-	declare sub RaiseError( byval e_code as LISP_ERROR, byref e_text as string = "")
-	declare sub RaiseWarning( byval e_code as LISP_ERROR, byref e_text as string = "")
+		declare sub RaiseError( byval e_code as LISP_ERROR, byref e_text as string = "")
+		declare sub RaiseWarning( byval e_code as LISP_ERROR, byref e_text as string = "")
 
-	EchoInput as integer
-	ShowResults as integer
+		EchoInput as integer
+		ShowResults as integer
 
-end type
+	end type
+
+end namespace
 
 #endif

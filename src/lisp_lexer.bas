@@ -29,6 +29,8 @@
 
 #include once "lisp_lexer.bi"
 
+namespace LISP
+
 ''
 #define LEX_CHAR_EOF -1
 
@@ -37,8 +39,6 @@
 '' ---------------------------------------------------------------------------
 
 type LISP_LEXER_CTX
-
-	DECLARE_DEBUG_ALLOCATOR()
 
 	declare constructor( )
 	declare constructor( byval parent_ctx as LISP_CTX ptr )
@@ -67,8 +67,6 @@ type LISP_LEXER_CTX
 	declare function getstring( ) as LISP_TOKEN_ID
 
 end type
-
-DEFINE_DEBUG_ALLOCATOR( LISP_LEXER_CTX )
 
 ''
 private constructor LISP_LEXER_CTX( byval parent_ctx as LISP_CTX ptr )
@@ -403,8 +401,6 @@ end function
 '' LEXER
 '' ---------------------------------------------------------------------------
 
-DEFINE_DEBUG_ALLOCATOR( LISP_LEXER )
-
 ''
 constructor LISP_LEXER( byval parent_ctx as LISP_CTX ptr )
 	ctx = new LISP_LEXER_CTX( parent_ctx )
@@ -443,3 +439,5 @@ end function
 function LISP_LEXER.column() as integer
 	function = ctx->column
 end function
+
+end namespace

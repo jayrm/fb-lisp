@@ -26,24 +26,26 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '/
 
-''
-type LISP_PARSER_CTX_ as LISP_PARSER_CTX
+namespace LISP
 
-''	
-type LISP_PARSER
+	''
+	type LISP_PARSER_CTX_ as LISP_PARSER_CTX
 
-	DECLARE_DEBUG_ALLOCATOR()
+	''	
+	type LISP_PARSER
 
-	declare constructor( )
-	declare constructor( byval parent_ctx as LISP_CTX ptr )
-	declare destructor( )
+		declare constructor( )
+		declare constructor( byval parent_ctx as LISP_CTX ptr )
+		declare destructor( )
 
-public:
-	declare function parse_object( byval havetoken as integer ) as LISP_OBJECT ptr
+	public:
+		declare function parse_object( byval havetoken as integer ) as LISP_OBJECT ptr
 
-private:
-	ctx as LISP_PARSER_CTX_ ptr
+	private:
+		ctx as LISP_PARSER_CTX_ ptr
 
-end type
+	end type
+
+end namespace
 
 #endif

@@ -26,82 +26,80 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '/
 
-''
-enum LISP_OBJECT_TYPE
-	OBJECT_TYPE_INVALID
-	OBJECT_TYPE_NIL
-	OBJECT_TYPE_T
-	OBJECT_TYPE_INTEGER
-	OBJECT_TYPE_REAL
-	OBJECT_TYPE_IDENTIFIER
-	OBJECT_TYPE_STRING
-	OBJECT_TYPE_CONS
-end enum
+namespace LISP
 
-type LISP_OBJECT_ as LISP_OBJECT
+	''
+	enum LISP_OBJECT_TYPE
+		OBJECT_TYPE_INVALID
+		OBJECT_TYPE_NIL
+		OBJECT_TYPE_T
+		OBJECT_TYPE_INTEGER
+		OBJECT_TYPE_REAL
+		OBJECT_TYPE_IDENTIFIER
+		OBJECT_TYPE_STRING
+		OBJECT_TYPE_CONS
+	end enum
 
-'' 
-type LISP_CELL
+	type LISP_OBJECT_ as LISP_OBJECT
 
-	DECLARE_DEBUG_ALLOCATOR()
+	'' 
+	type LISP_CELL
+		car as LISP_OBJECT_ ptr
+		cdr as LISP_OBJECT_ ptr
+	end type
 
-	car as LISP_OBJECT_ ptr
-	cdr as LISP_OBJECT_ ptr
-end type
+	''
+	type LISP_INTEGER as integer
 
-''
-type LISP_INTEGER as integer
+	''
+	type LISP_REAL as double
 
-''
-type LISP_REAL as double
+	''
+	union LISP_OBJECT_VALUE
+		id as zstring ptr
+		str as zstring ptr
+		int as LISP_INTEGER
+		flt as LISP_REAL
+		cell as LISP_CELL
+	end union
 
-''
-union LISP_OBJECT_VALUE
-	id as zstring ptr
-	str as zstring ptr
-	int as LISP_INTEGER
-	flt as LISP_REAL
-	cell as LISP_CELL
-end union
+	''
+	type LISP_OBJECT
+		declare constructor()
+		declare destructor()
 
-''
-type LISP_OBJECT
+		dtype as LISP_OBJECT_TYPE
+		value as LISP_OBJECT_VALUE
+		nxt as LISP_OBJECT ptr
+		usage_id as integer
 
-	DECLARE_DEBUG_ALLOCATOR()
+		declare operator += ( byref rhs as LISP_OBJECT )
+		declare operator -= ( byref rhs as LISP_OBJECT )
+		declare operator *= ( byref rhs as LISP_OBJECT )
+		declare operator /= ( byref rhs as LISP_OBJECT )
 
-	declare constructor()
-	declare destructor()
+		declare function IsZero() as integer
 
-	dtype as LISP_OBJECT_TYPE
-	value as LISP_OBJECT_VALUE
-	nxt as LISP_OBJECT ptr
-	usage_id as integer
+		declare function compare_integer( byref rhs as LISP_OBJECT ) as integer
+		declare function compare_integer( byval rhs as LISP_INTEGER ) as integer
+		declare function compare_real( byref rhs as LISP_OBJECT ) as integer
+		declare function compare_real( byval rhs as LISP_REAL ) as integer
+		declare function compare_string( byref rhs as LISP_OBJECT ) as integer
+		declare function compare_string( byval rhs as zstring ptr ) as integer
 
-	declare operator += ( byref rhs as LISP_OBJECT )
-	declare operator -= ( byref rhs as LISP_OBJECT )
-	declare operator *= ( byref rhs as LISP_OBJECT )
-	declare operator /= ( byref rhs as LISP_OBJECT )
+		declare operator = ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
+		declare operator < ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
+		declare operator > ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
+		declare operator <> ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
+		declare operator >= ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
+		declare operator <= ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
 
-	declare function IsZero() as integer
+		declare operator cast() as double
+		declare operator cast() as single
+		declare operator cast() as integer
 
-	declare function compare_integer( byref rhs as LISP_OBJECT ) as integer
-	declare function compare_integer( byval rhs as LISP_INTEGER ) as integer
-	declare function compare_real( byref rhs as LISP_OBJECT ) as integer
-	declare function compare_real( byval rhs as LISP_REAL ) as integer
-	declare function compare_string( byref rhs as LISP_OBJECT ) as integer
-	declare function compare_string( byval rhs as zstring ptr ) as integer
+	end type
 
-	declare operator = ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
-	declare operator < ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
-	declare operator > ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
-	declare operator <> ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
-	declare operator >= ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
-	declare operator <= ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
-
-	declare operator cast() as double
-	declare operator cast() as single
-	declare operator cast() as integer
-
-end type
+end namespace
 
 #endif

@@ -53,6 +53,8 @@
 #include once "lisp_eval.bi"
 #include once "lisp_funcs.bi"
 
+namespace LISP
+
 #define _NIL_ parent->objects->NIL_
 #define _T_   parent->objects->T_
 
@@ -62,8 +64,6 @@
 
 ''
 type LISP_EVAL_CTX
-
-	DECLARE_DEBUG_ALLOCATOR()
 
 	declare constructor( )
 	declare constructor( byval parent_ctx as LISP_CTX ptr )
@@ -88,8 +88,6 @@ type LISP_EVAL_CTX
 	
 
 end type
-
-DEFINE_DEBUG_ALLOCATOR( LISP_EVAL_CTX )
 
 ''
 private constructor LISP_EVAL_CTX( byval parent_ctx as LISP_CTX ptr )
@@ -301,8 +299,6 @@ end function
 '' EVALUATOR
 '' ---------------------------------------------------------------------------
 
-DEFINE_DEBUG_ALLOCATOR( LISP_EVAL )
-''
 constructor LISP_EVAL( byval parent_ctx as LISP_CTX ptr )
 	ctx = new LISP_EVAL_CTX( parent_ctx )
 end constructor
@@ -336,3 +332,5 @@ end function
 function LISP_EVAL.length( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 	function = execute( @"length", p )
 end function
+
+end namespace

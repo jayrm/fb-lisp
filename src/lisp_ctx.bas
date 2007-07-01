@@ -32,6 +32,8 @@
 #include once "lisp_funcs.bi"
 #include once "lisp_eval.bi"
 
+namespace LISP
+
 '' from "lisp_funcs*.bas"
 declare sub bind_intrinsic_funcs1( byval ctx as LISP_FUNCTIONS ptr )
 declare sub bind_intrinsic_funcs2( byval ctx as LISP_FUNCTIONS ptr )
@@ -40,14 +42,6 @@ declare sub bind_intrinsic_funcs3( byval ctx as LISP_FUNCTIONS ptr )
 '' ---------------------------------------------------------------------------
 '' LISP EXECUTION CONTEXT
 '' ---------------------------------------------------------------------------
-
-DEFINE_DEBUG_ALLOCATOR( LISP_CTX )
-
-#ifdef DEBUG
-sub DieAtLast( ) destructor 101
-	lisp.memcheck()
-end sub
-#endif
 
 ''
 constructor LISP_CTX()
@@ -105,3 +99,5 @@ sub LISP_CTX.RaiseWarning( byval e_code as LISP_ERROR, byref e_text as string )
 	ErrorText = e_text
 
 end sub
+
+end namespace

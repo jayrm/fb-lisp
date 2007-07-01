@@ -55,6 +55,8 @@
 #include once "lisp_parser.bi"
 #include once "lisp_funcs.bi"
 
+namespace LISP
+
 #define _NIL_ parent->objects->NIL_
 #define _T_   parent->objects->T_
 
@@ -64,8 +66,6 @@
 
 ''
 type LISP_PARSER_CTX
-
-	DECLARE_DEBUG_ALLOCATOR()
 
 	declare constructor( )
 	declare constructor( byval parent_ctx as LISP_CTX ptr )
@@ -84,8 +84,6 @@ type LISP_PARSER_CTX
 	declare function parse_form() as LISP_OBJECT ptr
 
 end type
-
-DEFINE_DEBUG_ALLOCATOR( LISP_PARSER_CTX )
 
 ''
 private constructor LISP_PARSER_CTX( byval parent_ctx as LISP_CTX ptr )
@@ -266,8 +264,6 @@ end function
 '' PARSER
 '' ---------------------------------------------------------------------------
 
-DEFINE_DEBUG_ALLOCATOR( LISP_PARSER )
-
 ''
 constructor LISP_PARSER( byval parent_ctx as LISP_CTX ptr )
 	ctx = new LISP_PARSER_CTX( parent_ctx )
@@ -283,3 +279,4 @@ function LISP_PARSER.parse_object( byval havetoken as integer ) as LISP_OBJECT p
 	function = ctx->parse_object( havetoken )
 end function
 
+end namespace

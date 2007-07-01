@@ -26,24 +26,26 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '/
 
-type LISP_FUNCTION as function( byval parent_ctx as LISP_CTX ptr, byval args as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+namespace LISP
 
-type LISP_FUNCTIONS_CTX_ as LISP_FUNCTIONS_CTX
+	type LISP_FUNCTION as function( byval parent_ctx as LISP_CTX ptr, byval args as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 
-type LISP_FUNCTIONS
+	type LISP_FUNCTIONS_CTX_ as LISP_FUNCTIONS_CTX
 
-	DECLARE_DEBUG_ALLOCATOR()
+	type LISP_FUNCTIONS
 
-	declare constructor( )
-	declare constructor( byval parent_ctx as LISP_CTX ptr  )
-	declare destructor( )
+		declare constructor( )
+		declare constructor( byval parent_ctx as LISP_CTX ptr  )
+		declare destructor( )
 
-	declare function bind( byval id as zstring ptr, byval func as LISP_FUNCTION ) as integer
-	declare function find( byval id as zstring ptr ) as LISP_FUNCTION 
+		declare function bind( byval id as zstring ptr, byval func as LISP_FUNCTION ) as integer
+		declare function find( byval id as zstring ptr ) as LISP_FUNCTION 
 
-private:
-	ctx as LISP_FUNCTIONS_CTX_ ptr
+	private:
+		ctx as LISP_FUNCTIONS_CTX_ ptr
 
-end type
+	end type
+
+end namespace
 
 #endif

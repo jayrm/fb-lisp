@@ -26,40 +26,42 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '/
 
-''
-type LISP_OBJECTS_CTX_ as LISP_OBJECTS_CTX
+namespace LISP
 
-''
-type LISP_OBJECTS
+	''
+	type LISP_OBJECTS_CTX_ as LISP_OBJECTS_CTX
 
-	DECLARE_DEBUG_ALLOCATOR()
+	''
+	type LISP_OBJECTS
 
-	declare constructor( byval parent_ctx as LISP_CTX ptr )
-	declare destructor( )
+		declare constructor( byval parent_ctx as LISP_CTX ptr )
+		declare destructor( )
 
-public:
+	public:
 
-	declare function NIL_() as LISP_OBJECT ptr
-	declare function T_() as LISP_OBJECT ptr
-	
-	declare function new_object( ) as LISP_OBJECT ptr
-	declare function new_object( byval dtype as LISP_OBJECT_TYPE ) as LISP_OBJECT ptr
-	declare function new_object( byval dtype as LISP_OBJECT_TYPE, byval init_value as LISP_INTEGER ) as LISP_OBJECT ptr
-	declare function new_object( byval dtype as LISP_OBJECT_TYPE, byval init_value as LISP_REAL ) as LISP_OBJECT ptr
+		declare function NIL_() as LISP_OBJECT ptr
+		declare function T_() as LISP_OBJECT ptr
+		
+		declare function new_object( ) as LISP_OBJECT ptr
+		declare function new_object( byval dtype as LISP_OBJECT_TYPE ) as LISP_OBJECT ptr
+		declare function new_object( byval dtype as LISP_OBJECT_TYPE, byval init_value as LISP_INTEGER ) as LISP_OBJECT ptr
+		declare function new_object( byval dtype as LISP_OBJECT_TYPE, byval init_value as LISP_REAL ) as LISP_OBJECT ptr
 
-	declare sub set_object( byval nameid as LISP_OBJECT ptr, byval value as LISP_OBJECT ptr )
-	declare function get_object( byval nameid as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+		declare sub set_object( byval nameid as LISP_OBJECT ptr, byval value as LISP_OBJECT ptr )
+		declare function get_object( byval nameid as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 
-	declare function find_identifier( byval s as zstring ptr ) as LISP_OBJECT ptr
-	declare function find_string( byval s as zstring ptr ) as LISP_OBJECT ptr
-	declare function find_integer( byval num as LISP_INTEGER ) as LISP_OBJECT ptr
-	declare function find_real( byval num as LISP_REAL ) as LISP_OBJECT ptr
+		declare function find_identifier( byval s as zstring ptr ) as LISP_OBJECT ptr
+		declare function find_string( byval s as zstring ptr ) as LISP_OBJECT ptr
+		declare function find_integer( byval num as LISP_INTEGER ) as LISP_OBJECT ptr
+		declare function find_real( byval num as LISP_REAL ) as LISP_OBJECT ptr
 
-	declare function garbage_collect() as LISP_OBJECT ptr
+		declare function garbage_collect() as LISP_OBJECT ptr
 
-private:	
-	ctx as LISP_OBJECTS_CTX_ ptr
+	private:	
+		ctx as LISP_OBJECTS_CTX_ ptr
 
-end type
+	end type
+
+end namespace
 
 #endif
