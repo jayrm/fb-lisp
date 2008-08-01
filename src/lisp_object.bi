@@ -3,7 +3,7 @@
 
 /'
  * 
- * Copyright (c) 2007 Jeffery R. Marshall.  All rights reserved.
+ * Copyright (c) 2007-2008 Jeffery R. Marshall.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -86,19 +86,19 @@ namespace LISP
 		declare function compare_real( byval rhs as LISP_REAL ) as integer
 		declare function compare_string( byref rhs as LISP_OBJECT ) as integer
 		declare function compare_string( byval rhs as zstring ptr ) as integer
-
-		declare operator = ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
-		declare operator < ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
-		declare operator > ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
-		declare operator <> ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
-		declare operator >= ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
-		declare operator <= ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
-
 		declare operator cast() as double
 		declare operator cast() as single
 		declare operator cast() as integer
 
 	end type
+
+	declare operator = ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
+	declare operator < ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
+	declare operator > ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
+	declare operator <> ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
+	declare operator >= ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
+	declare operator <= ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
+
 
 end namespace
 

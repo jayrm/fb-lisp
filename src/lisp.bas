@@ -1,5 +1,5 @@
 /'
- * Copyright (c) 2007 Jeffery R. Marshall.  All rights reserved.
+ * Copyright (c) 2007-2008 Jeffery R. Marshall.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -62,6 +62,8 @@ dim shared ErrMessages( 0 to LISP_ERRS - 1 ) as zstring ptr = { _
 '' USER API
 '' ---------------------------------------------------------------------------
 
+'' FIXME: Add copy constructor / reference counting
+
 ''
 constructor LispModule( )
 	ctx = new LISP_CTX
@@ -78,6 +80,8 @@ function LispModule.Eval( byref text as string ) as integer
 	
 	dim p1 as LISP_OBJECT ptr
 	dim p2 as LISP_OBJECT ptr
+
+	ErrorReset( )
 
 	ctx->lexer->settext( text )
 

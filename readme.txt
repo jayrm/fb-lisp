@@ -1,16 +1,38 @@
 	LISP Evaluator for FreeBASIC 
-	Copyright (c) 2007 Jeffery R. Marshall.
+	Copyright (c) 2007-2008 Jeffery R. Marshall.
 
 	An embedded LISP interpreter written entirely in FreeBASIC for use 
 	with FreeBASIC applications.
 
 
-LICENSE
+0. INTRODUCTION
+
+	My main motivation for writing this is I like the idea of LISP as a
+	script or macro language that can be embedded in my programs.
+
+	I also wanted to make a	non-trivial object oriented program in 
+	FreeBASIC. And the design of this LISP evaluator is exactly that.  
+	Through the top-level object LispModule, it is possible to instance
+	two or more	completely seperate evaluators.  The only thing shared 
+	between the instances is the string text for error messages.
+
+	In writing the library, the experience didn't completely suck, except
+	in debugging it was just like C++, spending a significant smount of 
+	time chasing down a memory leak due to the manual managed memory 
+	allocations. And this was with careful planning of object life-times 
+	from the beginning.  In the end it was a stupid mistake that was 
+	causing the memory leak, but, isn't that always	the case?
+
+	Using this library is probably not a good way to learn LISP.  Use a real
+	LISP compiler or interpreter for that.
+
+
+1. LICENSE
 
 	See the 'license.txt' file in the same folder as this readme.txt
 
 
-COMPILING
+2. COMPILING
 
 	To compile the library, use the following commands:
 
@@ -18,7 +40,7 @@ COMPILING
 	make
 
 
-INSTALLING
+3. INSTALLING
 
 	There is no install script.  To use, either copy the library and
 	include files to an appropriate directory, or include the paths
@@ -34,8 +56,10 @@ INSTALLING
 	of the include files from ./src are also needed.
 
 
-INTRINSIC FUNCTIONS
+4. INTRINSIC FUNCTIONS
 
+	Following is a list of the built-in functions available from the library.
+	
 	(* <number> <number>...)
 	(+ <number> <number>...)
 	(- <number> <number>...)
@@ -73,7 +97,7 @@ INTRINSIC FUNCTIONS
 	(while <expr> exprs...)
 
 
-EXAMPLE USAGE IN FREEBASIC
+5. EXAMPLE USAGE IN FREEBASIC
 
 	#include "lisp.bi"
 	using LISP
@@ -85,7 +109,7 @@ EXAMPLE USAGE IN FREEBASIC
 	lsp.eval( expr )
 
 
-EXAMPLE PROGRAMS
+6. EXAMPLE PROGRAMS
 
 	The directory ./examples have a few example example programs. To
 	compile all of the example programs, use:
@@ -97,36 +121,17 @@ EXAMPLE PROGRAMS
 	in the .bas source file.
 
 
-WHY DID I WRITE THIS LIBRARY?
-
-	My main motivation for writing this is I like the idea of LISP as a script
-	or macro language that can be embedded in my programs.
-
-	I also wanted to make a	non-trivial object oriented program in FreeBASIC.
-	And the design of this LISP evaluator is exactly that.  Through the top-
-	level object LispModule, it is possible to instance two or more
-	completely seperate evaluators.  The only thing shared between the 
-	instances is the string text for error messages.
-
-	In writing the library, the experience didn't completely suck, except in
-	debugging it was just like C++, spending a significant smount of time
-	chasing down a memory leak due to the manual managed memory allocations.
-	And this was with careful planning of object life-times from the 
-	beginning.  In the end it was a	stupid mistake that was causing the 
-	memory leak, but, isn't that always	the case?
-
-
-OBTAINING THE ORIGINAL SOURCE
+7. OBTAINING THE ORIGINAL SOURCE
 
 	Sources whould be at my own webpage here: http://www.coderjeff.ca
 
 
-ACKNOWLEDGEMENTS
+8. ACKNOWLEDGEMENTS
 
 	Sandro Sigala - That a C version of a simple LISP evaluator existed and
 	was available under an Open Source license saved huge amounts time.  
-	Thanks to Sandro, creating this library took only a minimal amount of 
-	time.
+	Thanks to Sandro for slisp-1.2, creating this library took only a minimal
+	amount of time.
 	
 
 EOF

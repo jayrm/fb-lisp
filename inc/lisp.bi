@@ -2,7 +2,7 @@
 #define __LISP_BI__
 
 /'
- * Copyright (c) 2007 Jeffery R. Marshall.  All rights reserved.
+ * Copyright (c) 2007-2008 Jeffery R. Marshall.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -39,6 +39,7 @@ namespace LISP
 	type LispModule
 
 		declare constructor( )
+		declare constructor( byref rhs as LispModule )
 		declare destructor( )
 
 	public:

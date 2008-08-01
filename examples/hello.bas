@@ -10,13 +10,7 @@
 ''
 '' --------------------------------------------------------
 
-#include once "lisp.bi
-using LISP
+#include once "lisp.bi"
 
-sub main
-	dim lsp as LispModule
-
-	lsp.eval $"(princ ""Hello World\n"")" 
-end sub
-
-main
+dim lsp as LISP.LispModule
+lsp.eval $"(princ ""Hello World\n"")" 

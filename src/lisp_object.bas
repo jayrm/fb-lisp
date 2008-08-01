@@ -1,6 +1,6 @@
 /'
  * 
- * Copyright (c) 2007 Jeffery R. Marshall.  All rights reserved.
+ * Copyright (c) 2007-2008 Jeffery R. Marshall.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -196,27 +196,27 @@ IMPL_COMPARE( string, byval rhs as zstring ptr, *value.str, *rhs )
 
 ''
 #macro IMPL_REL_OP( op )
-operator LISP_OBJECT.op ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
+operator op ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
 
 	operator = FALSE
 
 	if( lhs.dtype = OBJECT_TYPE_INTEGER ) then
 		if( rhs.dtype = OBJECT_TYPE_INTEGER ) then
-			operator = ( compare_integer( rhs ) op 0 )
+			operator = ( lhs.compare_integer( rhs ) op 0 )
 		elseif( rhs.dtype = OBJECT_TYPE_REAL ) then
 			operator = ( -rhs.compare_real( cast( LISP_REAL, lhs.value.int ) ) op 0 )
 		end if
 
 	elseif( lhs.dtype = OBJECT_TYPE_REAL ) then
 		if( rhs.dtype = OBJECT_TYPE_INTEGER ) then
-			operator = ( compare_real( cast( LISP_INTEGER, rhs.value.int ) ) op 0 )
+			operator = ( lhs.compare_real( cast( LISP_INTEGER, rhs.value.int ) ) op 0 )
 		elseif( rhs.dtype = OBJECT_TYPE_REAL ) then
-			operator = ( compare_real( rhs) op 0 )
+			operator = ( lhs.compare_real( rhs) op 0 )
 		end if
 		
 	elseif( lhs.dtype = OBJECT_TYPE_STRING ) then
 		if( rhs.dtype = OBJECT_TYPE_STRING ) then
-			operator = ( compare_string( rhs ) op 0 )
+			operator = ( lhs.compare_string( rhs ) op 0 )
 		end if
 	end if
 
