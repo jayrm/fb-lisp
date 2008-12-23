@@ -84,6 +84,7 @@ type LISP_EVAL_CTX
 	declare function eval_cons( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 	declare function eval_func( byval p as LISP_OBJECT ptr, byval args as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 	declare function eval( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+	declare function copy( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 
 	
 
@@ -113,17 +114,29 @@ end destructor
 private function LISP_EVAL_CTX.call_func( byval nameid as zstring ptr, byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 	
 	dim func as LISP_FUNCTION = any
-	
-	func = functions->find( nameid )
 
+	'' Built-in function?
+	func = functions->find( nameid )
 	if( func ) then
 		function = func( parent, p )
-
-	else
-		parent->RaiseError( LISP_ERR_FUNCTION_NOT_DEFINED, *nameid )
-		function = _NIL_
-
+		exit function
 	end if
+
+	'' User defined function?
+	dim f as LISP_OBJECT ptr = objects->find_identifier( nameid )
+	if( f <> NULL ) then
+		dim fp as LISP_OBJECT ptr = objects->get_object( f )
+		if( fp <> _NIL_ ) then
+			function = eval_func( fp, p )
+			exit function
+		end if
+	end if
+
+	'' FIXME: allow overriding built-ins or error when tryin
+	'' (possibly by check user-def'ed functions first)
+
+	parent->RaiseError( LISP_ERR_FUNCTION_NOT_DEFINED, *nameid )
+	function = _NIL_
 	
 end function
 
@@ -202,7 +215,12 @@ private function LISP_EVAL_CTX.eval_cons( byval p as LISP_OBJECT ptr ) as LISP_O
 	dim as LISP_OBJECT ptr p1 = any, p2 = any, p3 = any
 
 	p1 = car( p )
-	p2 = cdr( p )
+
+	if( list_length(p) > 1 ) then
+		p2 = cdr( p )
+	else
+		p2 = _NIL_
+	end if
 
 	if( p1 <> _NIL_ ) then
 		if( p1->dtype = OBJECT_TYPE_IDENTIFIER ) then
@@ -211,7 +229,8 @@ private function LISP_EVAL_CTX.eval_cons( byval p as LISP_OBJECT ptr ) as LISP_O
 				function = p
 				exit function
 			end if
-
+			
+			'' Built-in function?
 			dim func as LISP_FUNCTION = any
 			func = functions->find( p1->value.id )
 			if( func ) then
@@ -219,15 +238,18 @@ private function LISP_EVAL_CTX.eval_cons( byval p as LISP_OBJECT ptr ) as LISP_O
 				exit function
 			end if
 
+			'' User defined function?
 			p3 = objects->get_object( p1 )
 			if( p3 <> _NIL_ ) then
 				function = eval_func( p3, p2 )
 				exit function
-
-			else
-				parent->RaiseError( LISP_ERR_FUNCTION_NOT_DEFINED, *p1->value.id )
-							
 			end if
+
+			'' FIXME: allow overriding built-ins or error when tryin
+			'' (possibly by check user-def'ed functions first)
+
+			parent->RaiseError( LISP_ERR_FUNCTION_NOT_DEFINED, *p1->value.id )
+							
 		end if
 	end if
 
@@ -235,6 +257,10 @@ private function LISP_EVAL_CTX.eval_cons( byval p as LISP_OBJECT ptr ) as LISP_O
 
 end function
 
+''
+private function LISP_EVAL_CTX.copy( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+	function = objects->copy_object( p )
+end function
 
 '' ---------------------------------------------------------------------------
 '' BUILT-IN FUNCTIONS
@@ -329,8 +355,13 @@ function LISP_EVAL.execute( byval nameid as zstring ptr, byval p as LISP_OBJECT 
 end function
 
 ''
-function LISP_EVAL.length( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
-	function = execute( @"length", p )
+function LISP_EVAL.copy( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+	function = ctx->copy( p )
+end function
+
+''
+function LISP_EVAL.length( byval p as LISP_OBJECT ptr ) as integer
+	function = ctx->list_length(p)
 end function
 
 end namespace

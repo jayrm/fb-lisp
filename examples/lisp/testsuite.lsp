@@ -115,3 +115,4 @@
 	   (assert '(progn* '(t nil nil t)))
 	   (asserteq '(progn* '(t nil nil 'foo)) ''foo)
 	   (asserteq '(progn* '(t nil nil 'foo 'bar)) ''bar)))
+

@@ -47,6 +47,8 @@ namespace LISP
 		declare function new_object( byval dtype as LISP_OBJECT_TYPE, byval init_value as LISP_INTEGER ) as LISP_OBJECT ptr
 		declare function new_object( byval dtype as LISP_OBJECT_TYPE, byval init_value as LISP_REAL ) as LISP_OBJECT ptr
 
+		declare function copy_object( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+
 		declare sub set_object( byval nameid as LISP_OBJECT ptr, byval value as LISP_OBJECT ptr )
 		declare function get_object( byval nameid as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 

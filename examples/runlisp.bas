@@ -15,6 +15,7 @@
 ''    runlisp file1.lsp [file2.lsp]...
 ''
 '' example:
+''    runlisp
 ''    runlisp lisp/hello.lsp
 ''
 '' --------------------------------------------------------
@@ -58,7 +59,6 @@ sub main
 	''
 	if( command(1) = "" ) then
 		print "runlisp [file1.lsp] [file2.lsp]..."
-		end
 	end if
 
 	dim expr as string

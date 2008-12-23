@@ -1,0 +1,34 @@
+Dec 23, 2008
+------------
+
+[Fixed]
+- lexer was not handling CRLF pairs
+- (length) was returning incorrect result
+- ICE when printing dotted pair cons'es
+- lexer was not allowing floats having no leading zero (e.g. .123)
+- rel-ops (= < > <= >= /=) were returning incorrect results for more than 2 arguments
+- error if trying to redefine a built-in function
+
+[Changed]
+- _LENGTH runtime macro returns integer instead of LISP_OBJECT
+- runlisp.bas example with no command line arguments immediately goes to interactive LISP shell
+- runtime macro _OBJ(p) now allows pointer arrays - _OBJ(p)(0 to n)
+
+[Added]
+- added (append <expr>...)
+- added (apply <function> [list])
+- added (mapcar <function> <list1...listn>)
+- added (elt <list> <index>)
+- added (nth <index> <list>)
+- added (last <list>)
+- added (consp <expr>)
+- added (integerp <expr>)
+- added (numberp <expr>)
+- added (zerop <expr>)
+- added (listp <expr>)
+- added (stringp <expr>)
+- LispModule.SetPrintCallBack() and LispModule.GetPrintCallBack()
+- LispModule.PrintOut(string) for printing (uses the call back)
+- runtime macro _COPY to copy a LISP_OBJECT
+- runtime macro _PRINT
+- runtime macro _IS_IDENTIFIER

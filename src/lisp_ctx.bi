@@ -25,6 +25,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '/
 
+#include "lisp.bi"
+
 namespace LISP
 
 	type LISP_LEXER_ as LISP_LEXER
@@ -54,6 +56,10 @@ namespace LISP
 
 		declare sub RaiseError( byval e_code as LISP_ERROR, byref e_text as string = "")
 		declare sub RaiseWarning( byval e_code as LISP_ERROR, byref e_text as string = "")
+
+		print_cb as LISP_PRINT_CALLBACK
+
+		declare sub PrintOut( byref s as const string )
 
 		EchoInput as integer
 		ShowResults as integer

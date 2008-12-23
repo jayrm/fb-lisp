@@ -322,8 +322,18 @@ private function LISP_LEXER_CTX.gettoken( ) as LISP_TOKEN_ID
 			lineno += 1
 			column = 0
 
-		'' ' ', '\f', '\t', '\v', '\r'
-		case 32, 12, 9, 11, 10
+		'' '\r'
+		case 10
+			c = getchar()
+			c = peekchar()
+			if( c = 13 ) then
+				c = getchar()
+			end if
+			lineno += 1
+			column = 0
+
+		'' ' ', '\f', '\t', '\v'
+		case 32, 12, 9, 11
 			c = getchar()
 
 		'' ';' comment
@@ -342,7 +352,9 @@ private function LISP_LEXER_CTX.gettoken( ) as LISP_TOKEN_ID
 		case 45 
 			c = peekchar(1)
 			select case c
-			case 48 to 57 '' '0'-'9'
+
+			'' '0'-'9', '.'
+			case 48 to 57, 46 
 				function = getnumber()
 				exit do
 
@@ -362,8 +374,8 @@ private function LISP_LEXER_CTX.gettoken( ) as LISP_TOKEN_ID
 			function = getidentifier()
 			exit do
 		
-		'' single_quote, '(', ')', '.'
-		case 39, 40, 41, 46
+		'' single_quote, '(', ')'
+		case 39, 40, 41
 
 			index0 = index1
 			c = getchar()
@@ -375,7 +387,20 @@ private function LISP_LEXER_CTX.gettoken( ) as LISP_TOKEN_ID
 				function = LISP_TK_LEFT_PARA
 			case 41
 				function = LISP_TK_RIGHT_PARA
-			case 46
+			end select
+			
+			exit do
+
+		'' '.'
+		case 46
+			c = peekchar(1)
+			select case c
+			case 48 to 57 '' '0'-'9'
+				function = getnumber()
+			case else
+				index0 = index1
+				c = getchar()
+				token = chr( c )
 				function = LISP_TK_DOT
 			end select
 			

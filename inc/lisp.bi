@@ -35,6 +35,8 @@ namespace LISP
 	type LISP_CTX_ as LISP_CTX
 	type LISP_FUNCTIONS_ as LISP_FUNCTIONS
 
+	type LISP_PRINT_CALLBACK as sub( byref s as const string )
+
 	''
 	type LispModule
 
@@ -58,6 +60,10 @@ namespace LISP
 		declare function ErrorColumn() as integer
 
 		declare property Functions() as LISP_FUNCTIONS_ ptr
+
+		declare sub SetPrintCallBack( byval cb as LISP_PRINT_CALLBACK )
+		declare function GetPrintCallBack() as LISP_PRINT_CALLBACK
+		declare sub PrintOut( byref s as const string )
 
 	private:
 		ctx as LISP_CTX_ ptr

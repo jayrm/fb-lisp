@@ -90,6 +90,8 @@ namespace LISP
 		declare operator cast() as single
 		declare operator cast() as integer
 
+		declare function number_abs() as double
+
 	end type
 
 	declare operator = ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
@@ -98,7 +100,6 @@ namespace LISP
 	declare operator <> ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
 	declare operator >= ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
 	declare operator <= ( byref lhs as LISP_OBJECT, byref rhs as LISP_OBJECT ) as integer
-
 
 end namespace
 

@@ -100,4 +100,13 @@ sub LISP_CTX.RaiseWarning( byval e_code as LISP_ERROR, byref e_text as string )
 
 end sub
 
+''
+sub LISP_CTX.PrintOut( byref s as const string )
+	if( print_cb ) then
+		print_cb(s)
+	else
+		print s;
+	end if
+end sub
+
 end namespace

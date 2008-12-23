@@ -291,6 +291,8 @@ function LISP_OBJECTS.new_object( byval dtype as LISP_OBJECT_TYPE ) as LISP_OBJE
 		p->value.int = 0
 	case OBJECT_TYPE_REAL
 		p->value.flt = 0
+	case OBJECT_TYPE_IDENTIFIER
+		p->value.id = NULL
 	case OBJECT_TYPE_STRING
 		p->value.str = NULL
 	case OBJECT_TYPE_CONS
@@ -316,6 +318,44 @@ function LISP_OBJECTS.new_object( byval dtype as LISP_OBJECT_TYPE, byval init_va
 	tmp = new_object( dtype )
 	tmp->value.flt = init_value
 	function = tmp
+end function
+
+''
+
+function LISP_OBJECTS.copy_object( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+
+	dim as LISP_OBJECT ptr p1 = any
+
+	select case p->dtype
+	case OBJECT_TYPE_INVALID
+	case OBJECT_TYPE_NIL
+		p1 = p
+	case OBJECT_TYPE_T
+		p1 = p
+	case OBJECT_TYPE_INTEGER
+		p1 = new_object()
+		p1->dtype = p->dtype
+		p1->value.int = p->value.int
+	case OBJECT_TYPE_REAL
+		p1 = new_object()
+		p1->dtype = p->dtype
+		p1->value.flt = p->value.flt
+	case OBJECT_TYPE_IDENTIFIER
+		p1 = new_object()
+		p1->dtype = p->dtype
+		p1->value.id = lisp.strdup( p->value.id )
+	case OBJECT_TYPE_STRING
+		p1 = new_object()
+		p1->dtype = p->dtype
+		p1->value.str = lisp.strdup( p->value.str )
+	case OBJECT_TYPE_CONS
+		p1 = new_object()
+		p1->value.cell.car = copy_object( p->value.cell.car )
+		p1->value.cell.cdr = copy_object( p->value.cell.cdr )
+	end select
+
+	function = p1
+
 end function
 
 ''

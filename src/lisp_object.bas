@@ -269,4 +269,15 @@ operator LISP_OBJECT.cast() as integer
 
 end operator
 
+''
+function LISP_OBJECT.number_abs() as double
+	if( dtype = OBJECT_TYPE_INTEGER ) then
+		function = abs( value.int )
+	elseif( dtype = OBJECT_TYPE_REAL ) then
+		function = abs( value.flt )
+	else
+		function = 0
+	end if
+end function
+
 end namespace

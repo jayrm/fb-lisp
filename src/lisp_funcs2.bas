@@ -69,7 +69,7 @@ define_lisp_function( princ_string, args )
 
 	res &= chr(34)
 
-	print res;
+	_PRINT( res )
 
 	function = p
 
@@ -86,34 +86,35 @@ define_lisp_function( princ_object, args )
 
 	select case p->dtype
 	case OBJECT_TYPE_NIL
-		print "nil";
+		_PRINT( "nil" )
 
 	case OBJECT_TYPE_T
-		print "t";
+		_PRINT( "t" )
 
 	case OBJECT_TYPE_IDENTIFIER
-		print *p->value.id;
+		_PRINT( *p->value.id )
 
 	case OBJECT_TYPE_STRING
 		_CALL( princ-string, p )
 
 	case OBJECT_TYPE_INTEGER
-		print str(p->value.int);
+		_PRINT( str(p->value.int) )
 
 	case OBJECT_TYPE_REAL
-		print str(p->value.flt);
+		_PRINT( str(p->value.flt) )
 
 	case OBJECT_TYPE_CONS
-		print "(";
+		_PRINT( "(" )
 		p1 = p
 		do
 			_CALL( princ-object, p1->value.cell.car )
 			p1 = p1->value.cell.cdr
 			if( p1 <> _NIL_ ) then
-				print " ";
+				_PRINT( " " )
 				if( p1->dtype <> OBJECT_TYPE_CONS ) then
-					print ". ";
+					_PRINT( ". " )
 					_CALL( princ-object, p1 )
+					exit do
 				end if
 			elseif( p1->dtype <> OBJECT_TYPE_CONS ) then
 				exit do
@@ -121,7 +122,7 @@ define_lisp_function( princ_object, args )
 				exit do
 			end if
 		loop
-		print ")";
+		_PRINT( ")" )
 	end select
 
 	function = p
@@ -139,7 +140,7 @@ define_lisp_function( princ, args )
 	do
 		p1 = _EVAL(_CAR(p))
 		if( _IS_STRING(p1) ) then
-			print *p1->value.str;
+			_PRINT( *p1->value.str )
 		else
 			_CALL( princ-object, p1 )
 		end if

@@ -55,7 +55,8 @@ dim shared ErrMessages( 0 to LISP_ERRS - 1 ) as zstring ptr = { _
 	@"Wrong number of arguments", _
 	@"Division by zero", _
 	@"Argument type mismatch", _
-	@"Too few arguments" _
+	@"Too few arguments", _
+	@"Unable to redefine built-in function" _
 }
 
 '' ---------------------------------------------------------------------------
@@ -93,9 +94,9 @@ function LispModule.Eval( byref text as string ) as integer
 		end if
 
 		if( ctx->EchoInput ) then
-			print "<<= ";
+			_PRINT( "<<= " )
 			_CALL( princ-object, p1 )
-			print
+			_PRINT( !"\n" )
 		end if
 
 		p2 = ctx->evaluator->eval( p1 )
@@ -105,9 +106,9 @@ function LispModule.Eval( byref text as string ) as integer
 		end if
 
 		if( ctx->ShowResults ) then
-			print "==> ";
+			_PRINT( "==> " )
 			_CALL( princ-object, p2 )
-			print
+			_PRINT( !"\n" )
 		end if
 
 		GarbageCollect()
@@ -184,5 +185,20 @@ end property
 property LispModule.Functions() as LISP_FUNCTIONS_ ptr
 	property = ctx->functions
 end property
+
+''
+sub LispModule.SetPrintCallBack( byval cb as LISP_PRINT_CALLBACK )
+	ctx->print_cb = cb
+end sub
+
+''
+function LispModule.GetPrintCallBack() as LISP_PRINT_CALLBACK
+	function = ctx->print_cb
+end function
+
+''
+sub LispModule.PrintOut( byref s as const string )
+	ctx->PrintOut( s )
+end sub
 
 end namespace

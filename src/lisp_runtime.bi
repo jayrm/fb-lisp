@@ -43,23 +43,26 @@ namespace LISP
 
 	#define _RAISEERROR               ctx->RaiseError
 	#define _RAISEWARNING             ctx->RaiseWarning
+	#define _PRINT(s)                 ctx->PrintOut(s)
 	#define _NIL_                     ctx->objects->NIL_
 	#define _T_                       ctx->objects->T_
 	#define _CAR                      ctx->evaluator->car
 	#define _CDR                      ctx->evaluator->cdr
 	#define _EVAL                     ctx->evaluator->eval
+	#define _COPY(p)                  ctx->evaluator->copy(p)
 	#define _CALL(proc,args)          ctx->evaluator->execute( #proc, args )
-	#define _LENGTH                   ctx->evaluator->length
+	#define _LENGTH(p)                ctx->evaluator->length(p)
 	#define _NEW                      ctx->objects->new_object
 	#define _NEW_INTEGER(i)           ctx->objects->new_object( OBJECT_TYPE_INTEGER, i )
 	#define _NEW_REAL(f)              ctx->objects->new_object( OBJECT_TYPE_REAL, f )
 	#define _SET                      ctx->objects->set_object
-	#define _OBJ(n)                   dim n as LISP_OBJECT ptr
+	#define _OBJ(n)                   dim as LISP_OBJECT ptr n
 	#define _IS_INTEGER(p)            (p->dtype = OBJECT_TYPE_INTEGER)
 	#define _IS_REAL(p)               (p->dtype = OBJECT_TYPE_REAL)
 	#define _IS_NUMBER(p)             ((p->dtype = OBJECT_TYPE_INTEGER) or (p->dtype = OBJECT_TYPE_REAL))
 	#define _IS_STRING(p)             (p->dtype = OBJECT_TYPE_STRING)
 	#define _IS_CONS(p)               (p->dtype = OBJECT_TYPE_CONS)
+	#define _IS_IDENTIFIER(p)         (p->dtype = OBJECT_TYPE_IDENTIFIER)
 
 	#macro import_lisp_function( proc )
 		declare function F_##proc( byval ctx as LISP_CTX ptr, byval args as LISP_OBJECT ptr ) as LISP_OBJECT ptr

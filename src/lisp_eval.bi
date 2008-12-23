@@ -39,7 +39,8 @@ namespace LISP
 		declare function car( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 		declare function cdr( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 		declare function eval( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
-		declare function length( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+		declare function copy( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+		declare function length( byval p as LISP_OBJECT ptr ) as integer
 		declare function execute( byval nameid as zstring ptr, byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 
 	private:

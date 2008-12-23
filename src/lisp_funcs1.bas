@@ -471,8 +471,11 @@ define_lisp_function( list, args)
 		p = _CDR(p)
 	loop while (p <> _NIL_ )
 
-	function = first
-
+	if( first = NULL ) then
+		function = _NIL_
+	else
+		function = first
+	end if
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
@@ -485,8 +488,17 @@ define_lisp_function( defun, args )
 	_OBJ(p1) = _CAR(args)			'' name
 	_OBJ(p2) = _CAR(_CDR(args))		'' argument list
 	_OBJ(p3) = _CDR(_CDR(args))		'' function body
-	_OBJ(lexpr) = any				'' the defined lambda expressin
+	_OBJ(lexpr) = any				'' the defined lambda expression
 
+	'' FIXME: allow overriding built-ins
+
+	'' Built-in?
+	if( ctx->functions->find( p1->value.id ) <> NULL ) then
+		_RAISEERROR( LISP_ERR_CANT_REDEFINE_BUILTIN )		
+		function = _NIL_
+		exit function
+	end if
+	
 	lexpr = _NEW(OBJECT_TYPE_CONS)
 	lexpr->value.cell.car = _NEW(OBJECT_TYPE_IDENTIFIER)
 	lexpr->value.cell.car->value.id = lisp.strdup("lambda")
@@ -495,8 +507,6 @@ define_lisp_function( defun, args )
 	lexpr->value.cell.cdr->value.cell.cdr = p3
 
 	_SET(p1, lexpr)
-
-	'' FIXME: allow overriding built-ins
 
 	function = p1
 
