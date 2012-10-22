@@ -86,6 +86,7 @@
 	(gc)
 	(if expr then-expr else-expr...)
 	(integerp <expr>)
+	(lambda expr...)
 	(last <list>)
 	(length <list>)
 	(list <expr1>...)

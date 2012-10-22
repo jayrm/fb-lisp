@@ -68,7 +68,7 @@ define_lisp_function( load, args )
 
 	end if
 
-end_lisp_function
+end_lisp_function()
 
 '' --------------------------------------------------------
 '' (quit)
@@ -98,7 +98,7 @@ define_lisp_function( quit, args )
 
 	end if
 
-end_lisp_function
+end_lisp_function()
 
 
 '' --------------------------------------------------------

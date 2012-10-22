@@ -121,6 +121,10 @@ SOURCE=.\src\lisp_funcs3.bas
 # End Source File
 # Begin Source File
 
+SOURCE=.\src\lisp_funcs4.bas
+# End Source File
+# Begin Source File
+
 SOURCE=.\src\lisp_int.bas
 # End Source File
 # Begin Source File
@@ -217,9 +221,21 @@ SOURCE=.\examples\makefile
 # End Source File
 # Begin Source File
 
+SOURCE=.\examples\printout.bas
+# End Source File
+# Begin Source File
+
 SOURCE=.\examples\runlisp.bas
 # End Source File
+# Begin Source File
+
+SOURCE=.\examples\test.bas
+# End Source File
 # End Group
+# Begin Source File
+
+SOURCE=.\changelog.txt
+# End Source File
 # Begin Source File
 
 SOURCE=".\dist-win32.lst"

@@ -79,7 +79,7 @@ private constructor LISP_LEXER_CTX( byval parent_ctx as LISP_CTX ptr )
 	index0 = 0
 	index1 = 0
 
-	token_id = 0
+	token_id = LISP_TK_INVALID
 	token = ""
 
 end constructor

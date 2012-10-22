@@ -1,4 +1,4 @@
-call c:\batch\setpath.bat fb0186
+call c:\batch\setpath.bat FB0240
 e:
 cd \fb\script\lisp\src
 
