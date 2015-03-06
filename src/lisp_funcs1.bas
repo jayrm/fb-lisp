@@ -228,6 +228,8 @@ define_lisp_function( set, args )
 
 	if( p1 = _NIL_ ) then
 		_RAISEERROR( LISP_ERR_SETTING_VALUE_OF_NIL_OBJECT )
+	elseif( _IS_IDENTIFIER( p1 ) = FALSE ) then
+		_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
 	else
 		_SET( p1, p2 )
 	end if
@@ -249,7 +251,14 @@ define_lisp_function( setq, args )
 	do
 		p1 = _CAR(p)
 		p2 = _EVAL(_CAR(_CDR(p)))
-		_SET( p1, p2 )
+
+		if( p1 = _NIL_ ) then
+			_RAISEERROR( LISP_ERR_SETTING_VALUE_OF_NIL_OBJECT )
+		elseif( _IS_IDENTIFIER( p1 ) = FALSE ) then
+			_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
+		else
+			_SET( p1, p2 )
+		end if
 		p = _CDR(_CDR(p))
 	loop while ( p <> _NIL_ )
 

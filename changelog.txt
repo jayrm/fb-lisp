@@ -1,3 +1,28 @@
+Mar 2015
+--------
+
+[Fixed]
+- non-identifiers (e.g. numbers) could be bound to forms
+- (eq) now only checks for identical object
+- (equal) compares cons'es
+- LISP_MODULE was hanging when parser reads unrecognized character
+- (defun ...) was allowing non-identifers for names
+- CR/LF and line counting was not handled correctly
+- internal: copy_object() was not copying conses correctly
+- (append ...) was not working correctly
+
+[Changed]
+- LISP_EVAL::execute() method renamed to call_by_name()
+- runtime macro _CALL renamed to _CALL_BY_NAME
+- internal: moved all code from LISP_MODULE to LISP_CTX
+- internal: re-organized runtime library modules
+- internal: LISP_LEXER can push/pop current state
+
+[Added]
+- added (load "filename" ) function
+- runtime macro call_lisp_function()
+
+
 Dec 23, 2008
 ------------
 

@@ -34,19 +34,20 @@ namespace LISP
 ''
 #define LEX_CHAR_EOF -1
 
+
+'' !!! Add ref counting
+
 '' ---------------------------------------------------------------------------
 '' LEXER_CTX
 '' ---------------------------------------------------------------------------
 
-type LISP_LEXER_CTX
+type LISP_LEXER_CTX_STATE
 
 	declare constructor( )
-	declare constructor( byval parent_ctx as LISP_CTX ptr )
 	declare destructor( )
-
-	parent as LISP_CTX ptr
-
+	
 	buffer as string		'' The buffer to lex/parse
+	filename as string      '' current filename
 	lineno as integer		'' current line number
 	column as integer		'' current column number
 	index0 as integer		'' last marked index
@@ -55,9 +56,9 @@ type LISP_LEXER_CTX
 	token_id as LISP_TOKEN_ID    '' id of last token found
 	token as string			     '' text of last token found
 
-	declare sub settext( byref buffer as string ) 
-	declare function gettoken( ) as LISP_TOKEN_ID
+	previous as LISP_LEXER_CTX_STATE ptr
 
+	declare function gettoken( ) as LISP_TOKEN_ID
 	declare function getchar( ) as integer
 	declare function peekchar( ) as integer
 	declare function peekchar( byval index as integer ) as integer
@@ -68,12 +69,27 @@ type LISP_LEXER_CTX
 
 end type
 
-''
-private constructor LISP_LEXER_CTX( byval parent_ctx as LISP_CTX ptr )
+type LISP_LEXER_CTX
 
-	parent = parent_ctx
+	declare constructor( )
+	declare constructor( byval parent_ctx as LISP_CTX ptr )
+	declare destructor( )
+
+	declare sub settext( byref buffer as string ) 
+
+	parent as LISP_CTX ptr
+
+	state as LISP_LEXER_CTX_STATE ptr
+
+end type
+
+''
+private constructor LISP_LEXER_CTX_STATE()
+
+	previous = NULL
 
 	buffer = ""
+	filename = ""
 	lineno = 0
 	column = 0
 	index0 = 0
@@ -85,16 +101,38 @@ private constructor LISP_LEXER_CTX( byval parent_ctx as LISP_CTX ptr )
 end constructor
 
 ''
-private destructor LISP_LEXER_CTX( )
-
+private destructor LISP_LEXER_CTX_STATE()
+	
 	buffer = ""
+	filename = ""
 	token = ""
 
 end destructor
 
 ''
-private function LISP_LEXER_CTX.getchar() as integer
-	if( index1 < len(buffer ) ) then
+private constructor LISP_LEXER_CTX( byval parent_ctx as LISP_CTX ptr )
+
+	parent = parent_ctx
+
+	state = new LISP_LEXER_CTX_STATE()
+
+end constructor
+
+''
+private destructor LISP_LEXER_CTX( )
+
+	while( state <> NULL )
+		dim state_previous as LISP_LEXER_CTX_STATE ptr = state->previous
+		delete state
+		state = state_previous
+	wend
+	state = NULL
+
+end destructor
+
+''
+private function LISP_LEXER_CTX_STATE.getchar() as integer
+	if( index1 < len(buffer) ) then
 		function = buffer[index1]
 		index1 += 1
 		column += 1
@@ -104,7 +142,7 @@ private function LISP_LEXER_CTX.getchar() as integer
 end function
 
 ''
-private function LISP_LEXER_CTX.peekchar() as integer
+private function LISP_LEXER_CTX_STATE.peekchar() as integer
 	if( index1 < len(buffer ) ) then
 		function = buffer[index1]
 	else
@@ -113,7 +151,7 @@ private function LISP_LEXER_CTX.peekchar() as integer
 end function
 
 ''
-private function LISP_LEXER_CTX.peekchar( byval index as integer) as integer
+private function LISP_LEXER_CTX_STATE.peekchar( byval index as integer) as integer
 	if( index1 + index < len(buffer) ) then
 		function = buffer[index1 + index]
 	else
@@ -122,7 +160,7 @@ private function LISP_LEXER_CTX.peekchar( byval index as integer) as integer
 end function
 
 ''
-private function LISP_LEXER_CTX.getcomment() as LISP_TOKEN_ID
+private function LISP_LEXER_CTX_STATE.getcomment() as LISP_TOKEN_ID
 	dim c as integer = any
 
 	'' ';'?
@@ -146,7 +184,7 @@ private function LISP_LEXER_CTX.getcomment() as LISP_TOKEN_ID
 end function
 
 ''
-private function LISP_LEXER_CTX.getnumber() as LISP_TOKEN_ID
+private function LISP_LEXER_CTX_STATE.getnumber() as LISP_TOKEN_ID
 
 	dim as integer c = any
 
@@ -208,7 +246,7 @@ private function LISP_LEXER_CTX.getnumber() as LISP_TOKEN_ID
 end function
 
 ''
-private function LISP_LEXER_CTX.getidentifier( ) as LISP_TOKEN_ID
+private function LISP_LEXER_CTX_STATE.getidentifier( ) as LISP_TOKEN_ID
 
 	dim c as integer = any
 
@@ -230,7 +268,7 @@ private function LISP_LEXER_CTX.getidentifier( ) as LISP_TOKEN_ID
 end function
 
 ''
-private function LISP_LEXER_CTX.getstring( ) as LISP_TOKEN_ID
+private function LISP_LEXER_CTX_STATE.getstring( ) as LISP_TOKEN_ID
 
 	dim c as integer = any
 
@@ -298,7 +336,7 @@ private function LISP_LEXER_CTX.getstring( ) as LISP_TOKEN_ID
 end function
 
 ''
-private function LISP_LEXER_CTX.gettoken( ) as LISP_TOKEN_ID
+private function LISP_LEXER_CTX_STATE.gettoken( ) as LISP_TOKEN_ID
 
 	dim as integer c
 	dim as LISP_TOKEN_ID tk
@@ -437,32 +475,59 @@ destructor LISP_LEXER( )
 end destructor
 
 ''
-sub LISP_LEXER.settext( byref text as string ) 
+sub LISP_LEXER.push( byref f as const string )
+	dim next_state as LISP_LEXER_CTX_STATE ptr = new LISP_LEXER_CTX_STATE()
+	next_state->previous = ctx->state
+	ctx->state = next_state
+	ctx->state->filename = f
+end sub
 
-	ctx->buffer = text
-	ctx->index0 = 0
-	ctx->index1 = 0
+''
+sub LISP_LEXER.pop( )
+	dim state_previous as LISP_LEXER_CTX_STATE ptr = ctx->state->previous
+	delete ctx->state
+	ctx->state = state_previous
+end sub
 
-	ctx->token = ""
+''
+sub LISP_LEXER.settext( byref text as const string ) 
+
+	ctx->state->buffer = text
+	ctx->state->index0 = 0
+	ctx->state->index1 = 0
+
+	ctx->state->token = ""
 
 end sub
 
 ''
 function LISP_LEXER.gettoken( ) as LISP_TOKEN_ID
-	function = ctx->gettoken()
+	function = ctx->state->gettoken()
 end function
 
 ''
 function LISP_LEXER.token() as zstring ptr
-	function = strptr( ctx->token )
+	function = strptr( ctx->state->token )
 end function
 
+''
+function LISP_LEXER.filename() as string
+	function = ctx->state->filename
+end function
+
+''
+sub LISP_LEXER.setfile( byref f as const string ) 
+	ctx->state->filename = f
+end sub
+
+''
 function LISP_LEXER.lineno() as integer
-	function = ctx->lineno
+	function = ctx->state->lineno
 end function
 
+''
 function LISP_LEXER.column() as integer
-	function = ctx->column
+	function = ctx->state->column
 end function
 
 end namespace

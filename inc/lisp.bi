@@ -46,6 +46,7 @@ namespace LISP
 
 	public:
 		declare function Eval( byref text as string ) as integer
+		declare function Load( byref filename as string ) as integer
 		declare sub GarbageCollect()
 
 		declare property EchoInput() as integer
@@ -53,7 +54,7 @@ namespace LISP
 		declare property ShowResults() as integer
 		declare property ShowResults( byval flag as integer )
 
-		declare sub ErrorReset()
+		declare sub ResetError()
 		declare function ErrorCode() as integer
 		declare function ErrorText() as string
 		declare function ErrorLine() as integer

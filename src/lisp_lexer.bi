@@ -56,12 +56,17 @@ namespace LISP
 		declare destructor( )
 
 	public:
-		declare sub settext( byref buffer as string ) 
+		declare sub settext( byref buffer as const string ) 
+		declare sub setfile( byref f as const string )
 		declare function gettoken( ) as LISP_TOKEN_ID
 		declare function token() as zstring ptr
 		
+		declare function filename() as string
 		declare function lineno() as integer
 		declare function column() as integer
+
+		declare sub push( byref f as const string )
+		declare sub pop()
 
 	private:
 		ctx as LISP_LEXER_CTX_ ptr

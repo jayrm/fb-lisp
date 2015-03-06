@@ -39,7 +39,7 @@ namespace LISP
 		declare destructor( )
 
 	public:
-		declare function parse_object( byval havetoken as integer ) as LISP_OBJECT ptr
+		declare function parse( ) as LISP_OBJECT ptr
 
 	private:
 		ctx as LISP_PARSER_CTX_ ptr

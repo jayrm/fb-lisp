@@ -1,4 +1,4 @@
-call c:\batch\setpath.bat FB0240
+call c:\batch\setpath.bat FBWIN
 e:
 cd \fb\script\lisp\src
 

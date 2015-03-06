@@ -46,31 +46,97 @@ define_lisp_function( abs, args )
 
 end_lisp_function()
 
+''
+function eval_text( byval ctx as LISP_CTX ptr, byref text as const string, byref filename as const string ) as LISP_OBJECT ptr
+
+
+	'' !!! this needs to move to evaluator?!!
+
+	dim p1 as LISP_OBJECT ptr
+	dim p2 as LISP_OBJECT ptr
+
+	ctx->lexer->push( filename )
+	ctx->lexer->settext( text )
+
+	p2 = _NIL_
+
+	do
+		p1 = ctx->parser->parse( )
+
+		if( p1 = NULL ) then
+			exit do
+		end if
+
+		if( ctx->EchoInput ) then
+			ctx->PrintOut( "<<= " )
+			ctx->evaluator->execute( "princ-object", p1 )
+			ctx->PrintOut( !"\n" )
+		end if
+
+		p2 = ctx->evaluator->eval( p1 )
+
+		if( ctx->ErrorCode ) then
+			exit do
+		end if
+
+		if( ctx->ShowResults ) then
+			ctx->PrintOut( "==> " )
+			ctx->evaluator->execute( "princ-object", p2 )
+			ctx->PrintOut( !"\n" )
+		end if
+
+		ctx->GarbageCollect()
+
+	loop
+
+	ctx->lexer->pop()
+
+	function = p2
+
+end function
+
 '' ---------------------------------------------------------------------------
 '' (load "filename")
 ''
-define_lisp_function( load, args)
+define_lisp_function( load, args )
 
 	if( _LENGTH(args) <> 1 ) then
 		_RAISEERROR( LISP_ERR_WRONG_NUMBER_OF_ARGUMENTS )
 	else
 		_OBJ(p) = _EVAL(_CAR(args))
 		if( _IS_STRING(p) ) then
+
+			dim filename as string
+
+			filename = *p->value.str
+
 			dim h as integer = freefile
-			dim x as string
-			if( open( *p->value.str for input access read as #h ) = 0 ) then
-				close #1
-				if( open( *p->value.str for binary access read as #h ) = 0 ) then
-					x = space( lof( 1 ))
-					get #1,,x
-					close #1
+			dim text as string
 
-					'' !!! insert 'x' in to the lexer buffer
+			if( open( filename for input access read as #h ) = 0 ) then
+				close #h
+				if( open( filename for binary access read as #h ) = 0 ) then
+					text = space( lof( h ))
+					get #h,,text
+					close #h
 
-					function = _NIL_ '' _T_
+					function = eval_text( ctx, text, filename )
+
+				else
+					_RAISEERROR( LISP_ERR_IO_ERROR )
+					function = _NIL_
 					exit function
-				end if 
+				end if
+
+			else
+
+				_RAISEERROR( LISP_ERR_FILE_NOT_FOUND )
+				function = _NIL_
+				exit function
+
 			end if
+
+			exit function
 		else
 			_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
 		end if

@@ -29,8 +29,10 @@
 #include once "lisp_int.bi"
 #include once "lisp_err.bi"
 #include once "lisp_ctx.bi"
+#include once "lisp_lexer.bi"
 #include once "lisp_object.bi"
 #include once "lisp_objects.bi"
+#include once "lisp_parser.bi"
 #include once "lisp_funcs.bi"
 #include once "lisp_eval.bi"
 

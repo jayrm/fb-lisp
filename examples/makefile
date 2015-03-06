@@ -3,7 +3,7 @@ FBC := fbc.exe
 LIB := ../lib/liblisp.a
 
 ifdef DEBUG
-FBCFLAGS += -g -d DEBUG -w pedantic
+FBCFLAGS += -g -d DEBUG -w pedantic -exx
 endif
 
 all : hello.exe bindfunc.exe runlisp.exe printout.exe

@@ -109,22 +109,6 @@ SOURCE=.\src\lisp_funcs.bi
 # End Source File
 # Begin Source File
 
-SOURCE=.\src\lisp_funcs1.bas
-# End Source File
-# Begin Source File
-
-SOURCE=.\src\lisp_funcs2.bas
-# End Source File
-# Begin Source File
-
-SOURCE=.\src\lisp_funcs3.bas
-# End Source File
-# Begin Source File
-
-SOURCE=.\src\lisp_funcs4.bas
-# End Source File
-# Begin Source File
-
 SOURCE=.\src\lisp_int.bas
 # End Source File
 # Begin Source File
@@ -166,6 +150,30 @@ SOURCE=.\src\lisp_parser.bi
 # Begin Source File
 
 SOURCE=.\src\lisp_runtime.bi
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\lisp_runtime_console.bas
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\lisp_runtime_data.bas
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\lisp_runtime_list.bas
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\lisp_runtime_math.bas
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\lisp_runtime_prog.bas
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\lisp_runtime_system.bas
 # End Source File
 # Begin Source File
 
@@ -229,7 +237,15 @@ SOURCE=.\examples\runlisp.bas
 # End Source File
 # Begin Source File
 
+SOURCE=.\examples\temp.lsp
+# End Source File
+# Begin Source File
+
 SOURCE=.\examples\test.bas
+# End Source File
+# Begin Source File
+
+SOURCE=.\examples\test.lsp
 # End Source File
 # End Group
 # Begin Source File

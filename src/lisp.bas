@@ -39,27 +39,6 @@
 namespace LISP
 
 '' ---------------------------------------------------------------------------
-'' ERROR MESSAGES
-'' ---------------------------------------------------------------------------
-
-dim shared ErrMessages( 0 to LISP_ERRS - 1 ) as zstring ptr = { _
-	@"OK", _
-	@"Function not defined", _
-	@"Invalid argument", _
-	@"Setting value of NIL object", _
-	@"Getting CDR of non CONS", _
-	@"Getting CAR of non CONS", _
-	@"Unexpected '.'", _
-	@"Unexpected ')'", _
-	@"Unexpected token", _
-	@"Wrong number of arguments", _
-	@"Division by zero", _
-	@"Argument type mismatch", _
-	@"Too few arguments", _
-	@"Unable to redefine built-in function" _
-}
-
-'' ---------------------------------------------------------------------------
 '' USER API
 '' ---------------------------------------------------------------------------
 
@@ -78,45 +57,12 @@ end destructor
 
 ''
 function LispModule.Eval( byref text as string ) as integer
-	
-	dim p1 as LISP_OBJECT ptr
-	dim p2 as LISP_OBJECT ptr
+	function = ctx->Eval( text )
+end function
 
-	ErrorReset( )
-
-	ctx->lexer->settext( text )
-
-	do
-		p1 = ctx->parser->parse_object( FALSE )
-
-		if( p1 = NULL ) then
-			exit do
-		end if
-
-		if( ctx->EchoInput ) then
-			_PRINT( "<<= " )
-			_CALL( princ-object, p1 )
-			_PRINT( !"\n" )
-		end if
-
-		p2 = ctx->evaluator->eval( p1 )
-
-		if( ctx->ErrorCode ) then
-			exit do
-		end if
-
-		if( ctx->ShowResults ) then
-			_PRINT( "==> " )
-			_CALL( princ-object, p2 )
-			_PRINT( !"\n" )
-		end if
-
-		GarbageCollect()
-
-	loop
-
-	function = ctx->ErrorCode
-
+''
+function LispModule.Load( byref filename as string ) as integer
+	function = ctx->Load( filename )
 end function
 
 ''
@@ -125,10 +71,8 @@ sub LispModule.GarbageCollect()
 end sub
 
 ''
-sub LispModule.ErrorReset()
-	ctx->ErrorCode = 0
-	ctx->ErrorText = ""
-	ctx->ErrorLine = 0
+sub LispModule.ResetError()
+	ctx->ResetError()
 end sub
 
 ''
@@ -138,22 +82,7 @@ end function
 
 ''
 function LispModule.ErrorText() as string
-
-	dim res as string
-
-	if( ctx->ErrorCode >= 0 and ctx->ErrorCode < LISP_ERRS ) then
-		res = *ErrMessages( ctx->ErrorCode )
-	else
-		res = "Unknown error"
-	end if
-	if( ctx->ErrorText > "" ) then
-		res &= ", '" & ctx->ErrorText & "'."
-	else
-		res &= "."
-	end if
-
-	function = res
-
+	function = ctx->GetErrorText()
 end function
 
 ''

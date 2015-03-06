@@ -14,6 +14,7 @@ SRCS += lisp_eval.bas
 SRCS += lisp_funcs1.bas
 SRCS += lisp_funcs2.bas
 SRCS += lisp_funcs3.bas
+SRCS += lisp_funcs4.bas
 
 HDRS := $(wildcard *.bi) $(wildcard ../inc/lisp_*.bi)
 
@@ -25,7 +26,7 @@ FBC := fbc.exe
 FBCFLAGS := -i ../inc
 
 ifdef DEBUG
-FBCFLAGS += -g -d DEBUG -w pedantic
+FBCFLAGS += -g -d DEBUG -w pedantic -exx
 endif
 
 .SUFFIXES:
@@ -41,7 +42,7 @@ obj/%.o : %.bas $(HDRS)
 	$(FBC) $(FBCFLAGS) -c $< -o $@
 
 ../lib/lib$(LIBNAME).a: $(OBJS)
-	$(FBC) -lib $(FBCFLAGS) $(OBJS) $(LIBS) $(RCS) -x ../lib/$(LIBNAME)
+	$(FBC) -lib $(FBCFLAGS) $(OBJS) $(LIBS) $(RCS) -x ../lib/lib$(LIBNAME).a
 
 .PHONY : clean
 clean:

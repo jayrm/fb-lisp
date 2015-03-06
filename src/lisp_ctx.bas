@@ -32,12 +32,39 @@
 #include once "lisp_funcs.bi"
 #include once "lisp_eval.bi"
 
+#include once "lisp_runtime.bi"
+
 namespace LISP
 
 '' from "lisp_funcs*.bas"
 declare sub bind_intrinsic_funcs1( byval ctx as LISP_FUNCTIONS ptr )
 declare sub bind_intrinsic_funcs2( byval ctx as LISP_FUNCTIONS ptr )
 declare sub bind_intrinsic_funcs3( byval ctx as LISP_FUNCTIONS ptr )
+declare sub bind_intrinsic_funcs4( byval ctx as LISP_FUNCTIONS ptr )
+
+'' ---------------------------------------------------------------------------
+'' ERROR MESSAGES
+'' ---------------------------------------------------------------------------
+
+dim shared ErrMessages( 0 to LISP_ERRS - 1 ) as zstring ptr = { _
+	@"OK", _
+	@"Function not defined", _
+	@"Invalid argument", _
+	@"Setting value of NIL object", _
+	@"Getting CDR of non CONS", _
+	@"Getting CAR of non CONS", _
+	@"Unexpected '.'", _
+	@"Unexpected ')'", _
+	@"Expected ')'", _
+	@"Unexpected token", _
+	@"Wrong number of arguments", _
+	@"Division by zero", _
+	@"Argument type mismatch", _
+	@"Too few arguments", _
+	@"Unable to redefine built-in function", _
+	@"File not found", _
+	@"I/O error" _
+}
 
 '' ---------------------------------------------------------------------------
 '' LISP EXECUTION CONTEXT
@@ -55,11 +82,14 @@ constructor LISP_CTX()
 	bind_intrinsic_funcs1( functions )
 	bind_intrinsic_funcs2( functions )
 	bind_intrinsic_funcs3( functions )
+	bind_intrinsic_funcs4( functions )
 
+	ErrorCode = 0
 	ErrorText = ""
+	ErrorFile = ""
 	ErrorLine = 0
 	ErrorColumn = 0
-	ErrorCode = 0
+	
 
 end constructor
 
@@ -77,14 +107,42 @@ destructor LISP_CTX()
 end destructor
 
 ''
+function LISP_CTX.GetErrorText() as string
+	dim res as string
+
+	if( ErrorCode >= 0 and ErrorCode < LISP_ERRS ) then
+		res = *ErrMessages( ErrorCode )
+	else
+		res = "Unknown error"
+	end if
+	if( ErrorText > "" ) then
+		res &= ", '" & ErrorText & "'."
+	else
+		res &= "."
+	end if
+
+	function = res
+end function
+
+''
+sub LISP_CTX.ResetError( )
+	ErrorCode = 0
+	ErrorText = ""
+	ErrorFile = ""
+	ErrorLine = 0
+	ErrorColumn = 0
+end sub
+
+''
 sub LISP_CTX.RaiseError( byval e_code as LISP_ERROR, byref e_text as string )
 
 	'' FIXME: only take the first error, or generate a list of errors
 
 	ErrorCode = e_code
+	ErrorText = e_text
+	ErrorFile = lexer->filename
 	ErrorLine = lexer->lineno + 1
 	ErrorColumn = lexer->column + 1
-	ErrorText = e_text
 
 end sub
 
@@ -94,10 +152,11 @@ sub LISP_CTX.RaiseWarning( byval e_code as LISP_ERROR, byref e_text as string )
 	'' FIXME: allow warnings to be ignored
 
 	ErrorCode = e_code
+	ErrorText = e_text
+	ErrorFile = lexer->filename
 	ErrorLine = lexer->lineno + 1
 	ErrorColumn = lexer->column + 1
-	ErrorText = e_text
-
+	
 end sub
 
 ''
@@ -107,6 +166,73 @@ sub LISP_CTX.PrintOut( byref s as const string )
 	else
 		print s;
 	end if
+end sub
+
+''
+function LISP_CTX.Eval( byref text as const string ) as integer
+
+	dim p1 as LISP_OBJECT ptr
+	dim p2 as LISP_OBJECT ptr
+
+	ResetError( )
+
+	lexer->settext( text )
+
+	do
+		p1 = parser->parse( )
+
+		if( p1 = NULL ) then
+			exit do
+		end if
+
+		if( EchoInput ) then
+			PrintOut( "<<= " )
+			evaluator->execute( "princ-object", p1 )
+			PrintOut( !"\n" )
+		end if
+
+		p2 = evaluator->eval( p1 )
+
+		if( ErrorCode ) then
+			exit do
+		end if
+
+		if( ShowResults ) then
+			PrintOut( "==> " )
+			evaluator->execute( "princ-object", p2 )
+			PrintOut( !"\n" )
+		end if
+
+		GarbageCollect()
+
+	loop
+
+	function = ErrorCode
+
+end function
+
+''
+function LISP_CTX.Load( byref filename as const string ) as integer
+
+	dim h as integer = freefile
+	dim x as string
+	if( open( filename for input access read as #h ) = 0 ) then
+		close #1
+		if( open( filename for binary access read as #h ) = 0 ) then
+			x = space( lof( 1 ))
+			get #1,,x
+			close #1
+			lexer->push( filename )
+			function = Eval( x )
+			lexer->pop()
+		end if
+	end if
+
+end function
+
+''
+sub LISP_CTX.GarbageCollect( )
+	objects->garbage_collect()
 end sub
 
 end namespace

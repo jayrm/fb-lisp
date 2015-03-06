@@ -21,29 +21,6 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- *
- * Copyright (c) 1997-2001 Sandro Sigala.  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '/
 
 #include once "lisp_int.bi"
@@ -79,9 +56,9 @@ type LISP_PARSER_CTX
 
 	token_id as LISP_TOKEN_ID
 
+	declare function parse_form() as LISP_OBJECT ptr
 	declare function parse_object( byval havetoken as integer ) as LISP_OBJECT ptr
 	declare function parse_quote() as LISP_OBJECT ptr
-	declare function parse_form() as LISP_OBJECT ptr
 
 end type
 
@@ -119,8 +96,12 @@ private function LISP_PARSER_CTX.parse_form() as LISP_OBJECT ptr
 	do
 		token_id = lexer->gettoken()
 
-		select case token_id 
-		case LISP_TK_RIGHT_PARA, LISP_TK_EOF
+		select case token_id
+		case LISP_TK_EOF
+			parent->RaiseWarning( LISP_ERR_EXPECTED_RIGHT_PARA )
+			exit do
+
+		case LISP_TK_RIGHT_PARA
 			exit do
 
 		case LISP_TK_DOT
@@ -170,6 +151,7 @@ end function
 
 ''
 private function LISP_PARSER_CTX.parse_quote() as LISP_OBJECT ptr
+
 	dim as LISP_OBJECT ptr p = any
 
 	p = objects->new_object( OBJECT_TYPE_CONS )
@@ -275,8 +257,8 @@ destructor LISP_PARSER( )
 end destructor
 
 ''
-function LISP_PARSER.parse_object( byval havetoken as integer ) as LISP_OBJECT ptr
-	function = ctx->parse_object( havetoken )
+function LISP_PARSER.parse( ) as LISP_OBJECT ptr
+	function = ctx->parse_object( FALSE )
 end function
 
 end namespace

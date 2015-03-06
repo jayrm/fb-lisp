@@ -49,20 +49,27 @@ namespace LISP
 		functions as LISP_FUNCTIONS_ ptr
 		evaluator as LISP_EVAL_ ptr
 
+		declare sub GarbageCollect()
+		declare function GetErrorText() as string
+		declare function Eval( byref text as const string ) as integer
+		declare function Load( byref filename as const string ) as integer
+				
 		ErrorCode as integer
+		ErrorText as string
+		ErrorFile as string
 		ErrorLine as integer
 		ErrorColumn as integer
-		ErrorText as string
-
+		
+		declare sub ResetError( )
 		declare sub RaiseError( byval e_code as LISP_ERROR, byref e_text as string = "")
 		declare sub RaiseWarning( byval e_code as LISP_ERROR, byref e_text as string = "")
 
+		EchoInput as integer
+		ShowResults as integer
 		print_cb as LISP_PRINT_CALLBACK
 
 		declare sub PrintOut( byref s as const string )
 
-		EchoInput as integer
-		ShowResults as integer
 
 	end type
 
