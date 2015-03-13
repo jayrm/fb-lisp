@@ -11,10 +11,12 @@ SRCS += lisp_objects.bas
 SRCS += lisp_parser.bas 
 SRCS += lisp_funcs.bas
 SRCS += lisp_eval.bas
-SRCS += lisp_funcs1.bas
-SRCS += lisp_funcs2.bas
-SRCS += lisp_funcs3.bas
-SRCS += lisp_funcs4.bas
+SRCS += lisp_runtime_console.bas
+SRCS += lisp_runtime_data.bas
+SRCS += lisp_runtime_list.bas
+SRCS += lisp_runtime_math.bas
+SRCS += lisp_runtime_prog.bas
+SRCS += lisp_runtime_system.bas
 
 HDRS := $(wildcard *.bi) $(wildcard ../inc/lisp_*.bi)
 

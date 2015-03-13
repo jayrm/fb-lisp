@@ -79,7 +79,7 @@ type LISP_FUNCTIONS_CTX
 	declare destructor( )
 
 	parent as LISP_CTX ptr 
-	''!!! objects as LISP_OBJECTS ptr		'' alias for parent->objects
+	''!!! FIXME: objects as LISP_OBJECTS ptr		'' alias for parent->objects
 	functions as FUNCTION_DEF ptr
 
 	declare function find( byval id as zstring ptr ) as FUNCTION_DEF ptr
@@ -92,7 +92,7 @@ private constructor LISP_FUNCTIONS_CTX( byval parent_ctx as LISP_CTX ptr )
 
 	parent = parent_ctx
 
-	''!!! objects = parent_ctx->objects
+	''!!! FIXME: objects = parent_ctx->objects
 	functions = NULL
 
 end constructor
@@ -101,7 +101,7 @@ end constructor
 private destructor LISP_FUNCTIONS_CTX( )
 
 	parent = NULL
-	''!!! objects = NULL
+	''!!! FIXME: objects = NULL
 
 	'' delete list of bound functions
 	while( functions )

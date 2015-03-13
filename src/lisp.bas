@@ -42,7 +42,7 @@ namespace LISP
 '' USER API
 '' ---------------------------------------------------------------------------
 
-'' FIXME: Add copy constructor / reference counting
+'' !!! FIXME: Add copy constructor / reference counting
 
 ''
 constructor LispModule( )

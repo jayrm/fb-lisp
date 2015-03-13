@@ -35,7 +35,7 @@ namespace LISP
 #define LEX_CHAR_EOF -1
 
 
-'' !!! Add ref counting
+'' !!! FIXME: Add ref counting
 
 '' ---------------------------------------------------------------------------
 '' LEXER_CTX
@@ -170,6 +170,14 @@ private function LISP_LEXER_CTX_STATE.getcomment() as LISP_TOKEN_ID
 		c = getchar()
 		select case c
 		case 13
+			c = peekchar()
+			if( c = 10 ) then
+				c = getchar()
+			end if
+			lineno += 1
+			column = 0
+			exit do
+		case 10
 			lineno += 1
 			column = 0
 			exit do
@@ -315,6 +323,16 @@ private function LISP_LEXER_CTX_STATE.getstring( ) as LISP_TOKEN_ID
 
 		case 13
 			token &= chr(c)
+			c = peekchar()
+			if( c = 10 ) then
+				c = getchar()
+				token &= chr(c)
+			end if
+			lineno += 1
+			column = 0
+
+		case 10
+			token &= chr(c)
 			lineno += 1
 			column = 0
 
@@ -354,19 +372,19 @@ private function LISP_LEXER_CTX_STATE.gettoken( ) as LISP_TOKEN_ID
 		case LEX_CHAR_EOF
 			exit do
 
-		'' '\n'
+		'' '\r'
 		case 13
 			c = getchar()
+			c = peekchar()
+			if( c = 10 ) then
+				c = getchar()
+			end if
 			lineno += 1
 			column = 0
 
-		'' '\r'
+		'' '\n'
 		case 10
 			c = getchar()
-			c = peekchar()
-			if( c = 13 ) then
-				c = getchar()
-			end if
 			lineno += 1
 			column = 0
 
@@ -449,8 +467,9 @@ private function LISP_LEXER_CTX_STATE.gettoken( ) as LISP_TOKEN_ID
 			exit do
 
 		case else
-			function = LISP_TK_CHAR
+			c = getchar()
 			token = chr(c)
+			function = LISP_TK_CHAR
 			exit do
 
 		end select

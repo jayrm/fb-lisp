@@ -21,29 +21,6 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- *
- * Copyright (c) 1997-2001 Sandro Sigala.  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '/
 
 #include once "lisp_int.bi"
@@ -362,6 +339,8 @@ end function
 function LISP_OBJECTS.find_identifier( byval s as zstring ptr ) as LISP_OBJECT ptr
 	dim p as LISP_OBJECT ptr = any
 
+	'' !!! FIXME: use hash
+
 	p = ctx->object_lstused
 	while( p )
 		if( p->dtype = OBJECT_TYPE_IDENTIFIER ) then
@@ -380,6 +359,8 @@ end function
 ''
 function LISP_OBJECTS.find_string( byval s as zstring ptr ) as LISP_OBJECT ptr
 	dim p as LISP_OBJECT ptr = any
+
+	'' !!! FIXME: use hash
 
 	p = ctx->object_lstused
 	while( p )
@@ -400,6 +381,8 @@ end function
 function LISP_OBJECTS.find_integer( byval num as LISP_INTEGER ) as LISP_OBJECT ptr
 	dim p as LISP_OBJECT ptr = any
 
+	'' !!! FIXME: use hash
+
 	p = ctx->object_lstused
 	while( p )
 		if( p->dtype = OBJECT_TYPE_INTEGER ) then
@@ -418,6 +401,8 @@ end function
 ''
 function LISP_OBJECTS.find_real( byval num as LISP_REAL ) as LISP_OBJECT ptr
 	dim p as LISP_OBJECT ptr = any
+
+	'' !!! FIXME: use hash
 
 	p = ctx->object_lstused
 	while( p )

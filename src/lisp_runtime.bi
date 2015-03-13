@@ -46,13 +46,15 @@ namespace LISP
 	#define _RAISEERROR               ctx->RaiseError
 	#define _RAISEWARNING             ctx->RaiseWarning
 	#define _PRINT(s)                 ctx->PrintOut(s)
+	#define _DUMP(p)                  ctx->Dump(p) 
 	#define _NIL_                     ctx->objects->NIL_
 	#define _T_                       ctx->objects->T_
 	#define _CAR                      ctx->evaluator->car
 	#define _CDR                      ctx->evaluator->cdr
 	#define _EVAL                     ctx->evaluator->eval
 	#define _COPY(p)                  ctx->evaluator->copy(p)
-	#define _CALL(proc,args)          ctx->evaluator->execute( #proc, args )
+	#define _PROGN(p)                 ctx->evaluator->progn(p)
+	#define _CALL_BY_NAME(proc,args)  ctx->evaluator->call_by_name( #proc, args )
 	#define _LENGTH(p)                ctx->evaluator->length(p)
 	#define _NEW                      ctx->objects->new_object
 	#define _NEW_INTEGER(i)           ctx->objects->new_object( OBJECT_TYPE_INTEGER, i )
@@ -66,7 +68,7 @@ namespace LISP
 	#define _IS_CONS(p)               (p->dtype = OBJECT_TYPE_CONS)
 	#define _IS_IDENTIFIER(p)         (p->dtype = OBJECT_TYPE_IDENTIFIER)
 
-	#macro import_lisp_function( proc )
+	#macro import_lisp_function( proc, args )
 		declare function F_##proc( byval ctx as LISP_CTX ptr, byval args as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 	#endmacro
 
@@ -78,7 +80,18 @@ namespace LISP
 		end function
 	#endmacro
 
+	#define call_lisp_function( proc, args ) F_##proc( ctx, args )
+
 	#define BIND_FUNC( f, name, proc ) f->bind( @name, @F_##proc )
+
+	'' from "lisp_funcs*.bas"
+	declare sub bind_runtime_console( byval ctx as LISP_FUNCTIONS ptr )
+	declare sub bind_runtime_data( byval ctx as LISP_FUNCTIONS ptr )
+	declare sub bind_runtime_list( byval ctx as LISP_FUNCTIONS ptr )
+	declare sub bind_runtime_math( byval ctx as LISP_FUNCTIONS ptr )
+	declare sub bind_runtime_prog( byval ctx as LISP_FUNCTIONS ptr )
+	declare sub bind_runtime_system( byval ctx as LISP_FUNCTIONS ptr )
+
 
 end namespace
 

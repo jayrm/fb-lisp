@@ -36,12 +36,14 @@ namespace LISP
 		declare destructor()
 
 	public:
+		declare function progn( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+		declare function eval( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+		declare function call_by_name( byval nameid as zstring ptr, byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+
 		declare function car( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 		declare function cdr( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
-		declare function eval( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
-		declare function copy( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 		declare function length( byval p as LISP_OBJECT ptr ) as integer
-		declare function execute( byval nameid as zstring ptr, byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+		declare function copy( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 
 	private:
 		ctx as LISP_EVAL_CTX_ ptr

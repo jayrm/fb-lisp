@@ -69,6 +69,7 @@ namespace LISP
 		print_cb as LISP_PRINT_CALLBACK
 
 		declare sub PrintOut( byref s as const string )
+		declare function Dump( byval args as LISP_OBJECT_ ptr ) as LISP_OBJECT_ ptr
 
 
 	end type

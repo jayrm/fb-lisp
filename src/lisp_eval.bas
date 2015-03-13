@@ -20,29 +20,6 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- *
- * Copyright (c) 1997-2001 Sandro Sigala.  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '/
 
 #include once "lisp_int.bi"
@@ -77,16 +54,14 @@ type LISP_EVAL_CTX
 	'' built-ins
 	declare function car( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 	declare function cdr( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
-	
 	declare function list_length( byval p as LISP_OBJECT ptr ) as integer
-	
-	declare function call_func( byval nameid as zstring ptr, byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+	declare function copy( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+
+	declare function progn( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 	declare function eval_cons( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 	declare function eval_func( byval p as LISP_OBJECT ptr, byval args as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 	declare function eval( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
-	declare function copy( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
-
-	
+	declare function call_by_name( byval nameid as zstring ptr, byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 
 end type
 
@@ -109,36 +84,6 @@ private destructor LISP_EVAL_CTX( )
 	functions = NULL
 
 end destructor
-
-''
-private function LISP_EVAL_CTX.call_func( byval nameid as zstring ptr, byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
-	
-	dim func as LISP_FUNCTION = any
-
-	'' Built-in function?
-	func = functions->find( nameid )
-	if( func ) then
-		function = func( parent, p )
-		exit function
-	end if
-
-	'' User defined function?
-	dim f as LISP_OBJECT ptr = objects->find_identifier( nameid )
-	if( f <> NULL ) then
-		dim fp as LISP_OBJECT ptr = objects->get_object( f )
-		if( fp <> _NIL_ ) then
-			function = eval_func( fp, p )
-			exit function
-		end if
-	end if
-
-	'' FIXME: allow overriding built-ins or error when tryin
-	'' (possibly by check user-def'ed functions first)
-
-	parent->RaiseError( LISP_ERR_FUNCTION_NOT_DEFINED, *nameid )
-	function = _NIL_
-	
-end function
 
 ''
 private function LISP_EVAL_CTX.eval_func( byval p as LISP_OBJECT ptr, byval args as LISP_OBJECT ptr ) as LISP_OBJECT ptr
@@ -195,7 +140,7 @@ private function LISP_EVAL_CTX.eval_func( byval p as LISP_OBJECT ptr, byval args
 	next
 
 	p4 = cdr(cdr(p))			'' function body
-	p5 = call_func( @"progn", p4 )
+	p5 = progn( p4 )
 
 	'' restore argument variables
 	p2 = car(cdr(p))			'' parameters
@@ -245,7 +190,7 @@ private function LISP_EVAL_CTX.eval_cons( byval p as LISP_OBJECT ptr ) as LISP_O
 				exit function
 			end if
 
-			'' FIXME: allow overriding built-ins or error when tryin
+			'' !!! FIXME: allow overriding built-ins or error when tryin
 			'' (possibly by check user-def'ed functions first)
 
 			parent->RaiseError( LISP_ERR_FUNCTION_NOT_DEFINED, *p1->value.id )
@@ -257,20 +202,79 @@ private function LISP_EVAL_CTX.eval_cons( byval p as LISP_OBJECT ptr ) as LISP_O
 
 end function
 
-''
-private function LISP_EVAL_CTX.copy( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
-	function = objects->copy_object( p )
-end function
-
 '' ---------------------------------------------------------------------------
 '' BUILT-IN FUNCTIONS
 '' ---------------------------------------------------------------------------
+
+''
+private function LISP_EVAL_CTX.progn( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+
+	dim p1 as LISP_OBJECT ptr = p
+	dim p2 as LISP_OBJECT ptr = _NIL_
+
+	while ( p1 <> _NIL_ )
+		p2 = eval(car(p1))
+		p1 = cdr(p1)
+	wend
+
+	function = p2
+	
+end function
+
+''
+private function LISP_EVAL_CTX.eval( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+	
+	select case p->dtype
+	case OBJECT_TYPE_IDENTIFIER
+		function = objects->get_object( p )
+
+	case OBJECT_TYPE_CONS
+		function = eval_cons( p )
+
+	case else
+		function = p
+
+	end select
+
+end function
+
+''
+private function LISP_EVAL_CTX.call_by_name( byval nameid as zstring ptr, byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+	
+	dim func as LISP_FUNCTION = any
+
+	'' Built-in function?
+	func = functions->find( nameid )
+	if( func ) then
+		function = func( parent, p )
+		exit function
+	end if
+
+	'' User defined function?
+	dim f as LISP_OBJECT ptr = objects->find_identifier( nameid )
+	if( f <> NULL ) then
+		dim fp as LISP_OBJECT ptr = objects->get_object( f )
+		if( fp <> _NIL_ ) then
+			function = eval_func( fp, p )
+			exit function
+		end if
+	end if
+
+	'' !!! FIXME: allow overriding built-ins or error when trying
+	'' (possibly by check user-def'ed functions first)
+
+	parent->RaiseError( LISP_ERR_FUNCTION_NOT_DEFINED, *nameid )
+	function = _NIL_
+	
+end function
 
 ''
 private function LISP_EVAL_CTX.car( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 
 	if( p->dtype = OBJECT_TYPE_CONS ) then
 		function = p->value.cell.car
+	elseif( p->dtype = OBJECT_TYPE_NIL ) then
+		function = _NIL_
 	else
 		parent->RaiseWarning( LISP_ERR_CAR_OF_NON_CONS )
 		function = _NIL_
@@ -283,6 +287,8 @@ private function LISP_EVAL_CTX.cdr( byval p as LISP_OBJECT ptr ) as LISP_OBJECT 
 
 	if( p->dtype = OBJECT_TYPE_CONS ) then
 		function = p->value.cell.cdr
+	elseif( p->dtype = OBJECT_TYPE_NIL ) then
+		function = _NIL_
 	else
 		parent->RaiseWarning( LISP_ERR_CDR_OF_NON_CONS )
 		function = _NIL_
@@ -305,20 +311,8 @@ private function LISP_EVAL_CTX.list_length( byval p as LISP_OBJECT ptr ) as inte
 end function
 
 ''
-private function LISP_EVAL_CTX.eval( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
-	
-	select case p->dtype
-	case OBJECT_TYPE_IDENTIFIER
-		function = objects->get_object( p )
-
-	case OBJECT_TYPE_CONS
-		function = eval_cons( p )
-
-	case else
-		function = p
-
-	end select
-
+private function LISP_EVAL_CTX.copy( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+	function = objects->copy_object( p )
 end function
 
 '' ---------------------------------------------------------------------------
@@ -335,8 +329,18 @@ destructor LISP_EVAL()
 end destructor
 
 ''
+function LISP_EVAL.progn( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+	function = ctx->progn( p )
+end function
+
+''
 function LISP_EVAL.eval( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 	function = ctx->eval( p )
+end function
+
+''
+function LISP_EVAL.call_by_name( byval nameid as zstring ptr, byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+	function = ctx->call_by_name( nameid, p )
 end function
 
 ''
@@ -350,8 +354,8 @@ function LISP_EVAL.cdr( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 end function
 
 ''
-function LISP_EVAL.execute( byval nameid as zstring ptr, byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
-	function = ctx->call_func( nameid, p )
+function LISP_EVAL.length( byval p as LISP_OBJECT ptr ) as integer
+	function = ctx->list_length(p)
 end function
 
 ''
@@ -359,9 +363,5 @@ function LISP_EVAL.copy( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 	function = ctx->copy( p )
 end function
 
-''
-function LISP_EVAL.length( byval p as LISP_OBJECT ptr ) as integer
-	function = ctx->list_length(p)
-end function
 
 end namespace

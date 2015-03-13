@@ -36,11 +36,8 @@
 
 namespace LISP
 
-'' from "lisp_funcs*.bas"
-declare sub bind_intrinsic_funcs1( byval ctx as LISP_FUNCTIONS ptr )
-declare sub bind_intrinsic_funcs2( byval ctx as LISP_FUNCTIONS ptr )
-declare sub bind_intrinsic_funcs3( byval ctx as LISP_FUNCTIONS ptr )
-declare sub bind_intrinsic_funcs4( byval ctx as LISP_FUNCTIONS ptr )
+'' !!! FIXME: this requires that console lib be linked
+declare function dump_helper( byval ctx as LISP_CTX ptr, byval args as LISP_OBJECT ptr, byval indent as integer ) as LISP_OBJECT ptr
 
 '' ---------------------------------------------------------------------------
 '' ERROR MESSAGES
@@ -79,17 +76,18 @@ constructor LISP_CTX()
 	functions = new LISP_FUNCTIONS( @this )
 	evaluator = new LISP_EVAL( @this )
 
-	bind_intrinsic_funcs1( functions )
-	bind_intrinsic_funcs2( functions )
-	bind_intrinsic_funcs3( functions )
-	bind_intrinsic_funcs4( functions )
+	bind_runtime_console( functions )
+	bind_runtime_data( functions )
+	bind_runtime_list( functions )
+	bind_runtime_math( functions )
+	bind_runtime_prog( functions )
+	bind_runtime_system( functions )
 
 	ErrorCode = 0
 	ErrorText = ""
 	ErrorFile = ""
 	ErrorLine = 0
 	ErrorColumn = 0
-	
 
 end constructor
 
@@ -136,7 +134,7 @@ end sub
 ''
 sub LISP_CTX.RaiseError( byval e_code as LISP_ERROR, byref e_text as string )
 
-	'' FIXME: only take the first error, or generate a list of errors
+	'' !!! FIXME: only take the first error, or generate a list of errors
 
 	ErrorCode = e_code
 	ErrorText = e_text
@@ -149,7 +147,7 @@ end sub
 ''
 sub LISP_CTX.RaiseWarning( byval e_code as LISP_ERROR, byref e_text as string )
 
-	'' FIXME: allow warnings to be ignored
+	'' !!! FIXME: allow warnings to be ignored
 
 	ErrorCode = e_code
 	ErrorText = e_text
@@ -169,10 +167,17 @@ sub LISP_CTX.PrintOut( byref s as const string )
 end sub
 
 ''
+function LISP_CTX.Dump( byval args as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+	function = dump_helper( @this, args, 0 )
+end function
+
+''
 function LISP_CTX.Eval( byref text as const string ) as integer
 
 	dim p1 as LISP_OBJECT ptr
 	dim p2 as LISP_OBJECT ptr
+
+	'' !!! FIXME: echo and show results should be set by system vars
 
 	ResetError( )
 
@@ -185,9 +190,13 @@ function LISP_CTX.Eval( byref text as const string ) as integer
 			exit do
 		end if
 
+		if( ErrorCode ) then
+			exit do
+		end if
+
 		if( EchoInput ) then
 			PrintOut( "<<= " )
-			evaluator->execute( "princ-object", p1 )
+			evaluator->call_by_name( "princ-object", p1 )
 			PrintOut( !"\n" )
 		end if
 
@@ -199,7 +208,7 @@ function LISP_CTX.Eval( byref text as const string ) as integer
 
 		if( ShowResults ) then
 			PrintOut( "==> " )
-			evaluator->execute( "princ-object", p2 )
+			evaluator->call_by_name( "princ-object", p2 )
 			PrintOut( !"\n" )
 		end if
 
