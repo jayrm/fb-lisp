@@ -54,6 +54,7 @@ type LISP_EVAL_CTX
 	'' built-ins
 	declare function car( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 	declare function cdr( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+	declare function cons( byval a as LISP_OBJECT ptr, byval a as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 	declare function list_length( byval p as LISP_OBJECT ptr ) as integer
 	declare function copy( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 
@@ -297,6 +298,11 @@ private function LISP_EVAL_CTX.cdr( byval p as LISP_OBJECT ptr ) as LISP_OBJECT 
 end function
 
 ''
+private function LISP_EVAL_CTX.cons( byval a as LISP_OBJECT ptr, byval b as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+	function = objects->new_cons(a,b)
+end function
+
+''
 private function LISP_EVAL_CTX.list_length( byval p as LISP_OBJECT ptr ) as integer
 
 	dim count as integer = 0
@@ -353,6 +359,10 @@ function LISP_EVAL.cdr( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 	function = ctx->cdr( p )
 end function
 
+''
+function LISP_EVAL.cons( byval a as LISP_OBJECT ptr, byval b as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+	function = ctx->cons( a, b )
+end function
 ''
 function LISP_EVAL.length( byval p as LISP_OBJECT ptr ) as integer
 	function = ctx->list_length(p)

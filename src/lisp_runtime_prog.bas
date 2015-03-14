@@ -126,6 +126,8 @@ end_lisp_function()
 '' ---------------------------------------------------------------------------
 '' (cond (expr1 [expr2])...)
 ''
+'' requires (progn ...)
+''
 define_lisp_function( cond, args)
 
 	_OBJ(p) = args
@@ -155,6 +157,8 @@ end_lisp_function()
 '' ---------------------------------------------------------------------------
 '' (if expr then-expr else-expr...)
 ''
+'' requires (progn ...)
+''
 define_lisp_function( if, args)
 
 	_OBJ(p1) = _CAR(args)
@@ -172,6 +176,8 @@ end_lisp_function()
 '' ---------------------------------------------------------------------------
 '' (unless expr else-expr...)
 ''
+'' requires (progn ...)
+''
 define_lisp_function( unless, args)
 
 	_OBJ(p1) = _CAR(args)
@@ -188,6 +194,8 @@ end_lisp_function()
 '' ---------------------------------------------------------------------------
 '' (when expr then-expr...)
 ''
+'' requires (progn ...)
+''
 define_lisp_function( when, args )
 
 	_OBJ(p1) = _CAR(args)
@@ -203,6 +211,8 @@ end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (while expr exprs...)
+''
+'' requires (progn ...)
 ''
 define_lisp_function( while, args )
 

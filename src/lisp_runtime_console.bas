@@ -95,6 +95,8 @@ end_lisp_function()
 '' ---------------------------------------------------------------------------
 '' (princ_object <item>)
 ''
+'' requires (princ-string ...)
+''
 define_lisp_function( princ_object, args )
 
 	_OBJ(p) = args
@@ -148,6 +150,8 @@ end_lisp_function()
 '' ---------------------------------------------------------------------------
 '' (princ <expr>...)
 ''
+'' requires (princ-string ...)
+''
 define_lisp_function( princ, args )
 
 	_OBJ(p) = args
@@ -170,7 +174,12 @@ end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 ''
-public function dump_helper( byval ctx as LISP_CTX ptr, byval args as LISP_OBJECT ptr, byval indent as integer ) as LISP_OBJECT ptr
+public function dump_helper _
+	( _
+		byval ctx as LISP_CTX ptr, _
+		byval args as LISP_OBJECT ptr, _
+		byval indent as integer _
+	) as LISP_OBJECT ptr
 
 	_OBJ(p) = args
 	_OBJ(p1) = any
@@ -207,7 +216,7 @@ public function dump_helper( byval ctx as LISP_CTX ptr, byval args as LISP_OBJEC
 
 			_PRINT( !"OBJECT_TYPE_CONS:\n" )
 			_PRINT( space(indent * 2 ) & !"(\n" )
-			
+			_PRINT( "*" )
 			p1 = p
 			do
 				dump_helper( ctx, p1->value.cell.car, indent+1 )
@@ -218,6 +227,8 @@ public function dump_helper( byval ctx as LISP_CTX ptr, byval args as LISP_OBJEC
 						_PRINT( space(indent * 2 ) & !".\n" )
 						dump_helper( ctx, p1, indent+1 )
 						exit do
+					else
+						_PRINT( space(indent * 2 ) & !"->\n" )
 					end if
 				elseif( p1->dtype <> OBJECT_TYPE_CONS ) then
 					exit do

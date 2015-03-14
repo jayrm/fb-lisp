@@ -51,6 +51,7 @@ namespace LISP
 	#define _T_                       ctx->objects->T_
 	#define _CAR                      ctx->evaluator->car
 	#define _CDR                      ctx->evaluator->cdr
+	#define _CONS                     ctx->evaluator->cons
 	#define _EVAL                     ctx->evaluator->eval
 	#define _COPY(p)                  ctx->evaluator->copy(p)
 	#define _PROGN(p)                 ctx->evaluator->progn(p)

@@ -73,6 +73,8 @@ type LISP_OBJECTS_CTX
 	declare sub gc_tag_tree( byval p as LISP_OBJECT ptr )
 	declare sub gc_tag_whole_tree()
 
+	declare function mem_stats( ) as integer
+
 end type
 
 ''
@@ -199,6 +201,52 @@ private sub LISP_OBJECTS_CTX.garbage_collect( )
 	gc_do_collection()
 end sub
 
+''
+private function LISP_OBJECTS_CTX.mem_stats( ) as integer
+
+/'
+	memstat.object_cntused = object_cntused
+	memstat.object_memused = object_cntused * sizeof( LISP_OBJECT )
+	memstat.object_cntfree = object_cntfree
+	memstat.object_cntfree = object_cntfree * sizeof( LISP_OBJECT )
+	memstat.count_int = 0
+	memstat.count_flt = 0
+	memstat.count_str = 0
+	memstat.count_int = 0
+	memstat.count_con = 0
+	memstat.count_unk = 0
+
+	memstat.size_id = 0
+	memstat.size_str = 0
+
+	dim p as LISP_OBJECT ptr = any
+
+	p = ctx->object_lstused
+	while( p )
+		select case p->dtype
+		case OBJECT_TYPE_INTEGER
+			memstat.count_int += 1
+		case OBJECT_TYPE_REAL
+			memstat.count_flt += 1
+		case OBJECT_TYPE_IDENTIFIER
+			memstat.count_id += 1
+			memstat.size_id += len( *p->value.id ) + 1
+		case OBJECT_TYPE_STRING
+			memstat.count_str += 1
+			memstat.size_id += len( *p->value.str ) + 1
+		case OBJECT_TYPE_CONS
+			memstat.count_con += 1
+		case else
+			memstat.count_unk += 1
+		end select
+		p = p->nxt
+	wend
+'/
+
+	function = 0
+
+end function
+
 '' ---------------------------------------------------------------------------
 '' OBJECTS
 '' ---------------------------------------------------------------------------
@@ -298,7 +346,15 @@ function LISP_OBJECTS.new_object( byval dtype as LISP_OBJECT_TYPE, byval init_va
 end function
 
 ''
+function LISP_OBJECTS.new_cons( byval first as LISP_OBJECT ptr, byval rest as LISP_OBJECT ptr ) as LISP_OBJECT ptr
+	dim tmp as LISP_OBJECT ptr
+	tmp = new_object( OBJECT_TYPE_CONS )
+	tmp->value.cell.car = first
+	tmp->value.cell.cdr = rest
+	function = tmp
+end function
 
+''
 function LISP_OBJECTS.copy_object( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 
 	dim as LISP_OBJECT ptr p1 = any
@@ -327,6 +383,7 @@ function LISP_OBJECTS.copy_object( byval p as LISP_OBJECT ptr ) as LISP_OBJECT p
 		p1->value.str = lisp.strdup( p->value.str )
 	case OBJECT_TYPE_CONS
 		p1 = new_object()
+		p1->dtype = p->dtype
 		p1->value.cell.car = copy_object( p->value.cell.car )
 		p1->value.cell.cdr = copy_object( p->value.cell.cdr )
 	end select
@@ -428,6 +485,8 @@ sub LISP_OBJECTS.set_object( byval nameid as LISP_OBJECT ptr, byval value as LIS
 		exit sub
 	end if
 
+	'' !!! FIXME: use hash
+
 	p = ctx->object_lstpair
 	while( p )
 		if( p->nameid->value.id <> NULL ) then
@@ -471,6 +530,16 @@ end function
 function LISP_OBJECTS.garbage_collect() as LISP_OBJECT ptr
 	ctx->garbage_collect()	
 	function = _T_
+end function
+
+''
+function LISP_OBJECTS.mem_used() as integer
+	function = 0
+end function
+
+''
+function LISP_OBJECTS.mem_free() as integer
+	function = 0
 end function
 
 end namespace

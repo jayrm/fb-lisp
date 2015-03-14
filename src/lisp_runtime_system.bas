@@ -28,6 +28,7 @@
 namespace LISP
 
 import_lisp_function( gc, args )
+import_lisp_function( mem, args )
 import_lisp_function( load, args )
 import_lisp_function( read, args )
 
@@ -37,6 +38,7 @@ sub bind_runtime_system( byval functions as LISP_FUNCTIONS ptr )
 
 	BIND_FUNC( functions, "gc", gc )                '' system
 	BIND_FUNC( functions, "garbage-collect", gc )   '' system
+	BIND_FUNC( functions, "mem", mem )              '' system
 	BIND_FUNC( functions, "load", load )            '' system
 	BIND_FUNC( functions, "read", read )            '' system
 
@@ -53,6 +55,37 @@ define_lisp_function( gc, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
+'' (mem)
+''
+define_lisp_function( mem, args )
+
+	_OBJ(r) = any
+	r = _CONS( _NEW_INTEGER( ctx->objects->mem_used() ), _
+	    _CONS( _NEW_INTEGER( ctx->objects->mem_free() ), _NIL_ ) _
+		)
+
+	function = r
+
+end_lisp_function()
+
+'' ---------------------------------------------------------------------------
+'' (getsymbols)
+''
+define_lisp_function( getsymbols, args )
+
+	_OBJ(r) = any
+	
+	r = _CONS( _NEW_INTEGER( ctx->objects->mem_used() ), _
+	    _CONS( _NEW_INTEGER( ctx->objects->mem_free() ), _NIL_ ) _
+		)
+
+	function = r
+
+end_lisp_function()
+
+'' ---------------------------------------------------------------------------
+''
+'' requires (princ-object ...)
 ''
 function eval_text( byval ctx as LISP_CTX ptr, byref text as const string, byref filename as const string ) as LISP_OBJECT ptr
 

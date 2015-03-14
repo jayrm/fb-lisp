@@ -38,6 +38,7 @@ namespace LISP
 
 '' !!! FIXME: this requires that console lib be linked
 declare function dump_helper( byval ctx as LISP_CTX ptr, byval args as LISP_OBJECT ptr, byval indent as integer ) as LISP_OBJECT ptr
+'' !!!
 
 '' ---------------------------------------------------------------------------
 '' ERROR MESSAGES
@@ -171,6 +172,7 @@ function LISP_CTX.Dump( byval args as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 	function = dump_helper( @this, args, 0 )
 end function
 
+'' requires (princ-object ...)
 ''
 function LISP_CTX.Eval( byref text as const string ) as integer
 

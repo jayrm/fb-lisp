@@ -109,6 +109,22 @@ SOURCE=.\src\lisp_funcs.bi
 # End Source File
 # Begin Source File
 
+SOURCE=.\src\lisp_funcs1.bas
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\lisp_funcs2.bas
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\lisp_funcs3.bas
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\lisp_funcs4.bas
+# End Source File
+# Begin Source File
+
 SOURCE=.\src\lisp_int.bas
 # End Source File
 # Begin Source File
@@ -200,6 +216,10 @@ SOURCE=.\inc\lisp_err.bi
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\examples\lisp\append.lsp
+# End Source File
+# Begin Source File
+
 SOURCE=.\examples\lisp\hanoi.lsp
 # End Source File
 # Begin Source File
@@ -222,6 +242,10 @@ SOURCE=.\examples\bindfunc.bas
 # Begin Source File
 
 SOURCE=.\examples\hello.bas
+# End Source File
+# Begin Source File
+
+SOURCE=.\examples\lispdemo.bas
 # End Source File
 # Begin Source File
 

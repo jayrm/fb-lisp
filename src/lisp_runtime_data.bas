@@ -83,7 +83,6 @@ define_lisp_function( set, args )
 
 	_OBJ(p1) = _EVAL(_CAR(args))
 	_OBJ(p2) = _EVAL(_CAR(_CDR(args)))
-
 	if( p1 = _NIL_ ) then
 		_RAISEERROR( LISP_ERR_SETTING_VALUE_OF_NIL_OBJECT )
 	elseif( _IS_IDENTIFIER( p1 ) = FALSE ) then
@@ -189,44 +188,24 @@ define_lisp_function( eq, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (equal <expr1> <expr2>)
 ''
-define_lisp_function( equal, args )
+private function equal_helper _
+	( _
+		byval ctx as LISP_CTX ptr, _
+		byval p1 as LISP_OBJECT ptr, _
+		byval p2 as LISP_OBJECT ptr _
+	) as integer
 
-	_OBJ(p1) = _EVAL(_CAR(args))
-	_OBJ(p2) = _EVAL(_CAR(_CDR(args)))
-	_OBJ(p3) = any
-	_OBJ(p4) = any
-	_OBJ(p5) = any
-
-	function = _NIL_
+	function = FALSE
 
 	if (p1 = p2) then
-		function = _T_
+		function = TRUE
 
 	elseif( _IS_CONS(p1) and _IS_CONS(p2) ) then
-
-		p3 = _NEW( OBJECT_TYPE_CONS )
-		p4 = _NEW( OBJECT_TYPE_CONS )
-
-		p3->value.cell.car = p1->value.cell.car
-		p3->value.cell.cdr = p4
-		p4->value.cell.car = p2->value.cell.car
-
-		p5 = _CALL_BY_NAME( equal, p3 )
-
-		if( p5 = _T_ ) then
-
-			p3->value.cell.car = p1->value.cell.car
-			p3->value.cell.cdr = p4
-			p4->value.cell.car = p2->value.cell.car
-
-			p5 = _CALL_BY_NAME( equal, p3 )
-
-			if( p5 = _T_ ) then
-				function = _T_
+		if( equal_helper( ctx, p1->value.cell.car, p2->value.cell.car ) ) then
+			if( equal_helper( ctx, p1->value.cell.cdr, p2->value.cell.cdr ) ) then
+				function = TRUE
 			end if
-
 		end if
 		
 	elseif( _IS_CONS(p1) or _IS_CONS(p2) ) then
@@ -237,26 +216,42 @@ define_lisp_function( equal, args )
 		select case p1->dtype
 		case OBJECT_TYPE_IDENTIFIER
 			if( *p1->value.id = *p2->value.id ) then
-				function = _T_
+				function = TRUE
 			end if
 
 		case OBJECT_TYPE_INTEGER
 			if( p1->value.int = p2->value.int ) then
-				function = _T_
+				function = TRUE
 			end if
 
 		case OBJECT_TYPE_REAL
 			if( p1->value.flt = p2->value.flt ) then
-				function = _T_
+				function = TRUE
 			end if
 
 		case OBJECT_TYPE_STRING
 			if( *p1->value.str = *p2->value.str ) then
-				function = _T_
+				function = TRUE
 			end if
 
 		end select
 
+	end if
+
+end function
+
+'' ---------------------------------------------------------------------------
+'' (equal <expr1> <expr2>)
+''
+define_lisp_function( equal, args )
+
+	_OBJ(p1) = _EVAL(_CAR(args))
+	_OBJ(p2) = _EVAL(_CAR(_CDR(args)))
+
+	if( equal_helper( ctx, p1, p2 ) ) then
+		function = _T_
+	else
+		function = _NIL_
 	end if
 
 end_lisp_function()

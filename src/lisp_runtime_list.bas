@@ -59,14 +59,30 @@ end sub
 '' (car expr)
 ''
 define_lisp_function( car, args )
+
+	if( _LENGTH(args) <> 1 ) then
+		_RAISEERROR( LISP_ERR_WRONG_NUMBER_OF_ARGUMENTS )
+		function = _NIL_
+		exit function
+	end if
+
 	function = _CAR( _EVAL( _CAR( args ) ) )
+
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
 '' (cdr expr)
 ''
 define_lisp_function( cdr, args )
+
+	if( _LENGTH(args) <> 1 ) then
+		_RAISEERROR( LISP_ERR_WRONG_NUMBER_OF_ARGUMENTS )
+		function = _NIL_
+		exit function
+	end if
+
 	function = _CDR( _EVAL( _CAR( args )))
+
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
@@ -75,6 +91,12 @@ end_lisp_function()
 define_lisp_function( cons, args)
 
 	_OBJ(p) = any
+
+	if( _LENGTH(args) < 1 ) then
+		_RAISEERROR( LISP_ERR_TOO_FEW_ARGUMENTS )
+		function = _NIL_
+		exit function
+	end if
 
 	p = _NEW( OBJECT_TYPE_CONS )
 
@@ -124,6 +146,9 @@ end_lisp_function()
 '' (append <expr>...)
 ''
 define_lisp_function( append, args )
+
+	'' !!! FIXME: first arg must be list
+	'' !!! FIXME: all but last arg must be a list
 
 	_OBJ(p) = args
 	_OBJ(p1) = any
@@ -242,37 +267,37 @@ define_lisp_function( nth, args)
 	if( _LENGTH(args) <> 2 ) then
 		_RAISEERROR( LISP_ERR_WRONG_NUMBER_OF_ARGUMENTS )
 		function = _NIL_
-	else
+		exit function
+	end if
 
-		_OBJ(p1) = _EVAL(_CAR(args))
-		_OBJ(p2) = _EVAL(_CAR(_CDR(args)))
+	_OBJ(p1) = _EVAL(_CAR(args))
+	_OBJ(p2) = _EVAL(_CAR(_CDR(args)))
 
-		if( _IS_INTEGER(p1) ) then
-			dim i as integer = p1->value.int
-			if( i < 0 ) then
-				_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
-			else
-				if( p2 = _NIL_ ) then
-					function = _NIL_
-				elseif( _IS_CONS(p2) ) then
-					while( p2 <> _NIL_ and i > 0 )
-						p2 = _CDR(p2)
-						i -= 1
-					wend
-					if( p2 <> _NIL_ ) then
-						function = _CAR(p2)
-					else
-						function = _NIL_
-					end if
+	if( _IS_INTEGER(p1) ) then
+		dim i as integer = p1->value.int
+		if( i < 0 ) then
+			_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
+		else
+			if( p2 = _NIL_ ) then
+				function = _NIL_
+			elseif( _IS_CONS(p2) ) then
+				while( p2 <> _NIL_ and i > 0 )
+					p2 = _CDR(p2)
+					i -= 1
+				wend
+				if( p2 <> _NIL_ ) then
+					function = _CAR(p2)
 				else
-					_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
 					function = _NIL_
 				end if
+			else
+				_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
+				function = _NIL_
 			end if
-		else
-			_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
-			function = _NIL_
 		end if
+	else
+		_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
+		function = _NIL_
 	end if
 
 end_lisp_function()
@@ -285,37 +310,37 @@ define_lisp_function( elt, args)
 	if( _LENGTH(args) <> 2 ) then
 		_RAISEERROR( LISP_ERR_WRONG_NUMBER_OF_ARGUMENTS )
 		function = _NIL_
-	else
+		exit function
+	end if
 
-		_OBJ(p2) = _EVAL(_CAR(args))
-		_OBJ(p1) = _EVAL(_CAR(_CDR(args)))
+	_OBJ(p2) = _EVAL(_CAR(args))
+	_OBJ(p1) = _EVAL(_CAR(_CDR(args)))
 
-		if( _IS_INTEGER(p1) ) then
-			dim i as integer = p1->value.int
-			if( i < 0 ) then
-				_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
-			else
-				if( p2 = _NIL_ ) then
-					function = _NIL_
-				elseif( _IS_CONS(p2) ) then
-					while( p2 <> _NIL_ and i > 0 )
-						p2 = _CDR(p2)
-						i -= 1
-					wend
-					if( p2 <> _NIL_ ) then
-						function = _CAR(p2)
-					else
-						function = _NIL_
-					end if
+	if( _IS_INTEGER(p1) ) then
+		dim i as integer = p1->value.int
+		if( i < 0 ) then
+			_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
+		else
+			if( p2 = _NIL_ ) then
+				function = _NIL_
+			elseif( _IS_CONS(p2) ) then
+				while( p2 <> _NIL_ and i > 0 )
+					p2 = _CDR(p2)
+					i -= 1
+				wend
+				if( p2 <> _NIL_ ) then
+					function = _CAR(p2)
 				else
-					_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
 					function = _NIL_
 				end if
+			else
+				_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
+				function = _NIL_
 			end if
-		else
-			_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
-			function = _NIL_
 		end if
+	else
+		_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
+		function = _NIL_
 	end if
 
 end_lisp_function()
@@ -328,30 +353,32 @@ define_lisp_function( last, args)
 	if( _LENGTH(args) <> 1 ) then
 		_RAISEERROR( LISP_ERR_WRONG_NUMBER_OF_ARGUMENTS )
 		function = _NIL_
+		exit function
+	end if
+
+	_OBJ(p) = _EVAL(_CAR(args))
+
+	if( p = _NIL_ ) then
+		function = _NIL_
 	else
-		_OBJ(p) = _EVAL(_CAR(args))
-		if( p = _NIL_ ) then
-			function = _NIL_
-		else
-			dim i as integer = _LENGTH(p) - 1
-			if( i >= 0 ) then
-				if( _IS_CONS(p) ) then
-					while( p <> _NIL_ and i > 0 )
-						p = _CDR(p)
-						i -= 1
-					wend
-					if( p <> _NIL_ ) then
-						function = _CAR(p)
-					else
-						function = _NIL_
-					end if
+		dim i as integer = _LENGTH(p) - 1
+		if( i >= 0 ) then
+			if( _IS_CONS(p) ) then
+				while( p <> _NIL_ and i > 0 )
+					p = _CDR(p)
+					i -= 1
+				wend
+				if( p <> _NIL_ ) then
+					function = _CAR(p)
 				else
-					_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
 					function = _NIL_
 				end if
 			else
+				_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
 				function = _NIL_
 			end if
+		else
+			function = _NIL_
 		end if
 	end if
 

@@ -46,6 +46,7 @@ namespace LISP
 		declare function new_object( byval dtype as LISP_OBJECT_TYPE ) as LISP_OBJECT ptr
 		declare function new_object( byval dtype as LISP_OBJECT_TYPE, byval init_value as LISP_INTEGER ) as LISP_OBJECT ptr
 		declare function new_object( byval dtype as LISP_OBJECT_TYPE, byval init_value as LISP_REAL ) as LISP_OBJECT ptr
+		declare function new_cons( byval first as LISP_OBJECT ptr, byval rest as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 
 		declare function copy_object( byval p as LISP_OBJECT ptr ) as LISP_OBJECT ptr
 
@@ -58,6 +59,8 @@ namespace LISP
 		declare function find_real( byval num as LISP_REAL ) as LISP_OBJECT ptr
 
 		declare function garbage_collect() as LISP_OBJECT ptr
+		declare function mem_used() as integer
+		declare function mem_free() as integer
 
 	private:	
 		ctx as LISP_OBJECTS_CTX_ ptr
