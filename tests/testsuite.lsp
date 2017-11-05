@@ -1,51 +1,6 @@
-(princ "LISP Test Suite\n")
-
-(defun assert (exp)
-  (or (eval exp)
-      (princ "assertion failed: " exp ":=(" (eval exp) ")\n")))
-
-(defun asserteq (exp1 exp2)
-  (or (eq (eval exp1) (eval exp2))
-      (princ "assertion failed: " exp1 ":=(" (eval exp1) ") == "
-	     exp2 ":=(" (eval exp2) ")\n")))
-
-(defun assertneq (exp1 exp2)
-  (or (not (eq (eval exp1) (eval exp2)))
-      (princ "assertion failed: " exp1 ":=(" (eval exp1) ") != "
-	     exp2 ":=(" (eval exp2) ")\n")))
-
-(defun assertequal (exp1 exp2)
-  (or (equal (eval exp1) (eval exp2))
-      (princ "assertion failed: " exp1 ":=(" (eval exp1) ") == "
-	     exp2 ":=(" (eval exp2) ")\n")))
-
-(defun assertnequal (exp1 exp2)
-  (or (not (equal (eval exp1) (eval exp2)))
-      (princ "assertion failed: " exp1 ":=(" (eval exp1) ") != "
-	     exp2 ":=(" (eval exp2) ")\n")))
-
-(defun assertn (exp)
-  (assert (list 'not exp)))
+;; Simple test routines for the SLisp interpreter.
 
 
-(assert t)
-(assertn nil)
-(asserteq '() nil)
-
-;; eq
-(asserteq ''foo ''foo)
-(assertneq ''foo ''bar)
-
-;; equal
-(assertequal ''() ''())
-(assertequal ''() 'nil)
-(assertequal 'nil ''())
-(assertequal ''foo ''foo)
-(assertnequal ''foo ''bar)
-(assertequal '(list 'foo) '(list 'foo))
-(assertnequal '(list 'foo) '(list 'bar))
-(assertequal ''('foo . 'bar) ''('foo . 'bar))
-(assertnequal ''('foo . 'bar) ''('foo . 'baz))
 
 ;; `car', `cdr' test
 (assertn '(car '()))
@@ -60,10 +15,6 @@
 (assert '(atom t))
 (assert '(atom nil))
 (assert '(atom '()))
-(assert '(atom 123))
-(assert '(atom 123.456))
-(assert '(atom "ABC"))
-(assertn '(atom '(1 . 2)))
 (assertn '(atom '(foo)))
 (assertn '(atom '(foo bar baz)))
 
@@ -80,26 +31,6 @@
 (asserteq '(car (cdr (list 'nil 'bar))) ''bar)
 (asserteq '(car (list 'foo 'bar)) ''foo)
 (asserteq '(cdr (cdr (list 'foo 'bar))) nil)
-
-;; consp test
-(assertn '(consp nil) )
-(assertn '(consp 'some-symbol) )
-(assertn '(consp 3) )
-(assertn '(consp "moo") )
-(assert '(consp (cons 1 2)) )
-(assert '(consp '(1 . 2)) )
-(assert '(consp '(1 2 3 4)) )
-(assert '(consp (list 1 2 3 4)) )
-
-;; listp test
-(assert '(listp nil) )
-(assertn '(listp 'some-symbol) )
-(assertn '(listp 3) )
-(assertn '(listp "moo") )
-(assert '(listp (cons 1 2)) )
-(assert '(listp '(1 . 2)) )
-(assert '(listp '(1 2 3 4)) )
-(assert '(listp (list 1 2 3 4)) )
 
 ;; `and', `or', `not' test
 (assert '(and t))
@@ -140,8 +71,8 @@
 (assert '(progn t nil nil t))
 (asserteq '(progn t nil nil 'foo) ''foo)
 (asserteq '(progn t nil nil 'foo 'bar) ''bar)
-;; FIXME: (assert '(prog1 t nil nil))
-;; FIXME: (assertn '(prog2 t nil t t))
+(assert '(prog1 t nil nil))
+(assertn '(prog2 t nil t t))
 
 ;; Recursion test
 (defun last* (l)
@@ -171,13 +102,3 @@
 	   (asserteq '(progn* '(t nil nil 'foo)) ''foo)
 	   (asserteq '(progn* '(t nil nil 'foo 'bar)) ''bar)))
 
-;; listp
-(assertn '(listp t))
-(assert '(listp nil))
-(assert '(listp '()))
-(assert '(listp '(foo bar)))
-(assert '(listp '(foo . bar)))
-(assert '(listp '(list foo bar)))
-
-
-(princ "Done\n")

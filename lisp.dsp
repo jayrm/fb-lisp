@@ -59,7 +59,7 @@ CFG=lisp - Win32 Debug
 # PROP Intermediate_Dir "Debug"
 # PROP Cmd_Line "e:\fb\script\lisp\mk.bat debug"
 # PROP Rebuild_Opt ""
-# PROP Target_File "e:\fb\script\lisp\lisp.exe"
+# PROP Target_File "e:\fb\script\lisp\lib\liblisp.a"
 # PROP Bsc_Name ""
 # PROP Target_Dir ""
 
@@ -192,68 +192,28 @@ SOURCE=.\inc\lisp.bi
 SOURCE=.\inc\lisp_err.bi
 # End Source File
 # End Group
-# Begin Group "examples"
-
-# PROP Default_Filter ""
-# Begin Group "lisp"
+# Begin Group "tests"
 
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\examples\lisp\append.lsp
+SOURCE=.\tests\assert.lsp
 # End Source File
 # Begin Source File
 
-SOURCE=.\examples\lisp\hanoi.lsp
+SOURCE=.\tests\eq.lsp
 # End Source File
 # Begin Source File
 
-SOURCE=.\examples\lisp\hello.lsp
+SOURCE=.\tests\temp.lsp
 # End Source File
 # Begin Source File
 
-SOURCE=.\examples\lisp\lisp.lsp
+SOURCE=.\tests\test.lsp
 # End Source File
 # Begin Source File
 
-SOURCE=.\examples\lisp\testsuite.lsp
-# End Source File
-# End Group
-# Begin Source File
-
-SOURCE=.\examples\bindfunc.bas
-# End Source File
-# Begin Source File
-
-SOURCE=.\examples\hello.bas
-# End Source File
-# Begin Source File
-
-SOURCE=.\examples\lispdemo.bas
-# End Source File
-# Begin Source File
-
-SOURCE=.\examples\makefile
-# End Source File
-# Begin Source File
-
-SOURCE=.\examples\printout.bas
-# End Source File
-# Begin Source File
-
-SOURCE=.\examples\runlisp.bas
-# End Source File
-# Begin Source File
-
-SOURCE=.\examples\temp.lsp
-# End Source File
-# Begin Source File
-
-SOURCE=.\examples\test.bas
-# End Source File
-# Begin Source File
-
-SOURCE=.\examples\test.lsp
+SOURCE=.\tests\testsuite.lsp
 # End Source File
 # End Group
 # Begin Source File
