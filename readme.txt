@@ -1,5 +1,5 @@
 	LISP Evaluator for FreeBASIC 
-	Copyright (c) 2007-2008 Jeffery R. Marshall.
+	Copyright (c) 2007-2017 Jeffery R. Marshall.
 
 	An embedded LISP interpreter written entirely in FreeBASIC for use 
 	with FreeBASIC applications.

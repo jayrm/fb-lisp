@@ -1,3 +1,7 @@
+Nov 2017
+--------
+- Updated copyright notice for 2017
+
 Mar 2015
 --------
 

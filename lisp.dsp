@@ -109,22 +109,6 @@ SOURCE=.\src\lisp_funcs.bi
 # End Source File
 # Begin Source File
 
-SOURCE=.\src\lisp_funcs1.bas
-# End Source File
-# Begin Source File
-
-SOURCE=.\src\lisp_funcs2.bas
-# End Source File
-# Begin Source File
-
-SOURCE=.\src\lisp_funcs3.bas
-# End Source File
-# Begin Source File
-
-SOURCE=.\src\lisp_funcs4.bas
-# End Source File
-# Begin Source File
-
 SOURCE=.\src\lisp_int.bas
 # End Source File
 # Begin Source File
