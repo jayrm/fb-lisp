@@ -60,8 +60,8 @@ sub bind_runtime_math( byval functions as LISP_FUNCTIONS ptr )
 	BIND_FUNC( functions, "not", not )      '' math-logical
 	BIND_FUNC( functions, "null", not )     '' data-logical !!! FIXME:
 
-	BIND_FUNC( functions, "1+", div )        '' math
-	BIND_FUNC( functions, "1-", div )        '' math
+	BIND_FUNC( functions, "1+", incr )        '' math
+	BIND_FUNC( functions, "1-", decr )        '' math
 
 end sub
 
