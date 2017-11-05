@@ -1,6 +1,20 @@
 ;; Simple test routines for the SLisp interpreter.
 
+(defun assert (exp)
+  (or (eval exp)
+      (princ "assertion failed: " exp " (:= " (eval exp) ")\n")))
 
+(defun asserteq (exp1 exp2)
+  (or (eq (eval exp1) (eval exp2))
+      (princ "assertion failed: " exp1 " (:= " (eval exp1) ") == "
+	     exp2 " (:= " (eval exp2) ")\n")))
+
+(defun assertn (exp)
+  (assert (list 'not exp)))
+
+(assert t)
+(assertn nil)
+(asserteq '() nil)
 
 ;; `car', `cdr' test
 (assertn '(car '()))
