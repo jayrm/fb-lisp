@@ -45,8 +45,8 @@ namespace LISP
 		declare destructor( )
 
 	public:
-		declare function Eval( byref text as string ) as LISP_ERROR
-		declare function Load( byref filename as string ) as LISP_ERROR
+		declare function Eval( byref text as const string ) as LISP_ERROR
+		declare function Load( byref filename as const string ) as LISP_ERROR
 		declare sub GarbageCollect()
 
 		declare property EchoInput() as boolean

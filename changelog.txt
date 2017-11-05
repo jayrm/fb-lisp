@@ -4,6 +4,9 @@ Nov 2017
 - added (lineno) function to expose current lexer line number
 - fixed (+1 ...) and (-1 ...) functions were pointing to wrong function
 - changed: examples/runlisp.bas has new command line options
+- changed: examples/runlisp.bas uses LispModule.Load() to preserve context
+- fixed: some const correctness for types in LispModule methods
+- fixed: added some missing methods to LispModule
 - added: examples/lispdemo.bas (WIP)
 
 Mar 2015

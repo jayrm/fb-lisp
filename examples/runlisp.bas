@@ -23,39 +23,6 @@
 #include once "lisp.bi"
 using LISP
 
-''
-'' Load a text file from disk as a string
-''
-function LoadFileAsString _
-	( _
-		byref filename as const string, _
-		byref expr as string _
-	) as boolean
-
-	dim x as string
-	expr = ""
-
-	function = false
-
-	if( open( filename for input access read as #1 ) = 0 ) then
-		close #1
-		if( open( filename for binary access read as #1 ) = 0 ) then
-			x = space( lof( 1 ))
-			get #1,,x
-			close #1
-			expr = x
-			function = true
-		else
-			print "Unable to open '" & filename & "'"
-		end if 
-	else
-		print "File not found '" & filename & "'"
-	end if
-
-	
-
-end function
-
 '' --------------------------------------------------------
 '' MAIN	PROGRAM
 '' --------------------------------------------------------
@@ -206,17 +173,12 @@ function ExecuteLispFile _
 		print "Loading '" & filename & "'"
 	end if
 
-	'' load the file
-	if( LoadFileAsString( filename, expr ) = false ) then
-		exit function
-	end if
-
-	'' pass the LISP code to the evaluator
-	result = lsp.Eval( expr )
+	'' load the file and pass the LISP code to the evaluator
+	result = lsp.Load( filename )
 
 	'' check for an error
 	if( result <> LISP_ERR_SUCCESS ) then
-		print "Error " & lsp.ErrorCode & " on line " & lsp.ErrorLine & " of '" & filename & "'"
+		print "Error " & lsp.ErrorCode & " on line " & lsp.ErrorLine & " of '" & lsp.ErrorFile & "'"
 		print "  " & lsp.ErrorText
 	else
 		function = true

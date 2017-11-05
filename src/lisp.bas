@@ -56,12 +56,12 @@ destructor LispModule( )
 end destructor
 
 ''
-function LispModule.Eval( byref text as string ) as LISP_ERROR
+function LispModule.Eval( byref text as const string ) as LISP_ERROR
 	function = ctx->Eval( text )
 end function
 
 ''
-function LispModule.Load( byref filename as string ) as LISP_ERROR
+function LispModule.Load( byref filename as const string ) as LISP_ERROR
 	function = ctx->Load( filename )
 end function
 
@@ -86,8 +86,18 @@ function LispModule.ErrorText() as string
 end function
 
 ''
+function LispModule.ErrorFile() as string
+	function = ctx->ErrorFile
+end function
+
+''
 function LispModule.ErrorLine() as integer
 	function = ctx->ErrorLine
+end function
+
+''
+function LispModule.ErrorColumn() as integer
+	function = ctx->ErrorColumn
 end function
 
 ''
