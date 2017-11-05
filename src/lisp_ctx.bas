@@ -174,7 +174,7 @@ end function
 
 '' requires (princ-object ...)
 ''
-function LISP_CTX.Eval( byref text as const string ) as integer
+function LISP_CTX.Eval( byref text as const string ) as LISP_ERROR
 
 	dim p1 as LISP_OBJECT ptr
 	dim p2 as LISP_OBJECT ptr
@@ -223,7 +223,7 @@ function LISP_CTX.Eval( byref text as const string ) as integer
 end function
 
 ''
-function LISP_CTX.Load( byref filename as const string ) as integer
+function LISP_CTX.Load( byref filename as const string ) as LISP_ERROR
 
 	dim h as integer = freefile
 	dim x as string

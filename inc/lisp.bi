@@ -45,18 +45,19 @@ namespace LISP
 		declare destructor( )
 
 	public:
-		declare function Eval( byref text as string ) as integer
-		declare function Load( byref filename as string ) as integer
+		declare function Eval( byref text as string ) as LISP_ERROR
+		declare function Load( byref filename as string ) as LISP_ERROR
 		declare sub GarbageCollect()
 
-		declare property EchoInput() as integer
-		declare property EchoInput( byval flag as integer )
-		declare property ShowResults() as integer
-		declare property ShowResults( byval flag as integer )
+		declare property EchoInput() as boolean
+		declare property EchoInput( byval flag as boolean )
+		declare property ShowResults() as boolean
+		declare property ShowResults( byval flag as boolean )
 
 		declare sub ResetError()
 		declare function ErrorCode() as integer
 		declare function ErrorText() as string
+		declare function ErrorFile() as string
 		declare function ErrorLine() as integer
 		declare function ErrorColumn() as integer
 

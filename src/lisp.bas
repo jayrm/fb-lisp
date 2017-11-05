@@ -56,12 +56,12 @@ destructor LispModule( )
 end destructor
 
 ''
-function LispModule.Eval( byref text as string ) as integer
+function LispModule.Eval( byref text as string ) as LISP_ERROR
 	function = ctx->Eval( text )
 end function
 
 ''
-function LispModule.Load( byref filename as string ) as integer
+function LispModule.Load( byref filename as string ) as LISP_ERROR
 	function = ctx->Load( filename )
 end function
 
@@ -91,22 +91,22 @@ function LispModule.ErrorLine() as integer
 end function
 
 ''
-property LispModule.EchoInput() as integer
+property LispModule.EchoInput() as boolean
 	property = ctx->EchoInput
 end property
 
 ''
-property LispModule.EchoInput( byval flag as integer )
+property LispModule.EchoInput( byval flag as boolean )
 	ctx->EchoInput = flag
 end property
 
 ''
-property LispModule.ShowResults() as integer
+property LispModule.ShowResults() as boolean
 	property = ctx->ShowResults
 end property
 
 ''
-property LispModule.ShowResults( byval flag as integer )
+property LispModule.ShowResults( byval flag as boolean )
 	ctx->ShowResults = flag
 end property
 
