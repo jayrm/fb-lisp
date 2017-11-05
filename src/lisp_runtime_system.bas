@@ -31,6 +31,7 @@ import_lisp_function( gc, args )
 import_lisp_function( mem, args )
 import_lisp_function( load, args )
 import_lisp_function( read, args )
+import_lisp_function( lineno, args )
 
 '' ---------------------------------------------------------------------------
 ''
@@ -41,6 +42,7 @@ sub bind_runtime_system( byval functions as LISP_FUNCTIONS ptr )
 	BIND_FUNC( functions, "mem", mem )              '' system
 	BIND_FUNC( functions, "load", load )            '' system
 	BIND_FUNC( functions, "read", read )            '' system
+	BIND_FUNC( functions, "lineno", lineno )        '' system
 
 end sub
 
@@ -209,6 +211,20 @@ define_lisp_function( read, args )
 	end if
 
 	function = _NIL_
+
+end_lisp_function()
+
+'' ---------------------------------------------------------------------------
+'' (lineno)
+''
+define_lisp_function( lineno, args )
+
+	if( _LENGTH(args) <> 0 ) then
+		_RAISEERROR( LISP_ERR_WRONG_NUMBER_OF_ARGUMENTS )
+		function = _NIL_
+	else
+		function = _NEW_INTEGER( ctx->lexer->lineno() )
+	end if
 
 end_lisp_function()
 

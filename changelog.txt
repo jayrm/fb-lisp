@@ -1,6 +1,7 @@
 Nov 2017
 --------
 - Updated copyright notice for 2017
+- added (lineno) function to expose current lexer line number
 
 Mar 2015
 --------
