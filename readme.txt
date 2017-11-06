@@ -81,6 +81,10 @@
 	(consp <expr>)
 	(defun <sym> <arglist> <expr>...)
 	(elt <list> <index>)
+	(eq <expr> <expr>)
+	(eql <expr> <expr>)
+	(equal <expr> <expr>)
+	(equalp <expr> <expr>)
 	(eval <expr>)
 	(garbage-collect)
 	(gc)
@@ -108,6 +112,18 @@
 	(when <expr> then-expr...)
 	(while <expr> exprs...)
 	(zerop <expr>)
+
+	** (abs )
+	** (1+ )
+	** (1- )		
+	** (dump ...)
+	** (princ_object <item>)
+	** (princ_string <item>)
+	** (mem )
+	** (load )
+	** (read )
+	** (lexer-lineno)
+	** (lexer-file)
 
 
 5. EXAMPLE USAGE IN FREEBASIC
@@ -143,8 +159,7 @@
 
 	Sandro Sigala - That a C version of a simple LISP evaluator existed and
 	was available under an Open Source license saved huge amounts time.  
-	Thanks to Sandro for slisp-1.2, creating this library took only a minimal
-	amount of time.
+	Thanks to Sandro for slisp-1.2.
 	
 
 EOF

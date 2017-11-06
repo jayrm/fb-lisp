@@ -42,16 +42,16 @@ import_lisp_function( last, args )
 ''
 sub bind_runtime_list( byval functions as LISP_FUNCTIONS ptr )
 
-	BIND_FUNC( functions, "car", car )          '' list
-	BIND_FUNC( functions, "cdr", cdr)           '' list
-  	BIND_FUNC( functions, "cons", cons )        '' list
-	BIND_FUNC( functions, "list", list )        '' list
+	BIND_FUNC( functions, "car", car )          '' list (tests/list.lsp)
+	BIND_FUNC( functions, "cdr", cdr)           '' list (tests/list.lsp)
+  	BIND_FUNC( functions, "cons", cons )        '' list (tests/list.lsp)
+	BIND_FUNC( functions, "list", list )        '' list (tests/list.lsp)
 
-	BIND_FUNC( functions, "append", append )		'' list
-	BIND_FUNC( functions, "length", length )		'' list
-	BIND_FUNC( functions, "nth", nth )				'' list
-	BIND_FUNC( functions, "elt", elt )				'' list
-	BIND_FUNC( functions, "last", last )			'' list
+	BIND_FUNC( functions, "append", append )    '' list (tests/list.lsp)
+	BIND_FUNC( functions, "length", length )    '' list (tests/list.lsp)
+	BIND_FUNC( functions, "nth", nth )          '' list (tests/list.lsp)
+	BIND_FUNC( functions, "elt", elt )          '' list (tests/list.lsp)
+	BIND_FUNC( functions, "last", last )        '' list (tests/list.lsp)
 
 end sub
 
@@ -88,7 +88,7 @@ end_lisp_function()
 '' ---------------------------------------------------------------------------
 '' (cons expr1 expr2)
 ''
-define_lisp_function( cons, args)
+define_lisp_function( cons, args )
 
 	_OBJ(p) = any
 
@@ -110,7 +110,7 @@ end_lisp_function()
 '' ---------------------------------------------------------------------------
 '' (list expr1...)
 ''
-define_lisp_function( list, args)
+define_lisp_function( list, args )
 
 	_OBJ(p) = args
 	_OBJ(first) = NULL
@@ -262,7 +262,7 @@ end_lisp_function()
 '' ---------------------------------------------------------------------------
 '' (nth <index> <list>)
 ''
-define_lisp_function( nth, args)
+define_lisp_function( nth, args )
 
 	if( _LENGTH(args) <> 2 ) then
 		_RAISEERROR( LISP_ERR_WRONG_NUMBER_OF_ARGUMENTS )
@@ -305,7 +305,7 @@ end_lisp_function()
 '' ---------------------------------------------------------------------------
 '' (elt <list> <index>)
 ''
-define_lisp_function( elt, args)
+define_lisp_function( elt, args )
 
 	if( _LENGTH(args) <> 2 ) then
 		_RAISEERROR( LISP_ERR_WRONG_NUMBER_OF_ARGUMENTS )
@@ -348,11 +348,11 @@ end_lisp_function()
 '' ---------------------------------------------------------------------------
 '' (last <list>)
 ''
-define_lisp_function( last, args)
+define_lisp_function( last, args )
 
 	if( _LENGTH(args) <> 1 ) then
-		_RAISEERROR( LISP_ERR_WRONG_NUMBER_OF_ARGUMENTS )
 		function = _NIL_
+		_RAISEERROR( LISP_ERR_WRONG_NUMBER_OF_ARGUMENTS )
 		exit function
 	end if
 
@@ -360,6 +360,9 @@ define_lisp_function( last, args)
 
 	if( p = _NIL_ ) then
 		function = _NIL_
+	elseif( not _IS_CONS(p) ) then
+		function = _NIL_
+		_RAISEERROR( LISP_ERR_ARGUMENT_TYPE_MISMATCH )
 	else
 		dim i as integer = _LENGTH(p) - 1
 		if( i >= 0 ) then
@@ -369,7 +372,7 @@ define_lisp_function( last, args)
 					i -= 1
 				wend
 				if( p <> _NIL_ ) then
-					function = _CAR(p)
+					function = p
 				else
 					function = _NIL_
 				end if

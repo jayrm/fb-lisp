@@ -46,16 +46,16 @@ import_lisp_function( mapcar, args )
 ''
 sub bind_runtime_prog( byval functions as LISP_FUNCTIONS ptr )
 
-	BIND_FUNC( functions, "quote", quote )          '' prog
+	BIND_FUNC( functions, "quote", quote )      '' prog
 	BIND_FUNC( functions, "eval", eval )        '' prog
 	BIND_FUNC( functions, "progn", progn )      '' prog
 	BIND_FUNC( functions, "defun", defun )      '' prog
 
-	BIND_FUNC( functions, "cond", cond )        '' prog
-	BIND_FUNC( functions, "if", if )            '' prog
-	BIND_FUNC( functions, "unless", unless )    '' prog
-	BIND_FUNC( functions, "when", when )        '' prog
-	BIND_FUNC( functions, "while", while )      '' prog
+	BIND_FUNC( functions, "cond", cond )        '' prog (tests/branch.lsp)
+	BIND_FUNC( functions, "if", if )            '' prog (tests/branch.lsp)
+	BIND_FUNC( functions, "unless", unless )    '' prog (tests/branch.lsp)
+	BIND_FUNC( functions, "when", when )        '' prog (tests/branch.lsp)
+	BIND_FUNC( functions, "while", while )      '' prog (tests/branch.lsp)
 
 	BIND_FUNC( functions, "apply", apply )      '' prog
 	BIND_FUNC( functions, "mapcar", mapcar )    '' prog
@@ -128,7 +128,7 @@ end_lisp_function()
 ''
 '' requires (progn ...)
 ''
-define_lisp_function( cond, args)
+define_lisp_function( cond, args )
 
 	_OBJ(p) = args
 	_OBJ(p1) = any
@@ -159,16 +159,23 @@ end_lisp_function()
 ''
 '' requires (progn ...)
 ''
-define_lisp_function( if, args)
+define_lisp_function( if, args )
 
 	_OBJ(p1) = _CAR(args)
 	_OBJ(p2) = _CAR(_CDR(args))
 	_OBJ(p3) = _CDR(_CDR(args))
 
-	if( _EVAL(p1) <> _NIL_ ) then
-		function = _EVAL(p2)
+	dim n as integer = _LENGTH(args)
+	
+	if( n < 2 or n > 3 ) then
+		_RAISEERROR( LISP_ERR_WRONG_NUMBER_OF_ARGUMENTS )
+		function = _NIL_
 	else
-		function = _CALL_BY_NAME( progn, p3 )
+		if( _EVAL(p1) <> _NIL_ ) then
+			function = _EVAL(p2)
+		else
+			function = _CALL_BY_NAME( progn, p3 )
+		end if
 	end if
 
 end_lisp_function()
@@ -178,7 +185,7 @@ end_lisp_function()
 ''
 '' requires (progn ...)
 ''
-define_lisp_function( unless, args)
+define_lisp_function( unless, args )
 
 	_OBJ(p1) = _CAR(args)
 	_OBJ(p2) = _CDR(args)

@@ -201,19 +201,39 @@ SOURCE=.\tests\assert.lsp
 # End Source File
 # Begin Source File
 
+SOURCE=.\tests\bool_op.lsp
+# End Source File
+# Begin Source File
+
+SOURCE=.\tests\branch.lsp
+# End Source File
+# Begin Source File
+
 SOURCE=.\tests\eq.lsp
 # End Source File
 # Begin Source File
 
-SOURCE=.\tests\temp.lsp
+SOURCE=.\tests\list.lsp
 # End Source File
 # Begin Source File
 
-SOURCE=.\tests\test.lsp
+SOURCE=.\tests\mathcomp.lsp
 # End Source File
 # Begin Source File
 
-SOURCE=.\tests\testsuite.lsp
+SOURCE=.\tests\mathops.lsp
+# End Source File
+# Begin Source File
+
+SOURCE=.\tests\progn.lsp
+# End Source File
+# Begin Source File
+
+SOURCE=.\tests\tests.lsp
+# End Source File
+# Begin Source File
+
+SOURCE=.\tests\types.lsp
 # End Source File
 # End Group
 # Begin Source File

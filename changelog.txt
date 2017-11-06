@@ -1,13 +1,20 @@
 Nov 2017
 --------
-- Updated copyright notice for 2017
-- added (lineno) function to expose current lexer line number
-- fixed (+1 ...) and (-1 ...) functions were pointing to wrong function
-- changed: examples/runlisp.bas has new command line options
-- changed: examples/runlisp.bas uses LispModule.Load() to preserve context
 - fixed: some const correctness for types in LispModule methods
 - fixed: added some missing methods to LispModule
+- fixed: = < > /= <= >= return expected results - tests added
+- fixed: (+1 ...) and (-1 ...) functions were pointing to wrong function
+- changed: updated copyright notice for 2017
+- changed: examples/runlisp.bas has new command line options
+- changed: examples/runlisp.bas uses LispModule.Load() to preserve context
+- added: (lexer-lineno) function to expose current lexer line number
+- added: (lexer-file) function to expose current lexer filename
 - added: examples/lispdemo.bas (WIP)
+- added: (eql ...) function
+- added: (equalp ...) function
+- added: reorganized and added many tests in 'tests/tests.lsp'
+- added: = < > /= <= >= functions test for numeric type
+
 
 Mar 2015
 --------

@@ -31,18 +31,20 @@ import_lisp_function( gc, args )
 import_lisp_function( mem, args )
 import_lisp_function( load, args )
 import_lisp_function( read, args )
-import_lisp_function( lineno, args )
+import_lisp_function( lexer_lineno, args )
+import_lisp_function( lexer_file, args )
 
 '' ---------------------------------------------------------------------------
 ''
 sub bind_runtime_system( byval functions as LISP_FUNCTIONS ptr )
 
-	BIND_FUNC( functions, "gc", gc )                '' system
-	BIND_FUNC( functions, "garbage-collect", gc )   '' system
-	BIND_FUNC( functions, "mem", mem )              '' system
-	BIND_FUNC( functions, "load", load )            '' system
-	BIND_FUNC( functions, "read", read )            '' system
-	BIND_FUNC( functions, "lineno", lineno )        '' system
+	BIND_FUNC( functions, "gc", gc )                      '' system
+	BIND_FUNC( functions, "garbage-collect", gc )         '' system
+	BIND_FUNC( functions, "mem", mem )                    '' system
+	BIND_FUNC( functions, "load", load )                  '' system
+	BIND_FUNC( functions, "read", read )                  '' system
+	BIND_FUNC( functions, "lexer-lineno", lexer_lineno )  '' system
+	BIND_FUNC( functions, "lexer-file", lexer_file )      '' system
 
 end sub
 
@@ -161,8 +163,10 @@ define_lisp_function( load, args )
 			if( open( filename for input access read as #h ) = 0 ) then
 				close #h
 				if( open( filename for binary access read as #h ) = 0 ) then
-					text = space( lof( h ))
-					get #h,,text
+					if( lof(h) > 0 ) then
+						text = space( lof( h ))
+						get #h,,text
+					end if
 					close #h
 
 					function = eval_text( ctx, text, filename )
@@ -215,15 +219,31 @@ define_lisp_function( read, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (lineno)
+'' (lexer-lineno)
 ''
-define_lisp_function( lineno, args )
+define_lisp_function( lexer_lineno, args )
 
 	if( _LENGTH(args) <> 0 ) then
 		_RAISEERROR( LISP_ERR_WRONG_NUMBER_OF_ARGUMENTS )
 		function = _NIL_
 	else
-		function = _NEW_INTEGER( ctx->lexer->lineno() )
+		function = _NEW_INTEGER( ctx->lexer->lineno() + 1 )
+	end if
+
+end_lisp_function()
+
+'' ---------------------------------------------------------------------------
+'' (lexer-file)
+''
+define_lisp_function( lexer_file, args )
+
+	if( _LENGTH(args) <> 0 ) then
+		_RAISEERROR( LISP_ERR_WRONG_NUMBER_OF_ARGUMENTS )
+		function = _NIL_
+	else
+		_OBJ(p) = _NEW( OBJECT_TYPE_STRING )
+		p->value.str = lisp.strdup( ctx->lexer->filename() )
+		function = p
 	end if
 
 end_lisp_function()
