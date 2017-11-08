@@ -270,7 +270,7 @@ operator LISP_OBJECT.cast() as integer
 end operator
 
 ''
-function LISP_OBJECT.number_abs() as double
+function LISP_OBJECT.abs_number() as double
 	if( dtype = OBJECT_TYPE_INTEGER ) then
 		function = abs( value.int )
 	elseif( dtype = OBJECT_TYPE_REAL ) then

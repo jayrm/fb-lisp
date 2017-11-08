@@ -41,10 +41,10 @@ sub bind_runtime_system( byval functions as LISP_FUNCTIONS ptr )
 	BIND_FUNC( functions, "gc", gc )                      '' system
 	BIND_FUNC( functions, "garbage-collect", gc )         '' system
 	BIND_FUNC( functions, "mem", mem )                    '' system
-	BIND_FUNC( functions, "load", load )                  '' system
+	BIND_FUNC( functions, "load", load )                  '' system (tests/tests,lsp)
 	BIND_FUNC( functions, "read", read )                  '' system
-	BIND_FUNC( functions, "lexer-lineno", lexer_lineno )  '' system
-	BIND_FUNC( functions, "lexer-file", lexer_file )      '' system
+	BIND_FUNC( functions, "lexer-lineno", lexer_lineno )  '' system (tests/assert.lsp)
+	BIND_FUNC( functions, "lexer-file", lexer_file )      '' system (tests/assert.lsp)
 
 end sub
 

@@ -14,6 +14,7 @@ Nov 2017
 - added: (equalp ...) function
 - added: reorganized and added many tests in 'tests/tests.lsp'
 - added: = < > /= <= >= functions test for numeric type
+- changed: symbol names can have prefix numbers (e.g. "1+") and dots (e.g. "a...b")
 
 
 Mar 2015

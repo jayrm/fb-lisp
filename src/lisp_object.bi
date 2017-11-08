@@ -90,7 +90,7 @@ namespace LISP
 		declare operator cast() as single
 		declare operator cast() as integer
 
-		declare function number_abs() as double
+		declare function abs_number() as double
 
 	end type
 

@@ -63,8 +63,8 @@ type LISP_LEXER_CTX_STATE
 	declare function peekchar( ) as integer
 	declare function peekchar( byval index as integer ) as integer
 	declare function getcomment( ) as LISP_TOKEN_ID
-	declare function getidentifier( ) as LISP_TOKEN_ID
-	declare function getnumber( ) as LISP_TOKEN_ID
+	declare function lexidentifier( ) as LISP_TOKEN_ID
+	declare function lexnumber( ) as LISP_TOKEN_ID
 	declare function getstring( ) as LISP_TOKEN_ID
 
 end type
@@ -192,9 +192,11 @@ private function LISP_LEXER_CTX_STATE.getcomment() as LISP_TOKEN_ID
 end function
 
 ''
-private function LISP_LEXER_CTX_STATE.getnumber() as LISP_TOKEN_ID
+private function LISP_LEXER_CTX_STATE.lexnumber() as LISP_TOKEN_ID
 
 	dim as integer c = any
+	dim as boolean have_dec = false
+	dim as boolean have_exp = false
 
 	function = LISP_TK_INVALID
 
@@ -206,17 +208,14 @@ private function LISP_LEXER_CTX_STATE.getnumber() as LISP_TOKEN_ID
 		c = peekchar()
 	end if
 
+	'' test for following patterns
+	'' #
+	'' #.
+	'' #.#
+	'' .#
+
 	'' [0-9]
-	while( c >= 48 and c <= 57 )
-		c = getchar()
-		c = peekchar()
-	wend
-
-	'' '.'
-	if( c = 46 ) then
-
-		c = getchar()
-		c = peekchar()
+	if( c >= 48 and c <= 57 ) then
 
 		'' [0-9]
 		while( c >= 48 and c <= 57 )
@@ -224,11 +223,53 @@ private function LISP_LEXER_CTX_STATE.getnumber() as LISP_TOKEN_ID
 			c = peekchar()
 		wend
 
-		'' [DEde]
-		if( c = 68 or c = 69 or c = 100 or c = 101 ) then
-			c = getchar()	'' [DEde]
+		'' '.'
+		if( c = 46 ) then
+			have_dec = true
+			c = getchar()
 			c = peekchar()
 		end if
+
+		'' [0-9]
+		while( c >= 48 and c <= 57 )
+			c = getchar()
+			c = peekchar()
+		wend
+
+	'.'
+	elseif( c = 46 ) then
+
+		c = getchar()
+		c = peekchar()
+
+		'' [0-9]
+		if( c >= 48 and c <= 57 ) then
+			have_dec = true
+
+			'' [0-9]
+			while( c >= 48 and c <= 57 )
+				c = getchar()
+				c = peekchar()
+			wend
+
+		else
+			'' invalid number
+			exit function
+
+		end if
+
+	else
+		'' invalid number
+		exit function
+
+	end if
+
+	'' [DEde]
+	select case c
+	case 68, 69, 100, 101
+
+		c = getchar()	'' [DEde]
+		c = peekchar()
 
 		'' '+', '-'		
 		if( c = 43 or c = 45 ) then
@@ -237,41 +278,53 @@ private function LISP_LEXER_CTX_STATE.getnumber() as LISP_TOKEN_ID
 		end if
 
 		'' [0-9]
-		while( c >= 48 and c <= 57 )
-			c = getchar()
-			c = peekchar()
-		wend
+		if( c >= 48 and c <= 57 ) then
 
+			'' [0-9]
+			while( c >= 48 and c <= 57 )
+				c = getchar()
+				c = peekchar()
+			wend
+
+		else
+			'' invalid number
+			exit function
+
+		end if
+
+	end select
+
+	if( have_dec or have_exp ) then
 		function = LISP_TK_REAL
-
-	else
+	else	
 		function = LISP_TK_INTEGER
-
 	end if
-
-	token = mid( buffer, index0 + 1, index1 - index0 )
 
 end function
 
 ''
-private function LISP_LEXER_CTX_STATE.getidentifier( ) as LISP_TOKEN_ID
+private function LISP_LEXER_CTX_STATE.lexidentifier( ) as LISP_TOKEN_ID
 
 	dim c as integer = any
+	dim index2 as integer = index1
 
 	do
 		c = peekchar()
 		select case c
 
-		'' [-/+*%<>=&A-Za-z_0-9]
-		case 45, 47, 43, 42, 37, 60, 62, 61, 38, 65 to 90, 97 to 122, 95, 48 to 57
+		'' [.-/+*%<>=&A-Za-z_0-9]
+		case 46, 45, 47, 43, 42, 37, 60, 62, 61, 38, 65 to 90, 97 to 122, 95, 48 to 57
 			c = getchar()
 		case else
 			exit do
 		end select
 	loop
 
-	token = mid( buffer, index0 + 1, index1 - index0 )
-	function = LISP_TK_IDENTIFIER
+	if( index2 <> index1 ) then
+		function = LISP_TK_IDENTIFIER
+	else
+		function = LISP_TK_INVALID
+	end if
 
 end function
 
@@ -357,7 +410,7 @@ end function
 private function LISP_LEXER_CTX_STATE.gettoken( ) as LISP_TOKEN_ID
 
 	dim as integer c
-	dim as LISP_TOKEN_ID tk
+	dim as LISP_TOKEN_ID tk, tktest
 
 	function = LISP_TK_EOF
 
@@ -404,36 +457,39 @@ private function LISP_LEXER_CTX_STATE.gettoken( ) as LISP_TOKEN_ID
 			function = LISP_TK_INTEGER
 			exit do
 
-		'' '-'
-		case 45 
-			c = peekchar(1)
-			select case c
+		'' '-', '+', [0-9]
+		case 45, 43, 48 to 57
 
-			'' '0'-'9', '.'
-			case 48 to 57, 46 
-				function = getnumber()
-				exit do
+			'' might be a number, so check that first
+			tk = lexnumber()
 
-			case else
-				function = getidentifier()
-				exit do
+			if( tk = LISP_TK_INVALID ) then
+				'' must be identifier, lex additional identifier characters
+				tk = lexidentifier()
+				tk = LISP_TK_IDENTIFIER
+			else
+				'' it's a number, but check for additional characters
+				'' that would make it an identifier
+				tktest = lexidentifier()
+				if( tktest <> LISP_TK_INVALID ) then
+					tk = tktest
+				end if
+			end if
 
-			end select
+			token = mid( buffer, index0 + 1, index1 - index0 )
+			function = tk
 
-		'' [0-9]
-		case 48 to 57
-			function = getnumber()
 			exit do
 
 		'' [-/+*%<>=&A-Za-z_]
 		case 45, 47, 43, 42, 37, 60, 62, 61, 38, 65 to 90, 97 to 122, 95
-			function = getidentifier()
+			function = lexidentifier()
+			token = mid( buffer, index0 + 1, index1 - index0 )
 			exit do
-		
+
 		'' single_quote, '(', ')'
 		case 39, 40, 41
 
-			index0 = index1
 			c = getchar()
 			token = chr( c )
 			select case c
@@ -449,17 +505,39 @@ private function LISP_LEXER_CTX_STATE.gettoken( ) as LISP_TOKEN_ID
 
 		'' '.'
 		case 46
-			c = peekchar(1)
-			select case c
-			case 48 to 57 '' '0'-'9'
-				function = getnumber()
-			case else
-				index0 = index1
+
+			'' might be a number, so check that first
+			tk = lexnumber()
+
+			if( tk = LISP_TK_INVALID ) then
+				'' not a number, but it might be an identifier, but
+				'' we might have read some number parts, so reset
+				'' the lexer to the last mark, get the initial '.'
+				'' and then try to lex additional identifier characters
+
+				index1 = index0
 				c = getchar()
-				token = chr( c )
-				function = LISP_TK_DOT
-			end select
-			
+				tk = lexidentifier()
+
+				if( tk = LISP_TK_INVALID ) then
+					'' OK, really is just a dot
+					index1 = index0
+					c = getchar()
+					tk = LISP_TK_DOT
+				end if
+
+			else
+				'' it's a number, but check for additional characters
+				'' that would make it an identifier
+				tktest = lexidentifier()
+				if( tktest <> LISP_TK_INVALID ) then
+					tk = tktest
+				end if
+			end if
+
+			token = mid( buffer, index0 + 1, index1 - index0 )
+			function = tk
+
 			exit do
 
 		case 34 '' '\"'

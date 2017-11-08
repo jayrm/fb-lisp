@@ -70,6 +70,9 @@
 	(= <atom> <atom>...)
 	(> <atom> <atom>...)
 	(>= <atom> <atom>...)
+	(1+ <number> )
+	(1- <number> )		
+	(abs <number> )
 	(and <expr>...)
 	(append <expr>...)
 	(apply function [list])
@@ -95,6 +98,7 @@
 	(length <list>)
 	(list <expr1>...)
 	(listp <expr>)
+	(load <filename>)
 	(mapcar <function> <list1...listn>)
 	(not <expr>)
 	(nth <index> <list>)
@@ -112,18 +116,6 @@
 	(when <expr> then-expr...)
 	(while <expr> exprs...)
 	(zerop <expr>)
-
-	** (abs )
-	** (1+ )
-	** (1- )		
-	** (dump ...)
-	** (princ_object <item>)
-	** (princ_string <item>)
-	** (mem )
-	** (load )
-	** (read )
-	** (lexer-lineno)
-	** (lexer-file)
 
 
 5. EXAMPLE USAGE IN FREEBASIC

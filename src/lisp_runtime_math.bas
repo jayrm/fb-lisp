@@ -27,41 +27,44 @@
 
 namespace LISP
 
-import_lisp_function( add, args )
-import_lisp_function( sub, args )
-import_lisp_function( mul, args )
-import_lisp_function( div, args )
+import_lisp_function( add, args )     '' +
+import_lisp_function( sub, args )     '' -
+import_lisp_function( mul, args )     '' *
+import_lisp_function( div, args )     '' /
 
 import_lisp_function( abs, args )
 
 import_lisp_function( and, args )
 import_lisp_function( or, args )
 import_lisp_function( not, args )
-import_lisp_function( null, args ) '' !!! FIXME:
+import_lisp_function( null, args )    '' !!! FIXME:
 
-import_lisp_function( incr, args )
-import_lisp_function( decr, args )
+import_lisp_function( incr, args )    '' 1+
+import_lisp_function( decr, args )    '' 1-
 
-import_lisp_function( bitnot, args )
+import_lisp_function( bitnot, args )  '' ~
 
 '' ---------------------------------------------------------------------------
 ''
 sub bind_runtime_math( byval functions as LISP_FUNCTIONS ptr )
 
-	BIND_FUNC( functions, "+", add )        '' math
-	BIND_FUNC( functions, "-", sub )        '' math
-	BIND_FUNC( functions, "*", mul )        '' math
-	BIND_FUNC( functions, "/", div )        '' math
+	BIND_FUNC( functions, "+", add )        '' math (tests/mathops.lsp)
+	BIND_FUNC( functions, "-", sub )        '' math (tests/mathops.lsp)
+	BIND_FUNC( functions, "*", mul )        '' math (tests/mathops.lsp)
+	BIND_FUNC( functions, "/", div )        '' math (tests/mathops.lsp)
 
-	BIND_FUNC( functions, "abs", abs )      '' math
+	BIND_FUNC( functions, "abs", abs )      '' math (tests/mathops.lsp)
 
-	BIND_FUNC( functions, "and", and )      '' math-logical
-	BIND_FUNC( functions, "or", or )        '' math-logical
-	BIND_FUNC( functions, "not", not )      '' math-logical
+	BIND_FUNC( functions, "and", and )      '' math-logical (tests/bool_op.lsp)
+	BIND_FUNC( functions, "or", or )        '' math-logical (tests/bool_op.lsp)
+	BIND_FUNC( functions, "not", not )      '' math-logical (tests/bool_op.lsp)
+
 	BIND_FUNC( functions, "null", not )     '' data-logical !!! FIXME:
 
-	BIND_FUNC( functions, "1+", incr )        '' math
-	BIND_FUNC( functions, "1-", decr )        '' math
+	BIND_FUNC( functions, "1+", incr )      '' math (tests/mathops.lsp)
+	BIND_FUNC( functions, "1-", decr )      '' math (tests/mathops.lsp)
+
+	BIND_FUNC( functions, "~", bitnot )     '' math
 
 end sub
 
@@ -199,7 +202,7 @@ define_lisp_function( abs, args )
 	else
 		_OBJ(p) = _EVAL(_CAR(args))
 		if( _IS_NUMBER(p) ) then
-			function = _NEW_REAL( p->number_abs() )
+			function = _NEW_REAL( p->abs_number() )
 		else
 			_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
 			function = _NIL_

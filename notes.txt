@@ -1,0 +1,11 @@
+functions that need documentation
+and tests, debugging, etc.
+
+	** (dump ...)
+	** (princ_object <item>)
+	** (princ_string <item>)
+	** (mem )
+	** (load )
+	** (read )
+	** (lexer-lineno)
+	** (lexer-file)
