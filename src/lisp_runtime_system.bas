@@ -49,8 +49,8 @@ sub bind_runtime_system( byval functions as LISP_FUNCTIONS ptr )
 end sub
 
 '' ---------------------------------------------------------------------------
-'' (gc)
-'' (garbage-collect)
+'' lisp-syntax: (gc)
+'' lisp-syntax: (garbage-collect)
 ''
 define_lisp_function( gc, args )
 
@@ -59,7 +59,7 @@ define_lisp_function( gc, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (mem)
+'' lisp-syntax: (mem)
 ''
 define_lisp_function( mem, args )
 
@@ -73,17 +73,38 @@ define_lisp_function( mem, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (getsymbols)
+'' lisp-syntax: (getsymbols)
 ''
 define_lisp_function( getsymbols, args )
 
-	_OBJ(r) = any
-	
-	r = _CONS( _NEW_INTEGER( ctx->objects->mem_used() ), _
-	    _CONS( _NEW_INTEGER( ctx->objects->mem_free() ), _NIL_ ) _
-		)
+	_OBJ(p) = args
+	_OBJ(first) = NULL
+	_OBJ(prev) = NULL
+	_OBJ(p1)
 
-	function = r
+	if( p = _NIL_ ) then
+		function = _NIL_
+		exit function
+	end if
+
+	do
+		p1 = _NEW( OBJECT_TYPE_CONS )
+		p1->value.cell.car = _EVAL(_CAR(p))
+		if( first = NULL ) then
+			first = p1
+		end if
+		if( prev <> NULL ) then
+			prev->value.cell.cdr = p1
+		end if
+		prev = p1
+		p = _CDR(p)
+	loop while (p <> _NIL_ )
+
+	if( first = NULL ) then
+		function = _NIL_
+	else
+		function = first
+	end if
 
 end_lisp_function()
 
@@ -143,7 +164,7 @@ function eval_text( byval ctx as LISP_CTX ptr, byref text as const string, byref
 end function
 
 '' ---------------------------------------------------------------------------
-'' (load "filename")
+'' lisp-syntax: (load <filename>)
 ''
 define_lisp_function( load, args )
 
@@ -196,7 +217,7 @@ define_lisp_function( load, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (read string)
+'' lisp-syntax: (read string)
 ''
 define_lisp_function( read, args )
 
@@ -219,7 +240,7 @@ define_lisp_function( read, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (lexer-lineno)
+'' lisp-syntax: (lexer-lineno)
 ''
 define_lisp_function( lexer_lineno, args )
 
@@ -233,7 +254,7 @@ define_lisp_function( lexer_lineno, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (lexer-file)
+'' lisp-syntax: (lexer-file)
 ''
 define_lisp_function( lexer_file, args )
 

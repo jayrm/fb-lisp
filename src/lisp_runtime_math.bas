@@ -69,7 +69,7 @@ sub bind_runtime_math( byval functions as LISP_FUNCTIONS ptr )
 end sub
 
 '' ---------------------------------------------------------------------------
-'' (+ expr... )
+'' lisp-syntax: (+ <number> number...)
 ''
 define_lisp_function( add, args )
 
@@ -95,7 +95,7 @@ define_lisp_function( add, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (- expr... )
+'' lisp-syntax: (- <number> number...)
 ''
 define_lisp_function( sub, args )
 
@@ -126,7 +126,7 @@ define_lisp_function( sub, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (* expr... )
+'' lisp-syntax: (* <number> number...)
 ''
 define_lisp_function( mul, args )
 
@@ -157,7 +157,7 @@ define_lisp_function( mul, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (/ expr... )
+'' lisp-syntax: (/ <number> number...)
 ''
 define_lisp_function( div, args )
 
@@ -192,7 +192,7 @@ define_lisp_function( div, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (abs number)
+'' lisp-syntax: (abs <number>)
 ''
 define_lisp_function( abs, args )
 
@@ -212,7 +212,7 @@ define_lisp_function( abs, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (and expr...)
+'' lisp-syntax: (and <expr>...)
 ''
 define_lisp_function( and, args)
 
@@ -234,7 +234,7 @@ define_lisp_function( and, args)
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (or expr...)
+'' lisp-syntax: (or <expr>...)
 ''
 define_lisp_function( or, args)
 
@@ -255,8 +255,8 @@ define_lisp_function( or, args)
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (not expr)
-'' (null expr)  !!! FIXME: does (null ...) belong here?
+'' lisp-syntax: (not <expr>)
+'' lisp-syntax: (null <expr>)
 ''
 define_lisp_function( not, args)
 
@@ -271,7 +271,7 @@ define_lisp_function( not, args)
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (~ <number>)
+'' lisp-syntax: (~ <number>)
 ''
 define_lisp_function( bitnot, args)
 
@@ -291,7 +291,7 @@ define_lisp_function( bitnot, args)
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (1+ <number>)
+'' lisp-syntax: (1+ <number>)
 ''
 define_lisp_function( incr, args)
 
@@ -313,7 +313,7 @@ define_lisp_function( incr, args)
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (1- <number>)
+'' lisp-syntax: (1- <number>)
 ''
 define_lisp_function( decr, args)
 

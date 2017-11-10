@@ -1,12 +1,12 @@
 ;; mathops.lsp
 
-;; (+ <number> <number>...)
-;; (- <number> <number>...)
-;; (* <number> <number>...)
-;; (/ <number> <number>...)
-;; (abs <number>)
-;; (1+ <number>)
-;; (1- <number>)
+;; lisp-syntax: (+ <number> number...)
+;; lisp-syntax: (- <number> number...)
+;; lisp-syntax: (* <number> number...)
+;; lisp-syntax: (/ <number> number...)
+;; lisp-syntax: (abs <number>)
+;; lisp-syntax: (1+ <number>)
+;; lisp-syntax: (1- <number>)
 
 ;; --------------------------
 ;; assertequal/assertnequal

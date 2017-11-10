@@ -1,6 +1,6 @@
 ;; progn.lsp
 
-;; (progn <expr>... )
+;; lisp-syntax: (progn <expr>... )
 
 
 ;; --------------------------

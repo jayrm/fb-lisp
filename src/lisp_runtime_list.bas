@@ -56,7 +56,8 @@ sub bind_runtime_list( byval functions as LISP_FUNCTIONS ptr )
 end sub
 
 '' ---------------------------------------------------------------------------
-'' (car expr)
+'' lisp-syntax: (car <list>)
+'' lisp-syntax: (car <cons>)
 ''
 define_lisp_function( car, args )
 
@@ -71,7 +72,8 @@ define_lisp_function( car, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (cdr expr)
+'' lisp-syntax: (cdr <list>)
+'' lisp-syntax: (cdr <cons>)
 ''
 define_lisp_function( cdr, args )
 
@@ -86,7 +88,7 @@ define_lisp_function( cdr, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (cons expr1 expr2)
+'' lisp-syntax: (cons <expr1> expr2)
 ''
 define_lisp_function( cons, args )
 
@@ -108,7 +110,7 @@ define_lisp_function( cons, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (list expr1...)
+'' lisp-syntax: (list expr...)
 ''
 define_lisp_function( list, args )
 
@@ -143,7 +145,7 @@ define_lisp_function( list, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (append <expr>...)
+'' lisp-syntax: (append <expr>...)
 ''
 define_lisp_function( append, args )
 
@@ -210,7 +212,7 @@ define_lisp_function( append, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (length <list>)
+'' lisp-syntax: (length <list>)
 ''
 define_lisp_function( length, args )
 
@@ -260,7 +262,7 @@ define_lisp_function( length, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (nth <index> <list>)
+'' lisp-syntax: (nth <index> <list>)
 ''
 define_lisp_function( nth, args )
 
@@ -303,7 +305,7 @@ define_lisp_function( nth, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (elt <list> <index>)
+'' lisp-syntax: (elt <list> <index>)
 ''
 define_lisp_function( elt, args )
 
@@ -346,7 +348,7 @@ define_lisp_function( elt, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (last <list>)
+'' lisp-syntax: (last <list>)
 ''
 define_lisp_function( last, args )
 

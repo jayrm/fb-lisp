@@ -83,7 +83,7 @@ sub bind_runtime_data( byval functions as LISP_FUNCTIONS ptr )
 end sub
 
 '' ---------------------------------------------------------------------------
-'' (set name value)
+'' lisp-syntax: (set <expr1> <expr2>)
 ''
 define_lisp_function( set, args )
 
@@ -102,7 +102,7 @@ define_lisp_function( set, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (setf name value...)
+'' lisp-syntax: (setf <sym1> <expr1> [<sym2> <expr2>]...)
 ''
 define_lisp_function( setf, args )
 
@@ -132,7 +132,7 @@ define_lisp_function( setf, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (setq name value...)
+'' lisp-syntax: (setq <sym1> <expr1> [<sym2> <expr2>]...)
 ''
 define_lisp_function( setq, args )
 
@@ -159,7 +159,7 @@ define_lisp_function( setq, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (atom expr)
+'' lisp-syntax: (atom <expr>)
 ''
 define_lisp_function( atom, args )
 
@@ -176,7 +176,7 @@ define_lisp_function( atom, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (eq <expr1> <expr2>)
+'' lisp-syntax: (eq <expr1> <expr2>)
 ''
 '' return T if <expr1> and <expr2> are 
 '' - the exact same data (stored at same memory address)
@@ -234,7 +234,7 @@ private function eql_helper _
 end function
 
 '' ---------------------------------------------------------------------------
-'' (eql <expr1> <expr2>)
+'' lisp-syntax: (eql <expr1> <expr2>)
 ''
 '' return T if <expr1> and <expr2> are both
 '' - integer and same value
@@ -309,7 +309,7 @@ private function equal_helper _
 end function
 
 '' ---------------------------------------------------------------------------
-'' (equal <expr1> <expr2>)
+'' lisp-syntax: (equal <expr1> <expr2>)
 ''
 '' return T if <expr1> and <expr2> are
 '' - are both integer and same value
@@ -378,7 +378,7 @@ private function equalp_helper _
 end function
 
 '' ---------------------------------------------------------------------------
-'' (equalp <expr1> <expr2>)
+'' lisp-syntax: (equalp <expr1> <expr2>)
 ''
 '' return T if <expr1> and <expr2> are
 '' - are both number and same value
@@ -399,7 +399,7 @@ define_lisp_function( equalp, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (listp <expr>)
+'' lisp-syntax: (listp <expr>)
 ''
 define_lisp_function( listp, args)
 
@@ -420,7 +420,7 @@ define_lisp_function( listp, args)
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (consp <expr>)
+'' lisp-syntax: (consp <expr>)
 ''
 define_lisp_function( consp, args)
 
@@ -439,7 +439,7 @@ define_lisp_function( consp, args)
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (integerp <expr>)
+'' lisp-syntax: (integerp <expr>)
 ''
 define_lisp_function( integerp, args)
 
@@ -458,7 +458,7 @@ define_lisp_function( integerp, args)
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (numberp <expr>)
+'' lisp-syntax: (numberp <expr>)
 ''
 define_lisp_function( numberp, args)
 
@@ -477,7 +477,7 @@ define_lisp_function( numberp, args)
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (zerop <expr>)
+'' lisp-syntax: (zerop <expr>)
 ''
 define_lisp_function( zerop, args)
 
@@ -500,7 +500,7 @@ define_lisp_function( zerop, args)
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (stringp <expr>)
+'' lisp-syntax: (stringp <expr>)
 ''
 define_lisp_function( stringp, args)
 
@@ -519,7 +519,7 @@ define_lisp_function( stringp, args)
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (= expr... )
+'' lisp-syntax: (= <atom> atom...)
 ''
 define_lisp_function( eq_atom, args )
 
@@ -596,7 +596,7 @@ define_lisp_function( eq_atom, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (< expr... )
+'' lisp-syntax: (< <atom> atom...)
 ''
 define_lisp_function( lt_atom, args )
 
@@ -645,7 +645,7 @@ define_lisp_function( lt_atom, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (> expr... )
+'' lisp-syntax: (> <atom> atom...)
 ''
 define_lisp_function( gt_atom, args )
 
@@ -694,7 +694,7 @@ define_lisp_function( gt_atom, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (/= expr... )
+'' lisp-syntax: (/= <atom> atom...)
 ''
 '' returns T if all number values are unique
 '' returns T if only 1 number
@@ -774,7 +774,7 @@ define_lisp_function( ne_atom, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (>= expr... )
+'' lisp-syntax: (>= <atom> atom...)
 ''
 define_lisp_function( ge_atom, args )
 
@@ -824,7 +824,7 @@ define_lisp_function( ge_atom, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (<= expr... )
+'' lisp-syntax: (<= <atom> atom...)
 ''
 define_lisp_function( le_atom, args )
 

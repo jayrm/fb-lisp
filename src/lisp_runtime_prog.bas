@@ -63,28 +63,28 @@ sub bind_runtime_prog( byval functions as LISP_FUNCTIONS ptr )
 end sub
 
 '' ---------------------------------------------------------------------------
-'' (quote expr)
+'' lisp-syntax: (quote <expr>)
 ''
 define_lisp_function( quote, args )
 	function = _CAR( args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (eval expr)
+'' lisp-syntax: (eval <expr>)
 ''
 define_lisp_function( eval, args )
 	function = _EVAL(_EVAL(_CAR( args )))
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (progn expr... )
+'' lisp-syntax: (progn <expr>... )
 ''
 define_lisp_function( progn, args )
 	function = _PROGN( args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (defun name (arglist) expr...)
+'' lisp-syntax: (defun <sym> (arglist) <expr>...)
 ''
 '' returns the name of the function defined
 ''
@@ -124,7 +124,7 @@ define_lisp_function( defun, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (cond (expr1 [expr2])...)
+'' lisp-syntax: (cond (<expr1> expr2)...)
 ''
 '' requires (progn ...)
 ''
@@ -155,7 +155,7 @@ define_lisp_function( cond, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (if expr then-expr else-expr...)
+'' lisp-syntax: (if <expr> <then-expr> else-expr...)
 ''
 '' requires (progn ...)
 ''
@@ -167,8 +167,8 @@ define_lisp_function( if, args )
 
 	dim n as integer = _LENGTH(args)
 	
-	if( n < 2 or n > 3 ) then
-		_RAISEERROR( LISP_ERR_WRONG_NUMBER_OF_ARGUMENTS )
+	if( n < 2 ) then
+		_RAISEERROR( LISP_ERR_TOO_FEW_ARGUMENTS )
 		function = _NIL_
 	else
 		if( _EVAL(p1) <> _NIL_ ) then
@@ -181,7 +181,7 @@ define_lisp_function( if, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (unless expr else-expr...)
+'' lisp-syntax: (unless <expr> else-expr...)
 ''
 '' requires (progn ...)
 ''
@@ -190,7 +190,12 @@ define_lisp_function( unless, args )
 	_OBJ(p1) = _CAR(args)
 	_OBJ(p2) = _CDR(args)
 
-	if( _EVAL(p1) = _NIL_ ) then
+	dim n as integer = _LENGTH(args)
+	
+	if( p1 = _NIL_ ) then
+		_RAISEERROR( LISP_ERR_TOO_FEW_ARGUMENTS )
+		function = _NIL_
+	elseif( _EVAL(p1) = _NIL_ ) then
 		function = _CALL_BY_NAME( progn, p2 )
 	else
 		function = _NIL_
@@ -199,7 +204,7 @@ define_lisp_function( unless, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (when expr then-expr...)
+'' lisp-syntax: (when <expr> then-expr...)
 ''
 '' requires (progn ...)
 ''
@@ -208,7 +213,10 @@ define_lisp_function( when, args )
 	_OBJ(p1) = _CAR(args)
 	_OBJ(p2) = _CDR(args)
 
-	if( _EVAL(p1) <> _NIL_ ) then
+	if( p1 = _NIL_ ) then
+		_RAISEERROR( LISP_ERR_TOO_FEW_ARGUMENTS )
+		function = _NIL_
+	elseif( _EVAL(p1) <> _NIL_ ) then
 		function = _CALL_BY_NAME( progn, p2 )
 	else
 		function = _NIL_
@@ -217,7 +225,7 @@ define_lisp_function( when, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (while expr exprs...)
+'' lisp-syntax: (while <expr> expr...)
 ''
 '' requires (progn ...)
 ''
@@ -235,7 +243,7 @@ define_lisp_function( while, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (apply function [list])
+'' lisp-syntax: (apply function [list])
 ''
 define_lisp_function( apply, args )
 
@@ -262,7 +270,7 @@ define_lisp_function( apply, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (mapcar <function> <list1...listn>)
+'' lisp-syntax: (mapcar <function> <list1...listn>)
 ''
 define_lisp_function( mapcar, args)
 

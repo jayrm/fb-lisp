@@ -44,7 +44,7 @@ sub bind_runtime_console( byval functions as LISP_FUNCTIONS ptr )
 end sub
 
 '' ---------------------------------------------------------------------------
-'' (princ_string <string>)
+'' lisp-syntax: (princ_string <string>)
 ''
 define_lisp_function( princ_string, args )
 
@@ -93,7 +93,7 @@ end_lisp_function()
 
 
 '' ---------------------------------------------------------------------------
-'' (princ_object <item>)
+'' lisp-syntax: (princ_object <item>)
 ''
 '' requires (princ-string ...)
 ''
@@ -148,7 +148,7 @@ define_lisp_function( princ_object, args )
 end_lisp_function()
 
 '' ---------------------------------------------------------------------------
-'' (princ <expr>...)
+'' lisp-syntax: (princ <expr>...)
 ''
 '' requires (princ-string ...)
 ''
@@ -253,7 +253,7 @@ public function dump_helper _
 end function
 
 '' ---------------------------------------------------------------------------
-'' (dump ...)
+'' lisp-syntax: (dump ...)
 ''
 define_lisp_function( dump, args )
 

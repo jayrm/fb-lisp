@@ -3,24 +3,24 @@
 ;; = 
 ;; compares only numbers, regardless of type. (see mathcomp.lsp)
 
-;; (eq <expr1> <expr2>)
+;; lisp-syntax: (eq <expr1> <expr2>)
 ;; - compares symbols. 
 ;; - Two objects are eq iff they are actually the same object in memory. 
 ;; - Don't use it for numbers and characters.
 
-;; (eql <expr1> <expr2>)
+;; lisp-syntax: (eql <expr1> <expr2>)
 ;; - compares symbols similarly to eq, numbers (type sensitive) 
 ;;   and characters (case sensitive)
 ;; - is true if the objects are eq or they are both numbers or characters of the same type 
 ;;   (floating point, character, integer, etc.) and are equal in value
 
-;; (equal <expr1> <expr2>)
+;; lisp-syntax: (equal <expr1> <expr2>)
 ;; - compares more general objects. 
 ;; - Two objects are equal iff they are eql, strings of eql characters, 
 ;;   bit vectors of the same contents, or lists of equal objects. 
 ;; - For anything else, eq is used.
 
-;; (equalp <expr1> <expr2>)
+;; lisp-syntax: (equalp <expr1> <expr2>)
 ;; - is like equal, just more advanced. 
 ;; - Comparison of numbers is type insensitive. 
 ;; - Comparison of chars and strings is case insensitive. 
@@ -72,10 +72,10 @@
 (assertn (eq "FOO" "foo") ) ;;  is false.
 
 ;; NOT-SUPPORTED
-;; (assert  (eq #c(3 -4) #c(3 -4)) )   ;;    might be true or false, depending on the implementation.
-;; (assertn (eq #c(3 -4.0) #c(3 -4)) ) ;;  is false. 
-;; (assert  (eq #\A #\A) ) ;;  might be true or false, depending on the implementation.
-;; (assertn (eq "Foo" (copy-seq "Foo")) ) ;;  is false.
+;; - (assert  (eq #c(3 -4) #c(3 -4)) )   ;;    might be true or false, depending on the implementation.
+;; - (assertn (eq #c(3 -4.0) #c(3 -4)) ) ;;  is false. 
+;; - (assert  (eq #\A #\A) ) ;;  might be true or false, depending on the implementation.
+;; - (assertn (eq "Foo" (copy-seq "Foo")) ) ;;  is false.
 
 
 ;; --------------------------
@@ -119,10 +119,10 @@
 (assertn (eql "FOO" "foo") ) ;; is false.
 
 ;; NOT-SUPPORTED
-;; (assert  (eql #c(3 -4) #c(3 -4)) )   ;; is true. 
-;; (assertn (eql #c(3 -4.0) #c(3 -4)) ) ;; is false. 
-;; (assert  (eql #\A #\A) is true. 
-;; (assertn (eql "Foo" (copy-seq "Foo")) is false. 
+;; - (assert  (eql #c(3 -4) #c(3 -4)) )   ;; is true. 
+;; - (assertn (eql #c(3 -4.0) #c(3 -4)) ) ;; is false. 
+;; - (assert  (eql #\A #\A) is true. 
+;; - (assertn (eql "Foo" (copy-seq "Foo")) is false. 
 
 
 ;; --------------------------
@@ -166,10 +166,10 @@
 (assertn (equal "FOO" "foo") ) ;;  is false.
 
 ;; NOT-SUPPORTED
-;; (assertn (equal #c(3 -4) #c(3 -4)) ) ;;  is true. 
-;; (assertn (equal #c(3 -4.0) #c(3 -4)) ) ;;  is false. 
-;; (assertn (equal #\A #\A) ) ;;  is true. 
-;; (assertn (equal "Foo" (copy-seq "Foo")) ) ;;  is true. 
+;; - (assertn (equal #c(3 -4) #c(3 -4)) ) ;;  is true. 
+;; - (assertn (equal #c(3 -4.0) #c(3 -4)) ) ;;  is false. 
+;; - (assertn (equal #\A #\A) ) ;;  is true. 
+;; - (assertn (equal "Foo" (copy-seq "Foo")) ) ;;  is true. 
 
 
 ;; --------------------------
@@ -214,7 +214,7 @@
 
 ;; NOT-SUPPORTED
 
-;; (assert (equalp #c(3 -4) #c(3 -4)) ) ;; is true. 
-;; (assert (equalp #c(3 -4.0) #c(3 -4)) ) ;; is true. 
-;; (assert (equalp #\A #\A) ) ;; is true. 
-;; (assert (equalp "Foo" (copy-seq "Foo")) ) ;; is true. 
+;; - (assert (equalp #c(3 -4) #c(3 -4)) ) ;; is true. 
+;; - (assert (equalp #c(3 -4.0) #c(3 -4)) ) ;; is true. 
+;; - (assert (equalp #\A #\A) ) ;; is true. 
+;; - (assert (equalp "Foo" (copy-seq "Foo")) ) ;; is true. 

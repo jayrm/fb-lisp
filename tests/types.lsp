@@ -1,12 +1,12 @@
 ;; types.lsp
 
-;; (atom <item>)
-;; (consp <expr>)
-;; (listp <expr>)
-;; (integerp <expr>)
-;; (numberp <expr>)
-;; (zerop <expr>)
-;; (stringp <expr>)
+;; lisp-syntax: (atom <expr>)
+;; lisp-syntax: (consp <expr>)
+;; lisp-syntax: (listp <expr>)
+;; lisp-syntax: (integerp <expr>)
+;; lisp-syntax: (numberp <expr>)
+;; lisp-syntax: (zerop <expr>)
+;; lisp-syntax: (stringp <expr>)
 
 
 ;; --------------------------

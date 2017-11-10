@@ -1,15 +1,17 @@
 ;; list.lsp
 
-;; (car <list>)
-;; (cdr <list>)
-;; (cons <expr1> <expr2>)
-;; (list <expr1>...)
+;; lisp-syntax: (car <list>)
+;; lisp-syntax: (car <cons>)
+;; lisp-syntax: (cdr <list>)
+;; lisp-syntax: (cdr <cons>)
+;; lisp-syntax: (cons <expr1> expr2)
+;; lisp-syntax: (list expr...)
 
-;; (append <expr>...)
-;; (length <list>)
-;; (nth <index> <list>)
-;; (elt <list> <index>)
-;; (last <list>)
+;; lisp-syntax: (append <expr>...)
+;; lisp-syntax: (length <list>)
+;; lisp-syntax: (nth <index> <list>)
+;; lisp-syntax: (elt <list> <index>)
+;; lisp-syntax: (last <list>)
 
 
 ;; --------------------------
@@ -68,7 +70,7 @@
 (assertequal ''(1 2 3) '(list 1 2 3) )
 
 ;; NOT-SUPPORTED
-;; (list 'a #c(1 2) "moo") => (A #C(1 2) "moo")
+;; - (list 'a #c(1 2) "moo") => (A #C(1 2) "moo")
 
 
 ;; --------------------------
@@ -81,7 +83,7 @@
 (assertequal '(append '(1 2 3) '(4 5 6) '(7 8 9)) ''(1 2 3 4 5 6 7 8 9) )
 
 ;; NOT-SUPPORTED
-;; (let ((x '(tail list))) (eq x (cddr (append '(front list) x)))) => T
+;; - (let ((x '(tail list))) (eq x (cddr (append '(front list) x)))) => T
 
 
 ;; --------------------------
@@ -96,7 +98,7 @@
 (assertequal '(length (cons "moo" (cons "boo" nil))) '2 )
 
 ;; NOT-SUPPORTED
-;; (assertequal '(length '#1=(a . (b . #1#))) 'nil )
+;; - (assertequal '(length '#1=(a . (b . #1#))) 'nil )
 
 
 ;; --------------------------
@@ -109,9 +111,9 @@
 (assertequal '(setq x (list 0 1 2 3)) ''(0 1 2 3) )
 
 ;; NOT-SUPPORTED
-;; (setf) does not update 'x
-;; (assertequal '(setf (nth 2 x) "two") '"two" )
-;; (assertequal 'x ''(0 1 'two 3) )
+;; - (setf) does not update 'x
+;; - (assertequal '(setf (nth 2 x) "two") '"two" )
+;; - (assertequal 'x ''(0 1 'two 3) )
 
 
 ;; --------------------------
@@ -134,11 +136,11 @@
 (assertequal '(last '(list 1 2 3) ) ''(3) )
 
 ;; NOT-SUPPORTED
-;; (assertequal '(last '(1 2 3) 0) 'nil )
-;; (assertequal '(last '(1 2 3) 1) '(3) )
-;; (assertequal '(last '(1 2 3) 2) '(2 3) )
-;; (assertequal '(last '(1 2 3) 3) '(1 2 3) )
-;; (assertequal '(last '(1 2 3) 4) '(1 2 3) )
-;; (assertequal '(last '(a . b) 0) 'B )
-;; (assertequal '(last '(a . b) 1) '(A . B) )
-;; (assertequal '(last '(a . b) 2) '(A . B) )
+;; - (assertequal '(last '(1 2 3) 0) 'nil )
+;; - (assertequal '(last '(1 2 3) 1) '(3) )
+;; - (assertequal '(last '(1 2 3) 2) '(2 3) )
+;; - (assertequal '(last '(1 2 3) 3) '(1 2 3) )
+;; - (assertequal '(last '(1 2 3) 4) '(1 2 3) )
+;; - (assertequal '(last '(a . b) 0) 'B )
+;; - (assertequal '(last '(a . b) 1) '(A . B) )
+;; - (assertequal '(last '(a . b) 2) '(A . B) )

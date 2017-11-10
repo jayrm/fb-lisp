@@ -1,10 +1,10 @@
 ;; branch.lsp
 
-;; (cond (expr1 [expr2])...)
-;; (if expr then-expr else-expr...)
-;; (while expr exprs...)
-;; (unless expr else-expr...)
-;; (when expr then-expr...)
+;; lisp-syntax: (cond (<expr1> expr2)...)
+;; lisp-syntax: (if <expr> <then-expr> else-expr...)
+;; lisp-syntax: (while <expr> expr...)
+;; lisp-syntax: (unless <expr> else-expr...)
+;; lisp-syntax: (when <expr> then-expr...)
 
 
 ;; --------------------------

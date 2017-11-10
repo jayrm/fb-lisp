@@ -1,11 +1,11 @@
 ;; mathcomp.lsp
 
-;; (= <atom> <atom>...)
-;; (/= <atom> <atom>...)
-;; (< <atom> <atom>...)
-;; (> <atom> <atom>...)
-;; (<= <atom> <atom>...)
-;; (>= <atom> <atom>...)
+;; lisp-syntax: (= <atom> atom...)
+;; lisp-syntax: (/= <atom> atom...)
+;; lisp-syntax: (< <atom> atom...)
+;; lisp-syntax: (> <atom> atom...)
+;; lisp-syntax: (<= <atom> atom...)
+;; lisp-syntax: (>= <atom> atom...)
 
 
 ;; --------------------------

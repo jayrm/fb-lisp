@@ -1,8 +1,9 @@
 ;; bool_op.lsp
 
-;; (and <expr>...)
-;; (or <expr>...)
-;; (not <expr>...)
+;; lisp-syntax: (and <expr>...)
+;; lisp-syntax: (or <expr>...)
+;; lisp-syntax: (not <expr>)
+;; lisp-syntax: (null <expr>)
 
 
 ;; --------------------------
@@ -56,3 +57,23 @@
 (assertn '(not t))
 (assert  '(not nil))
 (assertn '(not 'foo))
+(assertn '(not 1))
+(assert '(not '()))
+(assertn '(not '(list)))
+(assert '(not '(list 1)))
+(assert '(not '(list 2)))
+
+
+;; --------------------------
+;; null
+;; --------------------------
+
+(assertn '(not t))
+(assert  '(not nil))
+(assertn '(not 'foo))
+(assertn '(not 1))
+(assert '(not '()))
+(assertn '(not '(list)))
+(assert '(not '(list 1)))
+(assert '(not '(list 2)))
+
