@@ -8,23 +8,14 @@
 0. INTRODUCTION
 
 	My main motivation for writing this is I like the idea of LISP as a
-	script or macro language that can be embedded in my programs.
+	script or macro language that can be embedded in my programs.  My
+	experience with LISP was with AutoLISP.  This version of LISP is
+	also a single namespace variety.  It certainly does not follow any
+	standard.  None-the-less it is very LISP-like.
 
-	I also wanted to make a	non-trivial object oriented program in 
-	FreeBASIC. And the design of this LISP evaluator is exactly that.  
-	Through the top-level object LispModule, it is possible to instance
-	two or more	completely seperate evaluators.  The only thing shared 
-	between the instances is the string text for error messages.
-
-	In writing the library, the experience didn't completely suck, except
-	in debugging it was just like C++, spending a significant smount of 
-	time chasing down a memory leak due to the manual managed memory 
-	allocations. And this was with careful planning of object life-times 
-	from the beginning.  In the end it was a stupid mistake that was 
-	causing the memory leak, but, isn't that always	the case?
-
-	Using this library is probably not a good way to learn LISP.  Use a real
-	LISP compiler or interpreter for that.
+	Using this library is probably not a good way to learn LISP.  Use a 
+	real LISP compiler or interpreter for that.  But if you do know some
+	LISP programming, this version will be similar enough to be useful.
 
 
 1. LICENSE
@@ -128,7 +119,6 @@
 
 	DIM lsp AS LispModule, expr AS STRING
 
-
 	expr = "(lisp expression)"
 	lsp.eval( expr )
 
@@ -147,7 +137,9 @@
 
 7. OBTAINING THE ORIGINAL SOURCE
 
-	Sources whould be at my own webpage here: http://www.coderjeff.ca
+	https://github.com/jayrm/fb-lisp
+		
+	and sometimes http://www.coderjeff.ca
 
 
 8. ACKNOWLEDGEMENTS
