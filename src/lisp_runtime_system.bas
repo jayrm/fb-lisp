@@ -193,20 +193,18 @@ define_lisp_function( load, args )
 					function = eval_text( ctx, text, filename )
 
 				else
-					_RAISEERROR( LISP_ERR_IO_ERROR )
+					_RAISEERROR( LISP_ERR_IO_ERROR, filename )
 					function = _NIL_
-					exit function
+
 				end if
 
 			else
 
-				_RAISEERROR( LISP_ERR_FILE_NOT_FOUND )
+				_RAISEERROR( LISP_ERR_FILE_NOT_FOUND, filename )
 				function = _NIL_
-				exit function
 
 			end if
 
-			exit function
 		else
 			_RAISEERROR( LISP_ERR_INVALID_ARGUMENT )
 		end if

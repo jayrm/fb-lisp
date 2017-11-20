@@ -83,6 +83,7 @@
 (assertequal '(unless t   nil) 'nil )
 (assertequal '(unless t   t  ) 'nil )
 
+(assertequal '(unless t   'a 'b ) 'nil )
 (assertequal '(unless nil 'a 'b ) ''b )
 
 
@@ -95,4 +96,5 @@
 (assertequal '(when t   nil) 'nil )
 (assertequal '(when t   t  ) 't   )
 
-(assertequal '(when t 'a 'b ) ''b )
+(assertequal '(when t   'a 'b ) ''b )
+(assertequal '(when nil 'a 'b ) 'nil )

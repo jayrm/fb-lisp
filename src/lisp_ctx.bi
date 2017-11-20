@@ -61,8 +61,8 @@ namespace LISP
 		ErrorColumn as integer
 		
 		declare sub ResetError( )
-		declare sub RaiseError( byval e_code as LISP_ERROR, byref e_text as string = "")
-		declare sub RaiseWarning( byval e_code as LISP_ERROR, byref e_text as string = "")
+		declare sub RaiseError( byval e_code as LISP_ERROR, byref e_text as const string = "")
+		declare sub RaiseWarning( byval e_code as LISP_ERROR, byref e_text as const string = "")
 
 		EchoInput as boolean
 		ShowResults as boolean

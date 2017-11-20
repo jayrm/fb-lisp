@@ -27,8 +27,17 @@
 
 	To compile the library, use the following commands:
 
-	cd src
-	make
+		cd src
+		make
+
+	To compile the examples, use following:
+
+		cd examples
+		make
+
+	To run the test suite, from main directory
+
+		example\runlisp tests\tests.lsp
 
 
 3. INSTALLING

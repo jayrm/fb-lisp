@@ -192,10 +192,7 @@ define_lisp_function( unless, args )
 
 	dim n as integer = _LENGTH(args)
 	
-	if( p1 = _NIL_ ) then
-		_RAISEERROR( LISP_ERR_TOO_FEW_ARGUMENTS )
-		function = _NIL_
-	elseif( _EVAL(p1) = _NIL_ ) then
+	if( p1 = _NIL_ orelse _EVAL(p1) = _NIL_ ) then
 		function = _CALL_BY_NAME( progn, p2 )
 	else
 		function = _NIL_
@@ -214,7 +211,6 @@ define_lisp_function( when, args )
 	_OBJ(p2) = _CDR(args)
 
 	if( p1 = _NIL_ ) then
-		_RAISEERROR( LISP_ERR_TOO_FEW_ARGUMENTS )
 		function = _NIL_
 	elseif( _EVAL(p1) <> _NIL_ ) then
 		function = _CALL_BY_NAME( progn, p2 )

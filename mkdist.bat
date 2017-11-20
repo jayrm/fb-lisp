@@ -5,22 +5,22 @@ cd ..
 
 echo making directories
 
-mkdir h:\upload\lisp
-mkdir h:\upload\lisp\dist
-mkdir h:\upload\lisp\dist\%1
+mkdir .\lisp\dist
+mkdir .\lisp\dist\%1
 
 echo Removing previous files
 
-del h:\upload\lisp\dist\%1\*.zip
-del h:\upload\lisp\dist\%1\*.gz
+del .\lisp\dist\%1\*.zip
+del .\lisp\dist\%1\*.gz
 
 echo making distribution
 
-wzzip -ex -P @lisp\dist-win32.lst h:\upload\lisp\dist\%1\lisp-%1-win32.zip
+zip .\lisp\dist\%1\lisp-%1-win32.zip @lisp\dist-win32.lst
 
 cd lisp
 
 goto END
 :HELP
-echo mkdist yyyy.mm.dd
+echo.mkdist yyyy.mm.dd
+echo.writes zip file in .\lisp\dist\yyyy.mm.dd\lisp-yyyy.mm.dd-win32.zip
 :END

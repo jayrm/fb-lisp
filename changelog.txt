@@ -1,5 +1,8 @@
 Nov 2017
 --------
+- updated: distribution list
+- fixed: file not found errors show file name
+- fixed: (unless) & (when) testing condition
 - fixed: some const correctness for types in LispModule methods
 - fixed: added some missing methods to LispModule
 - fixed: = < > /= <= >= return expected results - tests added

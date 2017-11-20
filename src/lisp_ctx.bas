@@ -133,7 +133,7 @@ sub LISP_CTX.ResetError( )
 end sub
 
 ''
-sub LISP_CTX.RaiseError( byval e_code as LISP_ERROR, byref e_text as string )
+sub LISP_CTX.RaiseError( byval e_code as LISP_ERROR, byref e_text as const string )
 
 	'' !!! FIXME: only take the first error, or generate a list of errors
 
@@ -146,7 +146,7 @@ sub LISP_CTX.RaiseError( byval e_code as LISP_ERROR, byref e_text as string )
 end sub
 
 ''
-sub LISP_CTX.RaiseWarning( byval e_code as LISP_ERROR, byref e_text as string )
+sub LISP_CTX.RaiseWarning( byval e_code as LISP_ERROR, byref e_text as const string )
 
 	'' !!! FIXME: allow warnings to be ignored
 
@@ -228,15 +228,21 @@ function LISP_CTX.Load( byref filename as const string ) as LISP_ERROR
 	dim h as integer = freefile
 	dim x as string
 	if( open( filename for input access read as #h ) = 0 ) then
-		close #1
+		close #h
 		if( open( filename for binary access read as #h ) = 0 ) then
-			x = space( lof( 1 ))
-			get #1,,x
-			close #1
+			x = space( lof( h ))
+			get #h,,x
+			close #h
 			lexer->push( filename )
 			function = Eval( x )
 			lexer->pop()
+		else
+			RaiseError( LISP_ERR_IO_ERROR, filename )
+			function = LISP_ERR_IO_ERROR
 		end if
+	else
+		RaiseError( LISP_ERR_FILE_NOT_FOUND, filename )
+		function = LISP_ERR_FILE_NOT_FOUND
 	end if
 
 end function

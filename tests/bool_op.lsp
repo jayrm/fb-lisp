@@ -60,20 +60,20 @@
 (assertn '(not 1))
 (assert '(not '()))
 (assertn '(not '(list)))
-(assert '(not '(list 1)))
-(assert '(not '(list 2)))
+(assertn '(not '(list 1)))
+(assertn '(not '(list 2)))
 
 
 ;; --------------------------
 ;; null
 ;; --------------------------
 
-(assertn '(not t))
-(assert  '(not nil))
-(assertn '(not 'foo))
-(assertn '(not 1))
-(assert '(not '()))
-(assertn '(not '(list)))
-(assert '(not '(list 1)))
-(assert '(not '(list 2)))
+(assertn '(null t))
+(assert  '(null nil))
+(assertn '(null 'foo))
+(assertn '(null 1))
+(assert '(null '()))
+(assertn '(null '(list)))
+(assertn '(null '(list 1)))
+(assertn '(null '(list 2)))
 

@@ -103,9 +103,9 @@ sub GetCommandLineOptions()
 	if( opt_nfiles = 0 ) then
 		opt_interactive = true
 
-	'' else if --quit option not given, then assume interactive
-	elseif( opt_quit = false )then
-		opt_interactive = true
+	'' else if --quit option given, then disable interactive
+	elseif( opt_quit = true )then
+		opt_interactive = false
 		
 	end if
 
@@ -178,8 +178,17 @@ function ExecuteLispFile _
 
 	'' check for an error
 	if( result <> LISP_ERR_SUCCESS ) then
-		print "Error " & lsp.ErrorCode & " on line " & lsp.ErrorLine & " of '" & lsp.ErrorFile & "'"
-		print "  " & lsp.ErrorText
+		if( lsp.ErrorCode <> LISP_ERR_SUCCESS ) then
+			print "Error " & lsp.ErrorCode & " on line " & lsp.ErrorLine;
+			if( lsp.ErrorFile > "" ) then
+				print " of '" & lsp.ErrorFile & "'"
+			else
+				print
+			end if
+			print "  " & lsp.ErrorText
+		else
+			print "Error " & result & " : unable to load " & filename
+		end if
 	else
 		function = true
 	end if
